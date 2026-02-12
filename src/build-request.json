@@ -1,0 +1,73 @@
+{
+  "kind": "build_request",
+  "title": "Add additional selectable particle types for the Hero theme",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Extend the hero theme particle effect type options so admins can select additional particle types beyond the current set, and persist the chosen type as part of `HeroSectionTheme.particleEffect.effectType`.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Add more particles types in the hero section theme to select."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend `ParticleEffectType` supports additional variants (new selectable particle types) without breaking existing stored hero theme data.",
+        "Frontend type generation remains consistent (the new variants are available in the generated `frontend/src/backend` types and compile successfully).",
+        "The default hero theme remains valid and unchanged unless explicitly updated by the admin."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update the Admin Hero Theme Manager particle type selector to include the newly added particle effect types, with clear English labels, and ensure the currently saved type is correctly shown/selected when reloading the admin page.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Add more particles types in the hero section theme to select."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The \"Particle Type\" dropdown in `frontend/src/components/admin/HeroThemeManager.tsx` shows the full list of supported particle types (existing + newly added).",
+        "Saving the hero theme with a new particle type persists the selection and it remains selected after a page refresh.",
+        "User-facing labels are in English and are readable (e.g., title-cased names)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement distinct canvas rendering behaviors in `ParticleEffectLayer` for all particle types that are selectable in the admin UI, including the existing options that are currently not visually distinct (e.g., `confetti`, `stethoscopeParticles`, `crossParticles`) and the newly added types.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Add more particles types in the hero section theme to select."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each selectable particle type results in a visibly different particle style/shape/motion (not falling back to the generic circle rendering).",
+        "Selecting any supported particle type does not throw runtime errors in the hero section.",
+        "If an unknown/unsupported `effectType` is encountered, the particle layer falls back gracefully to a default rendering (no crash)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in `backend/main.mo` (no additional backend services).",
+    "Do not edit any files under `frontend/src/components/ui` or the immutable hook paths listed in SYSTEM_CONTEXT."
+  ],
+  "nonGoals": [
+    "Adding new sections to the landing page unrelated to hero theme configuration.",
+    "Introducing third-party particle libraries; keep the particle system canvas-based within the existing `ParticleEffectLayer` approach."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

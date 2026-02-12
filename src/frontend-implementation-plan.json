@@ -1,0 +1,69 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Expanded Hero particle type selection and distinct renderers",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Make hero particle effect type selection forward-compatible with additional backend variants and persist the selected `effectType` through the existing theme save flow.",
+      "acceptanceCriteria": [
+        "Frontend can accept and round-trip any `HeroSectionTheme.particleEffect.effectType` value produced by the generated backend types without forcing a default or breaking the admin save flow.",
+        "If the backend introduces new `ParticleEffectType` variants, the admin UI can display/select them without additional hardcoding, and the app compiles against regenerated types."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/particleEffectTypes.ts",
+          "operation": "create",
+          "description": "Add a single source of truth for particle effect type metadata derived from generated `ParticleEffectType` (e.g., list of supported values, human-friendly English labels, and a safe label fallback for unknown strings)."
+        },
+        {
+          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
+          "operation": "modify",
+          "description": "Update particle type handling to use the centralized particle type list/labels so new variants (from regenerated `frontend/src/backend` types) can be shown/selected and saved without changing defaults or overwriting existing stored values."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Update the Admin Hero Theme Manager particle type dropdown to show all supported particle types with clear English labels and correctly reflect the saved selection on reload.",
+      "acceptanceCriteria": [
+        "The \"Particle Type\" dropdown in `frontend/src/components/admin/HeroThemeManager.tsx` shows the full list of supported particle types (existing + newly added).",
+        "Saving the hero theme with a new particle type persists the selection and it remains selected after a page refresh.",
+        "User-facing labels are in English and are readable (e.g., title-cased names)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
+          "operation": "modify",
+          "description": "Replace the hardcoded `<SelectItem>` list with a mapped list from `frontend/src/utils/particleEffectTypes.ts`, rendering title-cased English labels and ensuring the controlled Select `value` stays bound to `localTheme.particleEffect.effectType` so reload shows the saved value."
+        },
+        {
+          "path": "frontend/src/utils/particleEffectTypes.ts",
+          "operation": "modify",
+          "description": "Add/adjust label rules for existing variants (e.g., `stethoscopeParticles`, `crossParticles`) and ensure a readable English fallback label for any unknown string values."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement visually distinct canvas rendering behaviors in `ParticleEffectLayer` for every selectable particle type and add a graceful fallback for unknown types.",
+      "acceptanceCriteria": [
+        "Each selectable particle type results in a visibly different particle style/shape/motion (not falling back to the generic circle rendering).",
+        "Selecting any supported particle type does not throw runtime errors in the hero section.",
+        "If an unknown/unsupported `effectType` is encountered, the particle layer falls back gracefully to a default rendering (no crash)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
+          "operation": "modify",
+          "description": "Refactor the renderer into a type-to-renderer strategy (no third-party libraries) and implement distinct visuals/motion for all known variants in generated `ParticleEffectType` (e.g., `confetti`, `dots`, `crossParticles`, `bubbles`, `lines`, `sparkles`, `swirls`, `stethoscopeParticles`, `rings`), with a safe default renderer if the value is unrecognized."
+        },
+        {
+          "path": "frontend/src/utils/particleEffectTypes.ts",
+          "operation": "modify",
+          "description": "Expose a shared list of selectable particle types for the admin UI that matches the set of renderers implemented in `ParticleEffectLayer`, and document (in-code) the expected mapping so newly added types can be implemented with distinct rendering."
+        }
+      ]
+    }
+  ]
+}

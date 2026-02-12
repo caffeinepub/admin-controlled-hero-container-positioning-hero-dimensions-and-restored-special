@@ -1,0 +1,68 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-extend-the-hero-theme-particle-effect-type-options-so-admins-can-select-additional-particle-types-beyond-the-current-set-and-persist-the-chosen-type-as-part-of-herosectiontheme-particleeffect-effecttype",
+      "featureTitle": "Extend the hero theme particle effect type options so admins can select additional particle types beyond the current set, and persist the chosen type as part of `HeroSectionTheme.particleEffect.effectType`.",
+      "files": [
+        "frontend/src/components/admin/HeroThemeManager.tsx",
+        "frontend/src/utils/particleEffectTypes.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-admin-hero-theme-manager-particle-type-selector-to-include-the-newly-added-particle-effect-types-with-clear-english-labels-and-ensure-the-currently-saved-type-is-correctly-shown-selected-when-reloading-the-admin-page",
+      "featureTitle": "Update the Admin Hero Theme Manager particle type selector to include the newly added particle effect types, with clear English labels, and ensure the currently saved type is correctly shown/selected when reloading the admin page.",
+      "files": [
+        "frontend/src/components/admin/HeroThemeManager.tsx",
+        "frontend/src/utils/particleEffectTypes.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-distinct-canvas-rendering-behaviors-in-particleeffectlayer-for-all-particle-types-that-are-selectable-in-the-admin-ui-including-the-existing-options-that-are-currently-not-visually-distinct-e-g-confetti-stethoscopeparticles-crossparticles-and-the-newly-added-types",
+      "featureTitle": "Implement distinct canvas rendering behaviors in `ParticleEffectLayer` for all particle types that are selectable in the admin UI, including the existing options that are currently not visually distinct (e.g., `confetti`, `stethoscopeParticles`, `crossParticles`) and the newly added types.",
+      "files": [
+        "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
+        "frontend/src/utils/particleEffectTypes.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

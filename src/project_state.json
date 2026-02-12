@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-extend-the-hero-theme-particle-effect-type-options-so-admins-can-select-additional-particle-types-beyond-the-current-set-and-persist-the-chosen-type-as-part-of-herosectiontheme-particleeffect-effecttype",
+      "title": "Extend the hero theme particle effect type options so admins can select additional particle types beyond the current set, and persist the chosen type as part of `HeroSectionTheme.particleEffect.effectType`.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-hero-theme-manager-particle-type-selector-to-include-the-newly-added-particle-effect-types-with-clear-english-labels-and-ensure-the-currently-saved-type-is-correctly-shown-selected-when-reloading-the-admin-page",
+      "title": "Update the Admin Hero Theme Manager particle type selector to include the newly added particle effect types, with clear English labels, and ensure the currently saved type is correctly shown/selected when reloading the admin page.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-distinct-canvas-rendering-behaviors-in-particleeffectlayer-for-all-particle-types-that-are-selectable-in-the-admin-ui-including-the-existing-options-that-are-currently-not-visually-distinct-e-g-confetti-stethoscopeparticles-crossparticles-and-the-newly-added-types",
+      "title": "Implement distinct canvas rendering behaviors in `ParticleEffectLayer` for all particle types that are selectable in the admin UI, including the existing options that are currently not visually distinct (e.g., `confetti`, `stethoscopeParticles`, `crossParticles`) and the newly added types.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Add more particle types as selectable options in the hero section theme.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Add additional selectable particle types for the Hero theme",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T05:27:11.185Z",
+  "summary": "Diff adds new particle effect variants on the backend (dots/rings/swirls/lines) and introduces a centralized frontend list of particle types/labels. However, the diff summary does not provide clear evidence that the admin dropdown is actually updated to use the full list, nor that ParticleEffectLayer implements distinct rendering (and graceful fallback) for all selectable types including stethoscopeParticles/crossParticles and the newly added types.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Update the Admin Hero Theme Manager particle type selector to include the newly added particle effect types, with clear English labels, and ensure the currently saved type is correctly shown/selected when reloading the admin page.",
+      "reason": "HeroThemeManager.tsx is truncated before any particle type Select rendering is shown; the diff only shows that PARTICLE_EFFECT_TYPES is imported, not that the dropdown is populated from it or that selection is wired to persisted theme data.",
+      "evidence": [
+        "frontend/src/components/admin/HeroThemeManager.tsx (truncated)",
+        "frontend/src/utils/particleEffectTypes.ts"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Implement distinct canvas rendering behaviors in ParticleEffectLayer for all particle types that are selectable in the admin UI (including confetti, stethoscopeParticles, crossParticles, and newly added types) and provide a graceful fallback for unknown types.",
+      "reason": "ParticleEffectLayer.tsx shows distinct rendering cases for bubbles/sparkles/confetti/dots and begins rings, but the diff is truncated before showing handling for rings completion, swirls, lines, stethoscopeParticles, crossParticles, and any default/fallback behavior for unknown effectType.",
+      "evidence": [
+        "frontend/src/components/hero/effects/ParticleEffectLayer.tsx (truncated)",
+        "frontend/src/utils/particleEffectTypes.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Addition of a backend migration module/file and wiring main.mo to run migration.",
+      "reason": "BuildRequest does not explicitly request creating a new migration module/file; it focuses on extending particle effect types and frontend behavior. While migration may be justified to avoid breaking stored data, it is still an unrequested implementation detail.",
+      "evidence": [
+        "backend/migration.mo",
+        "backend/main.mo (with migration = Migration.run)"
+      ]
+    },
+    {
+      "description": "Project state tracking and large-scale frontend file summary changes unrelated to particle type selection/rendering.",
+      "reason": "BuildRequest is narrowly scoped to particle type options, admin selector, and particle rendering. The diff includes project_state.json updates and a broad frontend-file-summaries.txt describing many unrelated UI/behavior changes.",
+      "evidence": [
+        "project_state.json",
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/components/admin/HeroThemeManager.tsx",
+    "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
+    "frontend/src/utils/particleEffectTypes.ts",
+    "project_state.json"
+  ]
+}

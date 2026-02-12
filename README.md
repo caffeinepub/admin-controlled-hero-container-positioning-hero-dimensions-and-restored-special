@@ -1,2 +1,3 @@
-# admin-controlled-hero-container-positioning-hero-dimensions-and-restored-special
-Exported from Caffeine project: Add additional selectable particle types for the Hero theme
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

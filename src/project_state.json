@@ -1,32 +1,50 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
+  "summary": "App/site improvements: fix duplicate patient review submissions; enhance admin blog editor formatting; add Blogs link to footer quick links; expand hero section material design effects/transitions and improve hero background controls.",
   "architectural_notes": [],
-  "known_issues": [],
-  "isFixRequest": false,
+  "known_issues": [
+    "Posting patient reviews is creating duplicate entries."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-extend-the-hero-theme-particle-effect-type-options-so-admins-can-select-additional-particle-types-beyond-the-current-set-and-persist-the-chosen-type-as-part-of-herosectiontheme-particleeffect-effecttype",
-      "title": "Extend the hero theme particle effect type options so admins can select additional particle types beyond the current set, and persist the chosen type as part of `HeroSectionTheme.particleEffect.effectType`.",
+      "id": "feature-fix-the-patient-review-submission-flow-so-that-creating-a-new-review-cannot-result-in-duplicate-review-entries-being-stored-or-displayed-even-if-the-user-clicks-submit-multiple-times-the-request-retries-or-the-ui-re-renders",
+      "title": "Fix the patient review submission flow so that creating a new review cannot result in duplicate review entries being stored or displayed (even if the user clicks submit multiple times, the request retries, or the UI re-renders).",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-the-admin-hero-theme-manager-particle-type-selector-to-include-the-newly-added-particle-effect-types-with-clear-english-labels-and-ensure-the-currently-saved-type-is-correctly-shown-selected-when-reloading-the-admin-page",
-      "title": "Update the Admin Hero Theme Manager particle type selector to include the newly added particle effect types, with clear English labels, and ensure the currently saved type is correctly shown/selected when reloading the admin page.",
+      "id": "feature-add-user-friendly-text-formatting-controls-for-admins-while-writing-blog-posts-covering-common-formatting-options-e-g-headings-bold-italic-underline-links-ordered-unordered-lists-quotes-and-ensure-the-formatted-content-is-stored-and-rendered-correctly-on-blog-list-detail-views",
+      "title": "Add user-friendly text formatting controls for admins while writing blog posts, covering common formatting options (e.g., headings, bold/italic/underline, links, ordered/unordered lists, quotes) and ensure the formatted content is stored and rendered correctly on blog list/detail views.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-distinct-canvas-rendering-behaviors-in-particleeffectlayer-for-all-particle-types-that-are-selectable-in-the-admin-ui-including-the-existing-options-that-are-currently-not-visually-distinct-e-g-confetti-stethoscopeparticles-crossparticles-and-the-newly-added-types",
-      "title": "Implement distinct canvas rendering behaviors in `ParticleEffectLayer` for all particle types that are selectable in the admin UI, including the existing options that are currently not visually distinct (e.g., `confetti`, `stethoscopeParticles`, `crossParticles`) and the newly added types.",
+      "id": "feature-add-a-blogs-option-to-the-footer-quick-links-that-navigates-users-to-the-blogs-page-using-the-app-s-existing-hash-based-routing",
+      "title": "Add a “Blogs” option to the Footer Quick Links that navigates users to the blogs page using the app’s existing hash-based routing.",
       "reqIds": [
         "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expand-the-hero-theme-system-with-additional-material-design-inspired-effects-and-transitions-and-allow-multiple-effect-types-to-be-enabled-configured-in-the-hero-theme-section-without-visual-glitches-or-performance-issues",
+      "title": "Expand the hero theme system with additional Material Design-inspired effects and transitions, and allow multiple effect types to be enabled/configured in the hero theme section without visual glitches or performance issues.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-hero-section-background-controls-more-robust-by-improving-configurability-and-reliability-provide-clearer-admin-controls-for-background-behavior-including-sensible-defaults-validation-handle-missing-light-dark-background-variants-gracefully-and-ensure-the-hero-remains-readable-across-different-backgrounds",
+      "title": "Make the hero section background controls more robust by improving configurability and reliability: provide clearer admin controls for background behavior (including sensible defaults/validation), handle missing light/dark background variants gracefully, and ensure the hero remains readable across different backgrounds.",
+      "reqIds": [
+        "REQ-5"
       ],
       "version": 1
     }
@@ -34,12 +52,36 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Add more particle types as selectable options in the hero section theme.",
+      "summary": "Fix glitch where posting patient reviews creates duplicate entries.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add user-friendly rich text formatting options for admins when writing blog posts.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add a \"Blogs\" option/link in the Footer Quick Links.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add multiple Material Design-style effects and transitions to the hero theme section.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Make hero section background controls more robust (improved configurability/reliability).",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Add additional selectable particle types for the Hero theme",
+  "projectName": "Dr Malay Site",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

@@ -1,24 +1,32 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { useInternetIdentity } from './useInternetIdentity';
-import type { Clinic, Service, SocialMediaLink, WebsiteContent, UserProfile, FooterContent, WebsiteImage, DoctorCredentials, HeroSectionTheme } from '../backend';
-import { ExternalBlob } from '../backend';
+import type {
+  WebsiteContent,
+  FooterContent,
+  Clinic,
+  Service,
+  SocialMediaLink,
+  WebsiteImage,
+  UserProfile,
+  DoctorCredentials,
+  HeroSectionTheme,
+  Review,
+  ReviewsPanelSettings,
+  BlogPost,
+} from '../backend';
 
 // User Profile Queries
 export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
-  const { identity } = useInternetIdentity();
 
   const query = useQuery<UserProfile | null>({
     queryKey: ['currentUserProfile'],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
-      const result = await actor.getCallerUserProfile();
-      return result ?? null;
+      return actor.getCallerUserProfile();
     },
-    enabled: !!actor && !!identity && !actorFetching,
+    enabled: !!actor && !actorFetching,
     retry: false,
-    staleTime: 5 * 60 * 1000,
   });
 
   return {
@@ -35,7 +43,7 @@ export function useSaveCallerUserProfile() {
   return useMutation({
     mutationFn: async (profile: UserProfile) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.saveCallerUserProfile(profile);
+      return actor.saveCallerUserProfile(profile);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
@@ -43,6 +51,7 @@ export function useSaveCallerUserProfile() {
   });
 }
 
+// Admin Check Query
 export function useIsCallerAdmin() {
   const { actor, isFetching } = useActor();
 
@@ -50,53 +59,23 @@ export function useIsCallerAdmin() {
     queryKey: ['isAdmin'],
     queryFn: async () => {
       if (!actor) return false;
-      const result = await actor.isCallerAdmin();
-      return result ?? false;
+      return actor.isCallerAdmin();
     },
     enabled: !!actor && !isFetching,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
   });
 }
 
 // Website Content Queries
 export function useGetWebsiteContent() {
-  const { actor, isFetching: actorFetching } = useActor();
+  const { actor, isFetching } = useActor();
 
   return useQuery<WebsiteContent>({
     queryKey: ['websiteContent'],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
-      const content = await actor.getWebsiteContent();
-      
-      return {
-        overviewContent: content?.overviewContent ?? '',
-        aboutContent: content?.aboutContent ?? '',
-        theme: content?.theme ?? { __kind__: 'light' as const },
-        heroSection: {
-          headline: content?.heroSection?.headline ?? '',
-          subtext: content?.heroSection?.subtext ?? '',
-          primaryButton: {
-            text: content?.heroSection?.primaryButton?.text ?? '',
-            link: content?.heroSection?.primaryButton?.link ?? '',
-          },
-          secondaryButton: content?.heroSection?.secondaryButton ?? undefined,
-        },
-        doctorCredentials: {
-          name: content?.doctorCredentials?.name ?? '',
-          qualifications: content?.doctorCredentials?.qualifications ?? '',
-          specializations: content?.doctorCredentials?.specializations ?? '',
-          yearsOfExperience: content?.doctorCredentials?.yearsOfExperience ?? '',
-          achievements: content?.doctorCredentials?.achievements ?? '',
-          profileImage: content?.doctorCredentials?.profileImage ?? undefined,
-        },
-      };
+      return actor.getWebsiteContent();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
@@ -107,53 +86,9 @@ export function useUpdateWebsiteContent() {
   return useMutation({
     mutationFn: async (content: WebsiteContent) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateWebsiteContent(content);
+      return actor.updateWebsiteContent(content);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['websiteContent'] });
-      queryClient.invalidateQueries({ queryKey: ['doctorCredentials'] });
-    },
-  });
-}
-
-// Doctor Credentials Queries
-export function useGetDoctorCredentials() {
-  const { actor, isFetching: actorFetching } = useActor();
-
-  return useQuery<DoctorCredentials>({
-    queryKey: ['doctorCredentials'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      const credentials = await actor.getDoctorCredentials();
-      
-      return {
-        name: credentials?.name ?? '',
-        qualifications: credentials?.qualifications ?? '',
-        specializations: credentials?.specializations ?? '',
-        yearsOfExperience: credentials?.yearsOfExperience ?? '',
-        achievements: credentials?.achievements ?? '',
-        profileImage: credentials?.profileImage ?? undefined,
-      };
-    },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
-  });
-}
-
-export function useUpdateDoctorCredentials() {
-  const { actor } = useActor();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (credentials: DoctorCredentials) => {
-      if (!actor) throw new Error('Actor not available');
-      await actor.updateDoctorCredentials(credentials);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['doctorCredentials'] });
       queryClient.invalidateQueries({ queryKey: ['websiteContent'] });
     },
   });
@@ -161,30 +96,15 @@ export function useUpdateDoctorCredentials() {
 
 // Footer Content Queries
 export function useGetFooterContent() {
-  const { actor, isFetching: actorFetching } = useActor();
+  const { actor, isFetching } = useActor();
 
   return useQuery<FooterContent>({
     queryKey: ['footerContent'],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
-      const content = await actor.getFooterContent();
-      
-      return {
-        contact: {
-          address: content?.contact?.address ?? '',
-          phone: content?.contact?.phone ?? '',
-          email: content?.contact?.email ?? '',
-        },
-        quickLinks: content?.quickLinks ?? [],
-        copyright: content?.copyright ?? '',
-        background: content?.background ?? undefined,
-      };
+      return actor.getFooterContent();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
@@ -195,7 +115,7 @@ export function useUpdateFooterContent() {
   return useMutation({
     mutationFn: async (content: FooterContent) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateFooterContent(content);
+      return actor.updateFooterContent(content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footerContent'] });
@@ -203,75 +123,17 @@ export function useUpdateFooterContent() {
   });
 }
 
-// Hero Section Theme Queries
-export function useGetHeroSectionTheme() {
-  const { actor, isFetching: actorFetching } = useActor();
-
-  return useQuery<HeroSectionTheme>({
-    queryKey: ['heroSectionTheme'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      const theme = await actor.getHeroSectionTheme();
-      return theme;
-    },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
-  });
-}
-
-export function useUpdateHeroSectionTheme() {
-  const { actor } = useActor();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (theme: HeroSectionTheme) => {
-      if (!actor) throw new Error('Actor not available');
-      await actor.updateHeroSectionTheme(theme);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['heroSectionTheme'] });
-    },
-  });
-}
-
-// Hero Background Image Query
-export function useGetHeroBackgroundImage() {
-  const { actor, isFetching: actorFetching } = useActor();
-
-  return useQuery<{ standard: ExternalBlob; darkMode?: ExternalBlob } | null>({
-    queryKey: ['heroBackgroundImage'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      const result = await actor.getHeroSectionBackgroundImage();
-      return result ?? null;
-    },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
-  });
-}
-
-// Clinic Queries
+// Clinics Queries
 export function useGetAllClinics() {
-  const { actor, isFetching: actorFetching } = useActor();
+  const { actor, isFetching } = useActor();
 
   return useQuery<Clinic[]>({
     queryKey: ['clinics'],
     queryFn: async () => {
       if (!actor) return [];
-      const clinics = await actor.getAllClinics();
-      return Array.isArray(clinics) ? clinics : [];
+      return actor.getAllClinics();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
@@ -282,7 +144,7 @@ export function useAddClinic() {
   return useMutation({
     mutationFn: async (clinic: Clinic) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.addClinic(clinic);
+      return actor.addClinic(clinic);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clinics'] });
@@ -297,7 +159,7 @@ export function useUpdateClinic() {
   return useMutation({
     mutationFn: async (clinic: Clinic) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateClinic(clinic);
+      return actor.updateClinic(clinic);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clinics'] });
@@ -312,7 +174,7 @@ export function useDeleteClinic() {
   return useMutation({
     mutationFn: async (id: string) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.deleteClinic(id);
+      return actor.deleteClinic(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clinics'] });
@@ -320,22 +182,17 @@ export function useDeleteClinic() {
   });
 }
 
-// Service Queries
+// Services Queries
 export function useGetAllServices() {
-  const { actor, isFetching: actorFetching } = useActor();
+  const { actor, isFetching } = useActor();
 
   return useQuery<Service[]>({
     queryKey: ['services'],
     queryFn: async () => {
       if (!actor) return [];
-      const services = await actor.getAllServices();
-      return Array.isArray(services) ? services : [];
+      return actor.getAllServices();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
@@ -346,7 +203,7 @@ export function useAddService() {
   return useMutation({
     mutationFn: async (service: Service) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.addService(service);
+      return actor.addService(service);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
@@ -361,7 +218,7 @@ export function useUpdateService() {
   return useMutation({
     mutationFn: async (service: Service) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateService(service);
+      return actor.updateService(service);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
@@ -376,7 +233,7 @@ export function useDeleteService() {
   return useMutation({
     mutationFn: async (id: string) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.deleteService(id);
+      return actor.deleteService(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
@@ -385,21 +242,16 @@ export function useDeleteService() {
 }
 
 // Social Media Queries
-export function useGetAllSocialMediaLinks() {
-  const { actor, isFetching: actorFetching } = useActor();
+export function useGetSortedSocialMediaLinks() {
+  const { actor, isFetching } = useActor();
 
   return useQuery<SocialMediaLink[]>({
     queryKey: ['socialMediaLinks'],
     queryFn: async () => {
       if (!actor) return [];
-      const links = await actor.getSortedSocialMediaLinks();
-      return Array.isArray(links) ? links : [];
+      return actor.getSortedSocialMediaLinks();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
@@ -410,7 +262,7 @@ export function useAddSocialMediaLink() {
   return useMutation({
     mutationFn: async (link: SocialMediaLink) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.addSocialMediaLink(link);
+      return actor.addSocialMediaLink(link);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['socialMediaLinks'] });
@@ -425,7 +277,7 @@ export function useUpdateSocialMediaLink() {
   return useMutation({
     mutationFn: async (link: SocialMediaLink) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateSocialMediaLink(link);
+      return actor.updateSocialMediaLink(link);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['socialMediaLinks'] });
@@ -440,7 +292,7 @@ export function useDeleteSocialMediaLink() {
   return useMutation({
     mutationFn: async (platform: string) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.deleteSocialMediaLink(platform);
+      return actor.deleteSocialMediaLink(platform);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['socialMediaLinks'] });
@@ -448,34 +300,30 @@ export function useDeleteSocialMediaLink() {
   });
 }
 
-// Image Queries
+// Images Queries
 export function useGetAllImages() {
-  const { actor, isFetching: actorFetching } = useActor();
+  const { actor, isFetching } = useActor();
 
   return useQuery<WebsiteImage[]>({
     queryKey: ['images'],
     queryFn: async () => {
       if (!actor) return [];
-      const images = await actor.getAllImages();
-      return Array.isArray(images) ? images : [];
+      return actor.getAllImages();
     },
-    enabled: !!actor && !actorFetching,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 5 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    enabled: !!actor && !isFetching,
   });
 }
 
-export function useGetImage() {
+export function useGetImage(id: string) {
   const { actor, isFetching } = useActor();
 
-  return useMutation({
-    mutationFn: async (id: string) => {
-      if (!actor) throw new Error('Actor not available');
-      const result = await actor.getImage(id);
-      return result ?? null;
+  return useQuery<WebsiteImage | null>({
+    queryKey: ['image', id],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getImage(id);
     },
+    enabled: !!actor && !isFetching && !!id,
   });
 }
 
@@ -486,11 +334,10 @@ export function useAddImage() {
   return useMutation({
     mutationFn: async (image: WebsiteImage) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.addImage(image);
+      return actor.addImage(image);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['images'] });
-      queryClient.invalidateQueries({ queryKey: ['heroBackgroundImage'] });
     },
   });
 }
@@ -502,27 +349,227 @@ export function useUpdateImage() {
   return useMutation({
     mutationFn: async (image: WebsiteImage) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.updateImage(image);
+      return actor.updateImage(image);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['images'] });
-      queryClient.invalidateQueries({ queryKey: ['heroBackgroundImage'] });
     },
   });
 }
 
-export function useDeleteImage() {
+// Doctor Credentials Queries
+export function useGetDoctorCredentials() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<DoctorCredentials>({
+    queryKey: ['doctorCredentials'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getDoctorCredentials();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdateDoctorCredentials() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (credentials: DoctorCredentials) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateDoctorCredentials(credentials);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['doctorCredentials'] });
+      queryClient.invalidateQueries({ queryKey: ['websiteContent'] });
+    },
+  });
+}
+
+// Hero Section Theme Queries
+export function useGetHeroSectionTheme() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<HeroSectionTheme>({
+    queryKey: ['heroSectionTheme'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getHeroSectionTheme();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdateHeroSectionTheme() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (theme: HeroSectionTheme) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateHeroSectionTheme(theme);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['heroSectionTheme'] });
+    },
+  });
+}
+
+export function useGetHeroBackgroundImage() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery({
+    queryKey: ['heroBackgroundImage'],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getHeroSectionBackgroundImage();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+// Reviews Queries
+export function useGetAllReviews() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Review[]>({
+    queryKey: ['reviews'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllReviews();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useAddReview() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (review: Review) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.addReview(review);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+    retry: false,
+  });
+}
+
+export function useUpdateReview() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (review: Review) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateReview(review);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+export function useDeleteReview() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
       if (!actor) throw new Error('Actor not available');
-      await actor.deleteImage(id);
+      return actor.deleteReview(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['images'] });
-      queryClient.invalidateQueries({ queryKey: ['heroBackgroundImage'] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+export function useGetReviewSettings() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<ReviewsPanelSettings>({
+    queryKey: ['reviewSettings'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getReviewSettings();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdateReviewSettings() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (settings: ReviewsPanelSettings) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateReviewSettings(settings);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviewSettings'] });
+    },
+  });
+}
+
+// Blog Post Queries
+export function useGetAllBlogPosts() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<BlogPost[]>({
+    queryKey: ['blogPosts'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllBlogPosts();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetBlogPost(id: string) {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<BlogPost | null>({
+    queryKey: ['blogPost', id],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getBlogPost(id);
+    },
+    enabled: !!actor && !isFetching && !!id,
+  });
+}
+
+export function useCreateOrUpdateBlogPost() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (post: BlogPost) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.createOrUpdateBlogPost(post);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogPosts'] });
+    },
+  });
+}
+
+export function useDeleteBlogPost() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.deleteBlogPost(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogPosts'] });
     },
   });
 }

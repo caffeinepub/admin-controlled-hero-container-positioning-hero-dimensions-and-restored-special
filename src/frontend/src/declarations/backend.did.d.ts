@@ -11,6 +11,14 @@ import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
 export interface AreaDimensions { 'height' : bigint, 'width' : bigint }
+export interface BlogPost {
+  'id' : string,
+  'title' : string,
+  'content' : Array<RichContentElement>,
+  'createdAt' : bigint,
+  'author' : string,
+  'updatedAt' : bigint,
+}
 export interface Button { 'link' : string, 'text' : string }
 export type CTARowLayout = { 'row' : null } |
   { 'stacked' : null };
@@ -150,6 +158,86 @@ export type ParticleEffectType = { 'confetti' : null } |
   { 'stethoscopeParticles' : null } |
   { 'rings' : null };
 export interface Position { 'x' : bigint, 'y' : bigint }
+export interface RevealAnimation {
+  'delayUnit' : bigint,
+  'animationType' : { 'pop' : null } |
+    { 'fade' : null } |
+    { 'none' : null } |
+    { 'slideIn' : null } |
+    { 'expand' : null },
+  'speedUnit' : bigint,
+  'easing' : { 'easeInOut' : null } |
+    { 'bounce' : null } |
+    { 'linear' : null },
+}
+export interface Review {
+  'id' : string,
+  'patientImage' : [] | [ExternalBlob],
+  'reviewText' : string,
+  'patientName' : string,
+  'rating' : bigint,
+}
+export interface ReviewColor {
+  'red' : bigint,
+  'blue' : bigint,
+  'green' : bigint,
+}
+export interface ReviewContentLayout {
+  'style' : { 'glassmorphic' : null } |
+    { 'gradient' : null } |
+    { 'card' : null } |
+    { 'frosted' : null } |
+    { 'minimalist' : null },
+  'paddingUnit' : bigint,
+  'spacingUnit' : bigint,
+  'layoutType' : { 'singleColumn' : null } |
+    { 'overlay' : null } |
+    { 'multiColumn' : null } |
+    { 'cardStyle' : null },
+}
+export type ReviewDisplayMode = { 'multi' : null } |
+  { 'centered' : null } |
+  { 'single' : null } |
+  { 'masonry' : null };
+export interface ReviewGlassmorphism {
+  'transparency' : bigint,
+  'blurIntensity' : bigint,
+  'overlayEffect' : { 'strong' : null } |
+    { 'subtle' : null } |
+    { 'medium' : null },
+}
+export interface ReviewGradient {
+  'direction' : { 'topToBottom' : null } |
+    { 'leftToRight' : null } |
+    { 'diagonal' : null },
+  'colors' : Array<ReviewColor>,
+  'intensity' : bigint,
+}
+export type ReviewTransitionType = { 'glassmorphic' : null } |
+  { 'blur' : null } |
+  { 'card' : null } |
+  { 'fade' : null } |
+  { 'none' : null } |
+  { 'slide' : null };
+export interface ReviewsPanelSettings {
+  'revealAnimation' : RevealAnimation,
+  'contentLayout' : ReviewContentLayout,
+  'displayMode' : ReviewDisplayMode,
+  'autoScrollSpeed' : bigint,
+  'primaryColor' : ReviewColor,
+  'transitionType' : ReviewTransitionType,
+  'maxReviews' : bigint,
+  'darkModeSupport' : boolean,
+  'secondaryColor' : ReviewColor,
+  'carouselEnabled' : boolean,
+  'gradientSettings' : ReviewGradient,
+  'overlayEffect' : ReviewGlassmorphism,
+}
+export type RichContentElement = {
+    'video' : { 'blob' : ExternalBlob, 'description' : string }
+  } |
+  { 'text' : { 'content' : string } } |
+  { 'image' : { 'blob' : ExternalBlob, 'description' : string } };
 export interface Service {
   'id' : string,
   'name' : string,
@@ -247,16 +335,24 @@ export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addClinic' : ActorMethod<[Clinic], undefined>,
   'addImage' : ActorMethod<[WebsiteImage], undefined>,
+  'addReview' : ActorMethod<[Review], undefined>,
   'addService' : ActorMethod<[Service], undefined>,
   'addSocialMediaLink' : ActorMethod<[SocialMediaLink], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'blogExists' : ActorMethod<[string], boolean>,
+  'createOrUpdateBlogPost' : ActorMethod<[BlogPost], undefined>,
+  'deleteBlogPost' : ActorMethod<[string], undefined>,
   'deleteClinic' : ActorMethod<[string], undefined>,
   'deleteImage' : ActorMethod<[string], undefined>,
+  'deleteReview' : ActorMethod<[string], undefined>,
   'deleteService' : ActorMethod<[string], undefined>,
   'deleteSocialMediaLink' : ActorMethod<[string], undefined>,
+  'getAllBlogPosts' : ActorMethod<[], Array<BlogPost>>,
   'getAllClinics' : ActorMethod<[], Array<Clinic>>,
   'getAllImages' : ActorMethod<[], Array<WebsiteImage>>,
+  'getAllReviews' : ActorMethod<[], Array<Review>>,
   'getAllServices' : ActorMethod<[], Array<Service>>,
+  'getBlogPost' : ActorMethod<[string], [] | [BlogPost]>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getConfig' : ActorMethod<[], Config>,
@@ -268,6 +364,7 @@ export interface _SERVICE {
   >,
   'getHeroSectionTheme' : ActorMethod<[], HeroSectionTheme>,
   'getImage' : ActorMethod<[string], [] | [WebsiteImage]>,
+  'getReviewSettings' : ActorMethod<[], ReviewsPanelSettings>,
   'getSortedSocialMediaLinks' : ActorMethod<[], Array<SocialMediaLink>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'getWebsiteContent' : ActorMethod<[], WebsiteContent>,
@@ -279,6 +376,8 @@ export interface _SERVICE {
   'updateFooterContent' : ActorMethod<[FooterContent], undefined>,
   'updateHeroSectionTheme' : ActorMethod<[HeroSectionTheme], undefined>,
   'updateImage' : ActorMethod<[WebsiteImage], undefined>,
+  'updateReview' : ActorMethod<[Review], undefined>,
+  'updateReviewSettings' : ActorMethod<[ReviewsPanelSettings], undefined>,
   'updateService' : ActorMethod<[Service], undefined>,
   'updateSocialMediaLink' : ActorMethod<[SocialMediaLink], undefined>,
   'updateWebsiteContent' : ActorMethod<[WebsiteContent], undefined>,

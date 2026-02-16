@@ -9,9 +9,10 @@ interface EditableFooterContentProps {
   content: string;
   field: 'address' | 'phone' | 'email' | 'copyright';
   isAdmin: boolean;
+  className?: string;
 }
 
-export default function EditableFooterContent({ content, field, isAdmin }: EditableFooterContentProps) {
+export default function EditableFooterContent({ content, field, isAdmin, className }: EditableFooterContentProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
   const { data: footerContent } = useGetFooterContent();
@@ -48,7 +49,7 @@ export default function EditableFooterContent({ content, field, isAdmin }: Edita
 
   if (!isAdmin) {
     if (!content) return null;
-    return <span>{content}</span>;
+    return <span className={className}>{content}</span>;
   }
 
   if (isEditing) {
@@ -82,7 +83,7 @@ export default function EditableFooterContent({ content, field, isAdmin }: Edita
   }
 
   return (
-    <span className="group relative inline-block">
+    <span className={`group relative inline-block ${className || ''}`}>
       {content || (
         <span className="text-muted-foreground italic">Click edit to add {field}</span>
       )}

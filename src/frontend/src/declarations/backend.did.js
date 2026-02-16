@@ -36,6 +36,13 @@ export const WebsiteImage = IDL.Record({
   'description' : IDL.Text,
   'image' : ExternalBlob,
 });
+export const Review = IDL.Record({
+  'id' : IDL.Text,
+  'patientImage' : IDL.Opt(ExternalBlob),
+  'reviewText' : IDL.Text,
+  'patientName' : IDL.Text,
+  'rating' : IDL.Nat,
+});
 export const Service = IDL.Record({
   'id' : IDL.Text,
   'name' : IDL.Text,
@@ -54,6 +61,19 @@ export const UserRole = IDL.Variant({
   'admin' : IDL.Null,
   'user' : IDL.Null,
   'guest' : IDL.Null,
+});
+export const RichContentElement = IDL.Variant({
+  'video' : IDL.Record({ 'blob' : ExternalBlob, 'description' : IDL.Text }),
+  'text' : IDL.Record({ 'content' : IDL.Text }),
+  'image' : IDL.Record({ 'blob' : ExternalBlob, 'description' : IDL.Text }),
+});
+export const BlogPost = IDL.Record({
+  'id' : IDL.Text,
+  'title' : IDL.Text,
+  'content' : IDL.Vec(RichContentElement),
+  'createdAt' : IDL.Nat,
+  'author' : IDL.Text,
+  'updatedAt' : IDL.Nat,
 });
 export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const Config = IDL.Record({
@@ -263,6 +283,90 @@ export const HeroSectionTheme = IDL.Record({
   'particleEffect' : ParticleEffect,
   'vectorEffect' : VectorEffect,
 });
+export const RevealAnimation = IDL.Record({
+  'delayUnit' : IDL.Nat,
+  'animationType' : IDL.Variant({
+    'pop' : IDL.Null,
+    'fade' : IDL.Null,
+    'none' : IDL.Null,
+    'slideIn' : IDL.Null,
+    'expand' : IDL.Null,
+  }),
+  'speedUnit' : IDL.Nat,
+  'easing' : IDL.Variant({
+    'easeInOut' : IDL.Null,
+    'bounce' : IDL.Null,
+    'linear' : IDL.Null,
+  }),
+});
+export const ReviewContentLayout = IDL.Record({
+  'style' : IDL.Variant({
+    'glassmorphic' : IDL.Null,
+    'gradient' : IDL.Null,
+    'card' : IDL.Null,
+    'frosted' : IDL.Null,
+    'minimalist' : IDL.Null,
+  }),
+  'paddingUnit' : IDL.Nat,
+  'spacingUnit' : IDL.Nat,
+  'layoutType' : IDL.Variant({
+    'singleColumn' : IDL.Null,
+    'overlay' : IDL.Null,
+    'multiColumn' : IDL.Null,
+    'cardStyle' : IDL.Null,
+  }),
+});
+export const ReviewDisplayMode = IDL.Variant({
+  'multi' : IDL.Null,
+  'centered' : IDL.Null,
+  'single' : IDL.Null,
+  'masonry' : IDL.Null,
+});
+export const ReviewColor = IDL.Record({
+  'red' : IDL.Nat,
+  'blue' : IDL.Nat,
+  'green' : IDL.Nat,
+});
+export const ReviewTransitionType = IDL.Variant({
+  'glassmorphic' : IDL.Null,
+  'blur' : IDL.Null,
+  'card' : IDL.Null,
+  'fade' : IDL.Null,
+  'none' : IDL.Null,
+  'slide' : IDL.Null,
+});
+export const ReviewGradient = IDL.Record({
+  'direction' : IDL.Variant({
+    'topToBottom' : IDL.Null,
+    'leftToRight' : IDL.Null,
+    'diagonal' : IDL.Null,
+  }),
+  'colors' : IDL.Vec(ReviewColor),
+  'intensity' : IDL.Nat,
+});
+export const ReviewGlassmorphism = IDL.Record({
+  'transparency' : IDL.Nat,
+  'blurIntensity' : IDL.Nat,
+  'overlayEffect' : IDL.Variant({
+    'strong' : IDL.Null,
+    'subtle' : IDL.Null,
+    'medium' : IDL.Null,
+  }),
+});
+export const ReviewsPanelSettings = IDL.Record({
+  'revealAnimation' : RevealAnimation,
+  'contentLayout' : ReviewContentLayout,
+  'displayMode' : ReviewDisplayMode,
+  'autoScrollSpeed' : IDL.Nat,
+  'primaryColor' : ReviewColor,
+  'transitionType' : ReviewTransitionType,
+  'maxReviews' : IDL.Nat,
+  'darkModeSupport' : IDL.Bool,
+  'secondaryColor' : ReviewColor,
+  'carouselEnabled' : IDL.Bool,
+  'gradientSettings' : ReviewGradient,
+  'overlayEffect' : ReviewGlassmorphism,
+});
 export const ThemePreference = IDL.Variant({
   'dark' : IDL.Null,
   'light' : IDL.Null,
@@ -312,16 +416,24 @@ export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addClinic' : IDL.Func([Clinic], [], []),
   'addImage' : IDL.Func([WebsiteImage], [], []),
+  'addReview' : IDL.Func([Review], [], []),
   'addService' : IDL.Func([Service], [], []),
   'addSocialMediaLink' : IDL.Func([SocialMediaLink], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'blogExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
+  'createOrUpdateBlogPost' : IDL.Func([BlogPost], [], []),
+  'deleteBlogPost' : IDL.Func([IDL.Text], [], []),
   'deleteClinic' : IDL.Func([IDL.Text], [], []),
   'deleteImage' : IDL.Func([IDL.Text], [], []),
+  'deleteReview' : IDL.Func([IDL.Text], [], []),
   'deleteService' : IDL.Func([IDL.Text], [], []),
   'deleteSocialMediaLink' : IDL.Func([IDL.Text], [], []),
+  'getAllBlogPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
   'getAllClinics' : IDL.Func([], [IDL.Vec(Clinic)], ['query']),
   'getAllImages' : IDL.Func([], [IDL.Vec(WebsiteImage)], ['query']),
+  'getAllReviews' : IDL.Func([], [IDL.Vec(Review)], ['query']),
   'getAllServices' : IDL.Func([], [IDL.Vec(Service)], ['query']),
+  'getBlogPost' : IDL.Func([IDL.Text], [IDL.Opt(BlogPost)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getConfig' : IDL.Func([], [Config], ['query']),
@@ -341,6 +453,7 @@ export const idlService = IDL.Service({
     ),
   'getHeroSectionTheme' : IDL.Func([], [HeroSectionTheme], ['query']),
   'getImage' : IDL.Func([IDL.Text], [IDL.Opt(WebsiteImage)], ['query']),
+  'getReviewSettings' : IDL.Func([], [ReviewsPanelSettings], ['query']),
   'getSortedSocialMediaLinks' : IDL.Func(
       [],
       [IDL.Vec(SocialMediaLink)],
@@ -360,6 +473,8 @@ export const idlService = IDL.Service({
   'updateFooterContent' : IDL.Func([FooterContent], [], []),
   'updateHeroSectionTheme' : IDL.Func([HeroSectionTheme], [], []),
   'updateImage' : IDL.Func([WebsiteImage], [], []),
+  'updateReview' : IDL.Func([Review], [], []),
+  'updateReviewSettings' : IDL.Func([ReviewsPanelSettings], [], []),
   'updateService' : IDL.Func([Service], [], []),
   'updateSocialMediaLink' : IDL.Func([SocialMediaLink], [], []),
   'updateWebsiteContent' : IDL.Func([WebsiteContent], [], []),
@@ -396,6 +511,13 @@ export const idlFactory = ({ IDL }) => {
     'description' : IDL.Text,
     'image' : ExternalBlob,
   });
+  const Review = IDL.Record({
+    'id' : IDL.Text,
+    'patientImage' : IDL.Opt(ExternalBlob),
+    'reviewText' : IDL.Text,
+    'patientName' : IDL.Text,
+    'rating' : IDL.Nat,
+  });
   const Service = IDL.Record({
     'id' : IDL.Text,
     'name' : IDL.Text,
@@ -414,6 +536,19 @@ export const idlFactory = ({ IDL }) => {
     'admin' : IDL.Null,
     'user' : IDL.Null,
     'guest' : IDL.Null,
+  });
+  const RichContentElement = IDL.Variant({
+    'video' : IDL.Record({ 'blob' : ExternalBlob, 'description' : IDL.Text }),
+    'text' : IDL.Record({ 'content' : IDL.Text }),
+    'image' : IDL.Record({ 'blob' : ExternalBlob, 'description' : IDL.Text }),
+  });
+  const BlogPost = IDL.Record({
+    'id' : IDL.Text,
+    'title' : IDL.Text,
+    'content' : IDL.Vec(RichContentElement),
+    'createdAt' : IDL.Nat,
+    'author' : IDL.Text,
+    'updatedAt' : IDL.Nat,
   });
   const UserProfile = IDL.Record({ 'name' : IDL.Text });
   const Config = IDL.Record({ 'terms' : IDL.Text, 'canonicalUrl' : IDL.Text });
@@ -611,6 +746,90 @@ export const idlFactory = ({ IDL }) => {
     'particleEffect' : ParticleEffect,
     'vectorEffect' : VectorEffect,
   });
+  const RevealAnimation = IDL.Record({
+    'delayUnit' : IDL.Nat,
+    'animationType' : IDL.Variant({
+      'pop' : IDL.Null,
+      'fade' : IDL.Null,
+      'none' : IDL.Null,
+      'slideIn' : IDL.Null,
+      'expand' : IDL.Null,
+    }),
+    'speedUnit' : IDL.Nat,
+    'easing' : IDL.Variant({
+      'easeInOut' : IDL.Null,
+      'bounce' : IDL.Null,
+      'linear' : IDL.Null,
+    }),
+  });
+  const ReviewContentLayout = IDL.Record({
+    'style' : IDL.Variant({
+      'glassmorphic' : IDL.Null,
+      'gradient' : IDL.Null,
+      'card' : IDL.Null,
+      'frosted' : IDL.Null,
+      'minimalist' : IDL.Null,
+    }),
+    'paddingUnit' : IDL.Nat,
+    'spacingUnit' : IDL.Nat,
+    'layoutType' : IDL.Variant({
+      'singleColumn' : IDL.Null,
+      'overlay' : IDL.Null,
+      'multiColumn' : IDL.Null,
+      'cardStyle' : IDL.Null,
+    }),
+  });
+  const ReviewDisplayMode = IDL.Variant({
+    'multi' : IDL.Null,
+    'centered' : IDL.Null,
+    'single' : IDL.Null,
+    'masonry' : IDL.Null,
+  });
+  const ReviewColor = IDL.Record({
+    'red' : IDL.Nat,
+    'blue' : IDL.Nat,
+    'green' : IDL.Nat,
+  });
+  const ReviewTransitionType = IDL.Variant({
+    'glassmorphic' : IDL.Null,
+    'blur' : IDL.Null,
+    'card' : IDL.Null,
+    'fade' : IDL.Null,
+    'none' : IDL.Null,
+    'slide' : IDL.Null,
+  });
+  const ReviewGradient = IDL.Record({
+    'direction' : IDL.Variant({
+      'topToBottom' : IDL.Null,
+      'leftToRight' : IDL.Null,
+      'diagonal' : IDL.Null,
+    }),
+    'colors' : IDL.Vec(ReviewColor),
+    'intensity' : IDL.Nat,
+  });
+  const ReviewGlassmorphism = IDL.Record({
+    'transparency' : IDL.Nat,
+    'blurIntensity' : IDL.Nat,
+    'overlayEffect' : IDL.Variant({
+      'strong' : IDL.Null,
+      'subtle' : IDL.Null,
+      'medium' : IDL.Null,
+    }),
+  });
+  const ReviewsPanelSettings = IDL.Record({
+    'revealAnimation' : RevealAnimation,
+    'contentLayout' : ReviewContentLayout,
+    'displayMode' : ReviewDisplayMode,
+    'autoScrollSpeed' : IDL.Nat,
+    'primaryColor' : ReviewColor,
+    'transitionType' : ReviewTransitionType,
+    'maxReviews' : IDL.Nat,
+    'darkModeSupport' : IDL.Bool,
+    'secondaryColor' : ReviewColor,
+    'carouselEnabled' : IDL.Bool,
+    'gradientSettings' : ReviewGradient,
+    'overlayEffect' : ReviewGlassmorphism,
+  });
   const ThemePreference = IDL.Variant({
     'dark' : IDL.Null,
     'light' : IDL.Null,
@@ -660,16 +879,24 @@ export const idlFactory = ({ IDL }) => {
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addClinic' : IDL.Func([Clinic], [], []),
     'addImage' : IDL.Func([WebsiteImage], [], []),
+    'addReview' : IDL.Func([Review], [], []),
     'addService' : IDL.Func([Service], [], []),
     'addSocialMediaLink' : IDL.Func([SocialMediaLink], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'blogExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
+    'createOrUpdateBlogPost' : IDL.Func([BlogPost], [], []),
+    'deleteBlogPost' : IDL.Func([IDL.Text], [], []),
     'deleteClinic' : IDL.Func([IDL.Text], [], []),
     'deleteImage' : IDL.Func([IDL.Text], [], []),
+    'deleteReview' : IDL.Func([IDL.Text], [], []),
     'deleteService' : IDL.Func([IDL.Text], [], []),
     'deleteSocialMediaLink' : IDL.Func([IDL.Text], [], []),
+    'getAllBlogPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
     'getAllClinics' : IDL.Func([], [IDL.Vec(Clinic)], ['query']),
     'getAllImages' : IDL.Func([], [IDL.Vec(WebsiteImage)], ['query']),
+    'getAllReviews' : IDL.Func([], [IDL.Vec(Review)], ['query']),
     'getAllServices' : IDL.Func([], [IDL.Vec(Service)], ['query']),
+    'getBlogPost' : IDL.Func([IDL.Text], [IDL.Opt(BlogPost)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getConfig' : IDL.Func([], [Config], ['query']),
@@ -689,6 +916,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getHeroSectionTheme' : IDL.Func([], [HeroSectionTheme], ['query']),
     'getImage' : IDL.Func([IDL.Text], [IDL.Opt(WebsiteImage)], ['query']),
+    'getReviewSettings' : IDL.Func([], [ReviewsPanelSettings], ['query']),
     'getSortedSocialMediaLinks' : IDL.Func(
         [],
         [IDL.Vec(SocialMediaLink)],
@@ -708,6 +936,8 @@ export const idlFactory = ({ IDL }) => {
     'updateFooterContent' : IDL.Func([FooterContent], [], []),
     'updateHeroSectionTheme' : IDL.Func([HeroSectionTheme], [], []),
     'updateImage' : IDL.Func([WebsiteImage], [], []),
+    'updateReview' : IDL.Func([Review], [], []),
+    'updateReviewSettings' : IDL.Func([ReviewsPanelSettings], [], []),
     'updateService' : IDL.Func([Service], [], []),
     'updateSocialMediaLink' : IDL.Func([SocialMediaLink], [], []),
     'updateWebsiteContent' : IDL.Func([WebsiteContent], [], []),

@@ -19,6 +19,7 @@ export default function Hero() {
   const heroSection = websiteContent?.heroSection;
   const isDarkMode = theme === 'dark';
   
+  // Robust background handling with fallbacks
   const backgroundImageUrl = isDarkMode && heroBackground?.darkMode
     ? heroBackground.darkMode.getDirectURL()
     : heroBackground?.standard?.getDirectURL();
@@ -51,18 +52,18 @@ export default function Hero() {
   const horizontalAlignment = layoutOverride?.horizontalAlignment ?? 'center';
   const ctaRowLayout = layoutOverride?.ctaRowLayout ?? 'row';
 
-  // Hero area dimensions
+  // Hero area dimensions with validation
   const areaDimensions = getEffectiveAreaDimensions(heroTheme);
   const minHeight = `${areaDimensions.height}px`;
 
-  // Manual content positioning
+  // Manual content positioning with validation
   const contentPosition = getEffectiveContentPosition(heroTheme);
   const manualPositioningEnabled = isManualPositioningEnabled(heroTheme);
 
   // Effects configuration
   const effectsEnabled = heroTheme?.effectsEnabled ?? false;
 
-  // Compute overlay styles using inline styles for production safety
+  // Compute overlay styles with safe defaults
   const overlayOpacityMap = {
     subtle: 0.2,
     medium: 0.4,
@@ -70,10 +71,10 @@ export default function Hero() {
   };
   const overlayOpacity = overlayOpacityMap[overlayEffect];
 
-  // Container width: prefer explicit, then preset, then fallback to image analysis
+  // Container width: prefer explicit, then preset
   let containerMaxWidth: string;
-  if (explicitMaxWidth) {
-    containerMaxWidth = `${explicitMaxWidth}px`;
+  if (explicitMaxWidth && explicitMaxWidth > 0) {
+    containerMaxWidth = `${Math.min(explicitMaxWidth, 2000)}px`;
   } else {
     const containerWidthPresetMap = {
       medium: '48rem',
@@ -83,7 +84,7 @@ export default function Hero() {
     containerMaxWidth = containerWidthPresetMap[contentContainerPreset];
   }
 
-  // Text size: prefer admin override, then fallback to image analysis
+  // Text size mapping
   const textSizeMap = {
     medium: {
       headline: 'text-4xl md:text-5xl lg:text-6xl',
@@ -100,7 +101,7 @@ export default function Hero() {
   };
   const textSizes = textSizeMap[textSizePreset];
 
-  // Alignment: prefer admin override, then fallback to image analysis
+  // Alignment classes
   const alignmentClassMap = {
     left: 'items-start text-left',
     center: 'items-center text-center',
@@ -122,16 +123,26 @@ export default function Hero() {
                           horizontalAlignment === 'right' ? 'justify-end' : 
                           'justify-start';
 
+  // Fallback background when no image exists
+  const hasFallbackBackground = !backgroundImageUrl;
+
   return (
     <section 
       className={`relative overflow-hidden flex items-center ${verticalClass}`}
       style={{ minHeight }}
     >
+      {/* Fallback gradient background when no image */}
+      {hasFallbackBackground && (
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/30 via-secondary/20 to-accent/30" />
+      )}
+      
+      {/* Gradient overlay */}
       <div 
         className="absolute inset-0 z-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20"
         style={{ opacity: gradientIntensity / 100 }}
       />
       
+      {/* Background image layer */}
       <div className="absolute inset-0 z-0">
         {isAdmin ? (
           <EditableImage
@@ -144,13 +155,13 @@ export default function Hero() {
           />
         ) : backgroundImageUrl ? (
           <div 
-            className="w-full h-full bg-cover bg-center"
+            className="w-full h-full bg-cover bg-center transition-all duration-700"
             style={{ backgroundImage: `url(${backgroundImageUrl})` }}
           />
         ) : null}
       </div>
 
-      {/* Multi-Effects Layer */}
+      {/* Multi-Effects Layer with smooth transitions */}
       {heroTheme && (
         <HeroMultiEffectsLayer
           particleEffect={heroTheme.particleEffect}
@@ -160,11 +171,12 @@ export default function Hero() {
         />
       )}
 
+      {/* Glassmorphism overlay with validated blur */}
       <div 
-        className="absolute inset-0 z-5 bg-gradient-to-b from-background via-background to-background"
+        className="absolute inset-0 z-5 bg-gradient-to-b from-background via-background to-background transition-all duration-500"
         style={{
-          backdropFilter: `blur(${blurIntensity}px)`,
-          WebkitBackdropFilter: `blur(${blurIntensity}px)`,
+          backdropFilter: `blur(${Math.min(blurIntensity, 50)}px)`,
+          WebkitBackdropFilter: `blur(${Math.min(blurIntensity, 50)}px)`,
           opacity: overlayOpacity,
         }}
       />
@@ -177,7 +189,7 @@ export default function Hero() {
         }}
       >
         <div 
-          className="mx-auto" 
+          className="mx-auto transition-transform duration-500" 
           style={{ 
             maxWidth: containerMaxWidth,
             transform: manualPositioningEnabled 
@@ -185,7 +197,7 @@ export default function Hero() {
               : undefined,
           }}
         >
-          <div className="relative backdrop-blur-xl bg-background/30 dark:bg-background/20 rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 dark:border-white/10 shadow-elevation-4">
+          <div className="relative backdrop-blur-xl bg-background/30 dark:bg-background/20 rounded-3xl p-8 md:p-12 lg:p-16 border border-white/20 dark:border-white/10 shadow-elevation-4 transition-all duration-500 hover:shadow-elevation-5">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
             
             <div className={`relative z-10 flex flex-col ${finalAlignment}`}>

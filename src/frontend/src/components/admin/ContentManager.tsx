@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
-import { useGetAllImages, useAddImage, useUpdateImage, useDeleteImage, useGetWebsiteContent, useUpdateWebsiteContent } from '../../hooks/useQueries';
+import { useGetAllImages, useAddImage, useUpdateImage, useGetWebsiteContent, useUpdateWebsiteContent } from '../../hooks/useQueries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, Upload, Loader2, Image as ImageIcon, Type } from 'lucide-react';
+import { Plus, Pencil, Upload, Loader2, Image as ImageIcon, Type } from 'lucide-react';
 import { toast } from 'sonner';
 import { ExternalBlob } from '../../backend';
 import type { WebsiteImage } from '../../backend';
@@ -16,7 +16,6 @@ export default function ContentManager() {
   const { data: websiteContent } = useGetWebsiteContent();
   const addMutation = useAddImage();
   const updateMutation = useUpdateImage();
-  const deleteMutation = useDeleteImage();
   const updateContentMutation = useUpdateWebsiteContent();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -209,20 +208,6 @@ export default function ContentManager() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this image?')) return;
-
-    try {
-      await deleteMutation.mutateAsync(id);
-      toast.success('Image deleted successfully');
-    } catch (error: any) {
-      toast.error('Failed to delete image', {
-        description: error?.message || 'Please try again',
-      });
-      console.error(error);
-    }
-  };
-
   const getImageStatus = (imageId: string) => {
     return images?.find(img => img.id === imageId);
   };
@@ -286,7 +271,7 @@ export default function ContentManager() {
                     id="primaryButtonLink"
                     value={heroFormData.primaryButtonLink}
                     onChange={(e) => setHeroFormData({ ...heroFormData, primaryButtonLink: e.target.value })}
-                    placeholder="#clinics"
+                    placeholder="#contact"
                   />
                 </div>
 
@@ -315,10 +300,10 @@ export default function ContentManager() {
                     {updateContentMutation.isPending ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Updating...
+                        Saving...
                       </>
                     ) : (
-                      'Update Hero Section'
+                      'Save Changes'
                     )}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => setIsHeroDialogOpen(false)}>
@@ -345,16 +330,16 @@ export default function ContentManager() {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="id">Image ID *</Label>
+                  <Label htmlFor="imageId">Image ID *</Label>
                   <Input
-                    id="id"
+                    id="imageId"
                     value={formData.id}
                     onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-                    placeholder="hero-background"
+                    placeholder="e.g., hero-background"
                     disabled={!!editingImage}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Use kebab-case (e.g., hero-background, doctor-headshot)
+                    Predefined IDs: {predefinedImages.map(img => img.id).join(', ')}
                   </p>
                 </div>
 
@@ -364,12 +349,12 @@ export default function ContentManager() {
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Hero Section Background"
+                    placeholder="Brief description of the image"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Light Mode Image {!editingImage && '*'}</Label>
+                  <Label>Standard Image *</Label>
                   <div className="flex gap-2">
                     <Button
                       type="button"
@@ -378,7 +363,7 @@ export default function ContentManager() {
                       disabled={isUploading}
                     >
                       <Upload className="h-4 w-4 mr-2" />
-                      Choose File
+                      Choose Image
                     </Button>
                     {selectedFile && <span className="text-sm self-center">{selectedFile.name}</span>}
                   </div>
@@ -391,7 +376,7 @@ export default function ContentManager() {
                   />
                   {previewUrl && (
                     <div className="mt-2">
-                      <img src={previewUrl} alt="Preview" className="max-w-full h-48 object-cover rounded-lg" />
+                      <img src={previewUrl} alt="Preview" className="w-full max-h-64 object-cover rounded-md" />
                     </div>
                   )}
                 </div>
@@ -406,7 +391,7 @@ export default function ContentManager() {
                       disabled={isUploading}
                     >
                       <Upload className="h-4 w-4 mr-2" />
-                      Choose File
+                      Choose Dark Image
                     </Button>
                     {selectedDarkFile && <span className="text-sm self-center">{selectedDarkFile.name}</span>}
                   </div>
@@ -419,7 +404,7 @@ export default function ContentManager() {
                   />
                   {darkPreviewUrl && (
                     <div className="mt-2">
-                      <img src={darkPreviewUrl} alt="Dark mode preview" className="max-w-full h-48 object-cover rounded-lg" />
+                      <img src={darkPreviewUrl} alt="Dark Preview" className="w-full max-h-64 object-cover rounded-md" />
                     </div>
                   )}
                 </div>
@@ -432,7 +417,7 @@ export default function ContentManager() {
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div 
-                        className="bg-primary h-2 rounded-full transition-all"
+                        className="bg-chart-1 h-2 rounded-full transition-all"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -460,117 +445,69 @@ export default function ContentManager() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Predefined Image Slots</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {predefinedImages.map((slot) => {
-            const existingImage = getImageStatus(slot.id);
-            return (
-              <Card key={slot.id} className={existingImage ? 'border-primary' : 'border-dashed'}>
-                <CardHeader>
-                  <CardTitle className="text-base flex items-center justify-between">
-                    <span className="flex items-center gap-2">
-                      <ImageIcon className="h-4 w-4" />
-                      {slot.description}
-                    </span>
-                    {existingImage && (
-                      <div className="flex gap-1">
-                        <Button size="icon" variant="ghost" onClick={() => handleEdit(existingImage)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ImageIcon className="h-5 w-5" />
+            Predefined Image Slots
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">Loading images...</div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {predefinedImages.map((slot) => {
+                const existingImage = getImageStatus(slot.id);
+                return (
+                  <Card key={slot.id} className="overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="aspect-video bg-muted rounded-md mb-3 overflow-hidden">
+                        {existingImage ? (
+                          <img
+                            src={existingImage.image.getDirectURL()}
+                            alt={slot.description}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="font-semibold text-sm mb-1">{slot.description}</h3>
+                      <p className="text-xs text-muted-foreground mb-3">ID: {slot.id}</p>
+                      {existingImage ? (
                         <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => handleDelete(slot.id)}
-                          disabled={deleteMutation.isPending}
+                          size="sm"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => handleEdit(existingImage)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Pencil className="h-3 w-3 mr-2" />
+                          Edit
                         </Button>
-                      </div>
-                    )}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {existingImage ? (
-                    <div className="space-y-2">
-                      <img 
-                        src={existingImage.image.getDirectURL()} 
-                        alt={slot.description}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <p className="text-xs text-muted-foreground">ID: {slot.id}</p>
-                      {existingImage.darkModeImage && (
-                        <p className="text-xs text-primary">✓ Dark mode variant available</p>
+                      ) : (
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          onClick={() => {
+                            setFormData({ id: slot.id, description: slot.description });
+                            setIsDialogOpen(true);
+                          }}
+                        >
+                          <Plus className="h-3 w-3 mr-2" />
+                          Add Image
+                        </Button>
                       )}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <div className="w-full h-32 bg-gradient-to-br from-muted/50 via-muted/30 to-muted/50 backdrop-blur-3xl rounded-lg flex items-center justify-center mb-2">
-                        <ImageIcon className="h-8 w-8 opacity-50" />
-                      </div>
-                      <p className="text-sm">No image uploaded</p>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="mt-2"
-                        onClick={() => {
-                          setFormData({ id: slot.id, description: slot.description });
-                          setIsDialogOpen(true);
-                        }}
-                      >
-                        Upload Image
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-
-      {isLoading ? (
-        <div>Loading images...</div>
-      ) : images && images.length > 0 ? (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">All Images</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {images.map((image) => (
-              <Card key={image.id}>
-                <CardHeader>
-                  <CardTitle className="text-base flex items-center justify-between">
-                    <span>{image.description}</span>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => handleEdit(image)}>
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => handleDelete(image.id)}
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <img 
-                    src={image.image.getDirectURL()} 
-                    alt={image.description}
-                    className="w-full h-32 object-cover rounded-lg mb-2"
-                  />
-                  <p className="text-xs text-muted-foreground">ID: {image.id}</p>
-                  {image.darkModeImage && (
-                    <p className="text-xs text-primary mt-1">✓ Dark mode variant</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      ) : null}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useGetAllSocialMediaLinks } from '../hooks/useQueries';
+import { useGetSortedSocialMediaLinks } from '../hooks/useQueries';
 import { useIsCallerAdmin } from '../hooks/useQueries';
 import { SiFacebook, SiX, SiInstagram, SiLinkedin, SiYoutube, SiGithub } from 'react-icons/si';
 import { Share2, AlertCircle } from 'lucide-react';
@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function SocialMedia() {
-  const { data: links, isLoading: linksLoading, error: linksError } = useGetAllSocialMediaLinks();
+  const { data: links, isLoading: linksLoading, error: linksError } = useGetSortedSocialMediaLinks();
   const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
 
   const visibleLinks = links?.filter(link => link.isVisible) ?? [];
@@ -88,8 +88,7 @@ export default function SocialMedia() {
                     title={link.displayName || link.platform}
                   >
                     <Icon 
-                      className="transition-all duration-500 group-hover:scale-110" 
-                      style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+                      className="transition-all duration-500 group-hover:scale-110"
                     />
                   </a>
                   

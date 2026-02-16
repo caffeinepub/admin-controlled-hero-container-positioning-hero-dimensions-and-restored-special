@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ParticleEffect } from '../../../backend';
 
 interface ParticleEffectLayerProps {
@@ -8,6 +8,13 @@ interface ParticleEffectLayerProps {
 export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
+  const [opacity, setOpacity] = useState(0);
+
+  useEffect(() => {
+    // Smooth fade-in transition
+    const fadeIn = setTimeout(() => setOpacity(0.5), 50);
+    return () => clearTimeout(fadeIn);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -69,15 +76,19 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
         particle.rotation += particle.rotationSpeed;
         particle.pulsePhase += 0.02;
 
-        // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
+        // Wrap around edges with smooth transition
+        if (particle.x < -20) particle.x = canvas.width + 20;
+        if (particle.x > canvas.width + 20) particle.x = -20;
+        if (particle.y < -20) particle.y = canvas.height + 20;
+        if (particle.y > canvas.height + 20) particle.y = -20;
 
-        // Render based on particle type
+        // Render based on particle type with Material Design elevation
         ctx.save();
         ctx.translate(particle.x, particle.y);
+
+        // Add subtle shadow for elevation effect
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = `hsla(${particle.hue}, 70%, 60%, 0.3)`;
 
         switch (config.effectType) {
           case 'bubbles':
@@ -85,6 +96,12 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
             ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
             ctx.strokeStyle = `hsla(${particle.hue}, 70%, 60%, ${particle.opacity})`;
             ctx.lineWidth = 2;
+            ctx.stroke();
+            // Inner glow
+            ctx.beginPath();
+            ctx.arc(0, 0, particle.size * 0.7, 0, Math.PI * 2);
+            ctx.strokeStyle = `hsla(${particle.hue}, 80%, 70%, ${particle.opacity * 0.5})`;
+            ctx.lineWidth = 1;
             ctx.stroke();
             break;
 
@@ -99,14 +116,20 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
 
           case 'confetti':
             ctx.rotate(particle.rotation);
-            ctx.fillStyle = `hsla(${particle.hue}, 90%, 60%, ${particle.opacity})`;
+            const gradient = ctx.createLinearGradient(-particle.size, 0, particle.size, 0);
+            gradient.addColorStop(0, `hsla(${particle.hue}, 90%, 60%, ${particle.opacity})`);
+            gradient.addColorStop(1, `hsla(${particle.hue + 30}, 90%, 70%, ${particle.opacity})`);
+            ctx.fillStyle = gradient;
             ctx.fillRect(-particle.size, -particle.size / 2, particle.size * 2, particle.size);
             break;
 
           case 'dots':
             ctx.beginPath();
             ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
-            ctx.fillStyle = `hsla(${particle.hue}, 80%, 60%, ${particle.opacity})`;
+            const dotGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, particle.size);
+            dotGradient.addColorStop(0, `hsla(${particle.hue}, 80%, 70%, ${particle.opacity})`);
+            dotGradient.addColorStop(1, `hsla(${particle.hue}, 80%, 60%, ${particle.opacity * 0.3})`);
+            ctx.fillStyle = dotGradient;
             ctx.fill();
             break;
 
@@ -154,21 +177,17 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
             break;
 
           case 'stethoscopeParticles':
-            // Stethoscope shape: circle with two earpieces
             ctx.strokeStyle = `hsla(${particle.hue}, 70%, 60%, ${particle.opacity})`;
             ctx.lineWidth = 1.5;
-            // Main circle
             ctx.beginPath();
             ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
             ctx.stroke();
-            // Earpieces
             ctx.beginPath();
             ctx.arc(-particle.size * 1.5, -particle.size * 1.5, particle.size * 0.5, 0, Math.PI * 2);
             ctx.stroke();
             ctx.beginPath();
             ctx.arc(particle.size * 1.5, -particle.size * 1.5, particle.size * 0.5, 0, Math.PI * 2);
             ctx.stroke();
-            // Connecting lines
             ctx.beginPath();
             ctx.moveTo(-particle.size * 1.5, -particle.size);
             ctx.lineTo(0, 0);
@@ -188,7 +207,6 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
             break;
 
           default:
-            // Fallback to simple dots
             ctx.beginPath();
             ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
             ctx.fillStyle = `hsla(${particle.hue}, 80%, 60%, ${particle.opacity})`;
@@ -215,8 +233,8 @@ export default function ParticleEffectLayer({ config }: ParticleEffectLayerProps
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none z-10"
-      style={{ opacity: 0.5 }}
+      className="absolute inset-0 w-full h-full pointer-events-none z-10 transition-opacity duration-700"
+      style={{ opacity }}
     />
   );
 }

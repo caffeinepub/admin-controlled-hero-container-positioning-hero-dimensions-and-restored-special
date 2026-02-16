@@ -3,16 +3,14 @@ import Map "mo:core/Map";
 import Order "mo:core/Order";
 import Text "mo:core/Text";
 import Nat "mo:core/Nat";
-import Iter "mo:core/Iter";
 import Array "mo:core/Array";
+import Iter "mo:core/Iter";
 import Principal "mo:core/Principal";
 import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
 import AccessControl "authorization/access-control";
-import Migration "migration";
 
-(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -69,10 +67,10 @@ actor {
     #sparkles;
     #stethoscopeParticles;
     #crossParticles;
-    #dots; // New effect type
-    #rings; // New effect type
-    #swirls; // New effect type
-    #lines; // New effect type
+    #dots;
+    #rings;
+    #swirls;
+    #lines;
   };
 
   public type EffectIntensity = { #subtle; #moderate; #dynamic };
@@ -226,6 +224,14 @@ actor {
     profileImage : ?Storage.ExternalBlob;
   };
 
+  public type Review = {
+    id : Text;
+    patientName : Text;
+    rating : Nat;
+    reviewText : Text;
+    patientImage : ?Storage.ExternalBlob;
+  };
+
   public type HeroLayoutOverride = {
     contentContainerPreset : MaxWidthPreset;
     explicitMaxWidth : ?Nat;
@@ -276,6 +282,84 @@ actor {
     doctorCredentials : DoctorCredentials;
   };
 
+  public type ReviewSettings = {
+    carouselEnabled : Bool;
+    autoScrollSpeed : Nat;
+    transitionType : ReviewTransitionType;
+    displayMode : ReviewDisplayMode;
+    maxReviews : Nat;
+    contentLayout : ReviewContentLayout;
+    overlayEffect : ReviewGlassmorphism;
+    primaryColor : ReviewColor;
+    secondaryColor : ReviewColor;
+    gradientSettings : ReviewGradient;
+    darkModeSupport : Bool;
+    revealAnimation : RevealAnimation;
+  };
+
+  public type ReviewTransitionType = {
+    #slide;
+    #fade;
+    #card;
+    #glassmorphic;
+    #blur;
+    #none;
+  };
+
+  public type ReviewDisplayMode = {
+    #single;
+    #multi;
+    #centered;
+    #masonry;
+  };
+
+  public type ReviewContentLayout = {
+    layoutType : { #singleColumn; #multiColumn; #cardStyle; #overlay };
+    style : { #minimalist; #card; #glassmorphic; #gradient; #frosted };
+    spacingUnit : Nat;
+    paddingUnit : Nat;
+  };
+
+  public type ReviewGlassmorphism = {
+    transparency : Nat;
+    blurIntensity : Nat;
+    overlayEffect : { #subtle; #medium; #strong };
+  };
+
+  public type ReviewColor = {
+    red : Nat;
+    green : Nat;
+    blue : Nat;
+  };
+
+  public type ReviewGradient = {
+    direction : { #leftToRight; #topToBottom; #diagonal };
+    intensity : Nat;
+    colors : [ReviewColor];
+  };
+
+  public type RevealAnimation = {
+    animationType : { #slideIn; #pop; #fade; #expand; #none };
+    delayUnit : Nat;
+    speedUnit : Nat;
+    easing : { #easeInOut; #linear; #bounce };
+  };
+
+  public type ReviewsPanelSettings = {
+    carouselEnabled : Bool;
+    autoScrollSpeed : Nat;
+    transitionType : ReviewTransitionType;
+    displayMode : ReviewDisplayMode;
+    maxReviews : Nat;
+    contentLayout : ReviewContentLayout;
+    overlayEffect : ReviewGlassmorphism;
+    primaryColor : ReviewColor;
+    secondaryColor : ReviewColor;
+    gradientSettings : ReviewGradient;
+    darkModeSupport : Bool;
+    revealAnimation : RevealAnimation;
+  };
+
   public type Config = {
     canonicalUrl : Text;
     terms : Text;
@@ -287,6 +371,72 @@ actor {
   let socialMediaLinks = Map.empty<Text, SocialMediaLink>();
   let images = Map.empty<Text, WebsiteImage>();
   let userProfiles = Map.empty<Principal, UserProfile>();
+  let reviews = Map.empty<Text, Review>();
+
+  // Blog Data Types and Storage
+  public type RichContentElement = {
+    #text : { content : Text };
+    #image : { blob : Storage.ExternalBlob; description : Text };
+    #video : { blob : Storage.ExternalBlob; description : Text };
+  };
+
+  public type BlogPost = {
+    id : Text;
+    title : Text;
+    author : Text;
+    content : [RichContentElement];
+    createdAt : Nat;
+    updatedAt : Nat;
+  };
+
+  // Persistent for blog posts
+  let blogPosts = Map.empty<Text, BlogPost>();
+
+  // Var Persistent Data
+  var reviewsPanelSettings : ReviewsPanelSettings = {
+    carouselEnabled = true;
+    autoScrollSpeed = 3000;
+    transitionType = #slide;
+    displayMode = #multi;
+    maxReviews = 8;
+    contentLayout = {
+      layoutType = #multiColumn;
+      style = #glassmorphic;
+      spacingUnit = 2;
+      paddingUnit = 8;
+    };
+    overlayEffect = {
+      transparency = 12;
+      blurIntensity = 32;
+      overlayEffect = #medium;
+    };
+    primaryColor = {
+      red = 0;
+      green = 174;
+      blue = 239;
+    };
+    secondaryColor = {
+      red = 239;
+      green = 65;
+      blue = 54;
+    };
+    gradientSettings = {
+      direction = #diagonal;
+      intensity = 75;
+      colors = [
+        { red = 195; green = 0; blue = 255 },
+        { red = 0; green = 163; blue = 255 },
+        { red = 255; green = 85; blue = 0 },
+      ];
+    };
+    darkModeSupport = true;
+    revealAnimation = {
+      animationType = #slideIn;
+      delayUnit = 150;
+      speedUnit = 220;
+      easing = #bounce;
+    };
+  };
 
   // Initial Content
   var websiteContent : WebsiteContent = {
@@ -328,7 +478,6 @@ actor {
     background = null;
   };
 
-  // New Hero Section Theme State with updated defaults
   var heroSectionTheme : HeroSectionTheme = {
     themeType = {
       mode = #light;
@@ -434,7 +583,7 @@ actor {
     config;
   };
 
-  // Public Queries - No authorization required (accessible to guests)
+  // Public Queries
   public query func getWebsiteContent() : async WebsiteContent {
     websiteContent;
   };
@@ -489,7 +638,51 @@ actor {
     };
   };
 
-  // Admin Functions - Admin-only authorization
+  // Review Queries
+  public query func getAllReviews() : async [Review] {
+    reviews.values().toArray();
+  };
+
+  public query func getReviewSettings() : async ReviewsPanelSettings {
+    reviewsPanelSettings;
+  };
+
+  // ==== Blog Functions ====
+
+  // Public read access - no authorization required (guests can read)
+  public query func getAllBlogPosts() : async [BlogPost] {
+    blogPosts.values().toArray();
+  };
+
+  public query func getBlogPost(id : Text) : async ?BlogPost {
+    blogPosts.get(id);
+  };
+
+  public query func blogExists(id : Text) : async Bool {
+    blogPosts.containsKey(id);
+  };
+
+  // Admin-Only Blog Functions
+  public shared ({ caller }) func createOrUpdateBlogPost(post : BlogPost) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can create or update blog posts");
+    };
+    // Update timestamp
+    let postWithTimestamp = {
+      post with
+      updatedAt = Nat.max(post.createdAt, post.updatedAt)
+    };
+    blogPosts.add(postWithTimestamp.id, postWithTimestamp);
+  };
+
+  public shared ({ caller }) func deleteBlogPost(id : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can delete blog posts");
+    };
+    blogPosts.remove(id);
+  };
+
+  // Admin Functions
   public shared ({ caller }) func updateWebsiteContent(content : WebsiteContent) : async () {
     if (not (AccessControl.isAdmin(accessControlState, caller))) {
       Runtime.trap("Unauthorized: Only admins can update content");
@@ -602,5 +795,40 @@ actor {
       Runtime.trap("Unauthorized: Only admins can update hero section theme");
     };
     heroSectionTheme := theme;
+  };
+
+  // --- Reviews Admin Functions ---
+  public shared ({ caller }) func updateReviewSettings(settings : ReviewsPanelSettings) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can update review settings");
+    };
+    reviewsPanelSettings := settings;
+  };
+
+  public shared ({ caller }) func addReview(review : Review) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can add reviews");
+    };
+    if (review.rating < 4 or review.rating > 5) {
+      Runtime.trap("Invalid rating: Only 4 and 5 star reviews allowed");
+    };
+    reviews.add(review.id, review);
+  };
+
+  public shared ({ caller }) func updateReview(review : Review) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can update reviews");
+    };
+    if (review.rating < 4 or review.rating > 5) {
+      Runtime.trap("Invalid rating: Only 4 and 5 star reviews allowed");
+    };
+    reviews.add(review.id, review);
+  };
+
+  public shared ({ caller }) func deleteReview(id : Text) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can delete reviews");
+    };
+    reviews.remove(id);
   };
 };

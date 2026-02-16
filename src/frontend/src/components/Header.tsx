@@ -9,9 +9,11 @@ interface HeaderProps {
   isAdmin: boolean;
   showAdminPanel: boolean;
   onToggleAdminPanel: () => void;
+  currentView: 'home' | 'blogs';
+  onNavigate: (view: 'home' | 'blogs') => void;
 }
 
-export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel }: HeaderProps) {
+export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel, currentView, onNavigate }: HeaderProps) {
   const { login, clear, loginStatus, identity } = useInternetIdentity();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
@@ -38,20 +40,46 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel }: 
   };
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
+    if (currentView !== 'home') {
+      window.location.hash = '';
+      onNavigate('home');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+    setMobileMenuOpen(false);
+  };
+
+  const navigateToBlogs = () => {
+    window.location.hash = '#/blogs';
+    onNavigate('blogs');
+    setMobileMenuOpen(false);
+  };
+
+  const navigateToHome = () => {
+    window.location.hash = '';
+    onNavigate('home');
+    setMobileMenuOpen(false);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold tracking-tight text-primary hover:opacity-80 transition-opacity cursor-default">
+          <button 
+            onClick={navigateToHome}
+            className="text-xl font-bold tracking-tight text-primary hover:opacity-80 transition-opacity"
+          >
             Dr. Malay Akechan
-          </h1>
+          </button>
         </div>
 
         {/* Desktop Navigation */}
@@ -85,6 +113,14 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel }: 
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
             Contact
+          </button>
+          <button 
+            onClick={navigateToBlogs}
+            className={`text-sm font-medium transition-colors ${
+              currentView === 'blogs' ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+            }`}
+          >
+            Blogs
           </button>
         </nav>
 
@@ -165,6 +201,14 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel }: 
             >
               Contact
             </button>
+            <button 
+              onClick={navigateToBlogs}
+              className={`text-sm font-medium transition-colors text-left py-2 px-3 rounded-md hover:bg-accent ${
+                currentView === 'blogs' ? 'text-primary bg-accent' : 'text-muted-foreground'
+              }`}
+            >
+              Blogs
+            </button>
             <Button
               onClick={handleAuth}
               disabled={disabled}
@@ -180,4 +224,3 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel }: 
     </header>
   );
 }
-

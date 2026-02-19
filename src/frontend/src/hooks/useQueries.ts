@@ -13,9 +13,10 @@ import type {
   Review,
   ReviewsPanelSettings,
   BlogPost,
+  Config,
 } from '../backend';
 
-// User Profile Queries
+// ===== User Profile Queries =====
 export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
 
@@ -51,21 +52,43 @@ export function useSaveCallerUserProfile() {
   });
 }
 
-// Admin Check Query
+// ===== Authorization Queries =====
 export function useIsCallerAdmin() {
   const { actor, isFetching } = useActor();
 
   return useQuery<boolean>({
-    queryKey: ['isAdmin'],
+    queryKey: ['isCallerAdmin'],
     queryFn: async () => {
       if (!actor) return false;
-      return actor.isCallerAdmin();
+      try {
+        return await actor.isCallerAdmin();
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        return false;
+      }
     },
     enabled: !!actor && !isFetching,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
   });
 }
 
-// Website Content Queries
+// ===== Config Query =====
+export function useGetConfig() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<Config>({
+    queryKey: ['config'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getConfig();
+    },
+    enabled: !!actor && !isFetching,
+    staleTime: Infinity,
+  });
+}
+
+// ===== Website Content Queries =====
 export function useGetWebsiteContent() {
   const { actor, isFetching } = useActor();
 
@@ -94,7 +117,7 @@ export function useUpdateWebsiteContent() {
   });
 }
 
-// Footer Content Queries
+// ===== Footer Content Queries =====
 export function useGetFooterContent() {
   const { actor, isFetching } = useActor();
 
@@ -123,7 +146,37 @@ export function useUpdateFooterContent() {
   });
 }
 
-// Clinics Queries
+// ===== Doctor Credentials Queries =====
+export function useGetDoctorCredentials() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<DoctorCredentials>({
+    queryKey: ['doctorCredentials'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getDoctorCredentials();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdateDoctorCredentials() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (credentials: DoctorCredentials) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateDoctorCredentials(credentials);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['doctorCredentials'] });
+      queryClient.invalidateQueries({ queryKey: ['websiteContent'] });
+    },
+  });
+}
+
+// ===== Clinic Queries =====
 export function useGetAllClinics() {
   const { actor, isFetching } = useActor();
 
@@ -182,7 +235,7 @@ export function useDeleteClinic() {
   });
 }
 
-// Services Queries
+// ===== Service Queries =====
 export function useGetAllServices() {
   const { actor, isFetching } = useActor();
 
@@ -241,7 +294,7 @@ export function useDeleteService() {
   });
 }
 
-// Social Media Queries
+// ===== Social Media Queries =====
 export function useGetSortedSocialMediaLinks() {
   const { actor, isFetching } = useActor();
 
@@ -300,7 +353,7 @@ export function useDeleteSocialMediaLink() {
   });
 }
 
-// Images Queries
+// ===== Image Queries =====
 export function useGetAllImages() {
   const { actor, isFetching } = useActor();
 
@@ -314,16 +367,14 @@ export function useGetAllImages() {
   });
 }
 
-export function useGetImage(id: string) {
+export function useGetImage() {
   const { actor, isFetching } = useActor();
 
-  return useQuery<WebsiteImage | null>({
-    queryKey: ['image', id],
-    queryFn: async () => {
-      if (!actor) return null;
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!actor) throw new Error('Actor not available');
       return actor.getImage(id);
     },
-    enabled: !!actor && !isFetching && !!id,
   });
 }
 
@@ -357,37 +408,22 @@ export function useUpdateImage() {
   });
 }
 
-// Doctor Credentials Queries
-export function useGetDoctorCredentials() {
-  const { actor, isFetching } = useActor();
-
-  return useQuery<DoctorCredentials>({
-    queryKey: ['doctorCredentials'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      return actor.getDoctorCredentials();
-    },
-    enabled: !!actor && !isFetching,
-  });
-}
-
-export function useUpdateDoctorCredentials() {
+export function useDeleteImage() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials: DoctorCredentials) => {
+    mutationFn: async (id: string) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.updateDoctorCredentials(credentials);
+      return actor.deleteImage(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['doctorCredentials'] });
-      queryClient.invalidateQueries({ queryKey: ['websiteContent'] });
+      queryClient.invalidateQueries({ queryKey: ['images'] });
     },
   });
 }
 
-// Hero Section Theme Queries
+// ===== Hero Section Queries =====
 export function useGetHeroSectionTheme() {
   const { actor, isFetching } = useActor();
 
@@ -419,7 +455,7 @@ export function useUpdateHeroSectionTheme() {
 export function useGetHeroBackgroundImage() {
   const { actor, isFetching } = useActor();
 
-  return useQuery({
+  return useQuery<{ standard: any; darkMode?: any } | null>({
     queryKey: ['heroBackgroundImage'],
     queryFn: async () => {
       if (!actor) return null;
@@ -429,7 +465,7 @@ export function useGetHeroBackgroundImage() {
   });
 }
 
-// Reviews Queries
+// ===== Review Queries =====
 export function useGetAllReviews() {
   const { actor, isFetching } = useActor();
 
@@ -438,6 +474,19 @@ export function useGetAllReviews() {
     queryFn: async () => {
       if (!actor) return [];
       return actor.getAllReviews();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useGetReviewSettings() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<ReviewsPanelSettings>({
+    queryKey: ['reviewSettings'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getReviewSettings();
     },
     enabled: !!actor && !isFetching,
   });
@@ -455,7 +504,6 @@ export function useAddReview() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
-    retry: false,
   });
 }
 
@@ -489,19 +537,6 @@ export function useDeleteReview() {
   });
 }
 
-export function useGetReviewSettings() {
-  const { actor, isFetching } = useActor();
-
-  return useQuery<ReviewsPanelSettings>({
-    queryKey: ['reviewSettings'],
-    queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      return actor.getReviewSettings();
-    },
-    enabled: !!actor && !isFetching,
-  });
-}
-
 export function useUpdateReviewSettings() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
@@ -517,7 +552,7 @@ export function useUpdateReviewSettings() {
   });
 }
 
-// Blog Post Queries
+// ===== Blog Post Queries =====
 export function useGetAllBlogPosts() {
   const { actor, isFetching } = useActor();
 
@@ -531,16 +566,14 @@ export function useGetAllBlogPosts() {
   });
 }
 
-export function useGetBlogPost(id: string) {
-  const { actor, isFetching } = useActor();
+export function useGetBlogPost() {
+  const { actor } = useActor();
 
-  return useQuery<BlogPost | null>({
-    queryKey: ['blogPost', id],
-    queryFn: async () => {
-      if (!actor) return null;
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!actor) throw new Error('Actor not available');
       return actor.getBlogPost(id);
     },
-    enabled: !!actor && !isFetching && !!id,
   });
 }
 

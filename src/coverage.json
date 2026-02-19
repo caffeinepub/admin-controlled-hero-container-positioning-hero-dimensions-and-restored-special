@@ -1,118 +1,58 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-16T17:45:43.839Z",
+  "generatedAt": "2026-02-19T15:17:52.611Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 5,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix the patient review submission flow so that creating a new review cannot result in duplicate review entries being stored or displayed (even if the user clicks submit multiple times, the request retries, or the UI re-renders).",
+        "summary": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/admin/ReviewsManager.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useActor.ts",
+          "frontend/src/hooks/useInternetIdentity.ts",
           "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/Reviews.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/admin/ReviewsManager.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/Reviews.tsx"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Add user-friendly text formatting controls for admins while writing blog posts, covering common formatting options (e.g., headings, bold/italic/underline, links, ordered/unordered lists, quotes) and ensure the formatted content is stored and rendered correctly on blog list/detail views.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/blogs/RichTextEditor.tsx",
-          "frontend/src/components/blogs/BlogPostEditorDialog.tsx",
-          "frontend/src/components/blogs/RichContentRenderer.tsx",
-          "frontend/src/components/blogs/BlogList.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/blogs/RichTextEditor.tsx",
-          "frontend/src/components/blogs/BlogPostEditorDialog.tsx",
-          "frontend/src/components/blogs/RichContentRenderer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Add a “Blogs” option to the Footer Quick Links that navigates users to the blogs page using the app’s existing hash-based routing.",
-        "status": "implemented",
-        "plannedFiles": [
+          "frontend/src/components/Hero.tsx",
+          "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/main.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useQueries.ts",
           "frontend/src/components/Footer.tsx"
         ]
       },
       {
-        "id": "REQ-4",
-        "summary": "Expand the hero theme system with additional Material Design-inspired effects and transitions, and allow multiple effect types to be enabled/configured in the hero theme section without visual glitches or performance issues.",
+        "id": "REQ-2",
+        "summary": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/admin/HeroThemeManager.tsx",
-          "frontend/src/components/hero/HeroMultiEffectsLayer.tsx",
-          "frontend/src/components/hero/effects/MotionEffectLayer.tsx",
-          "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
-          "frontend/src/components/hero/effects/VectorEffectLayer.tsx",
-          "frontend/src/components/Hero.tsx"
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/hero/effects/MotionEffectLayer.tsx",
-          "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
-          "frontend/src/components/hero/effects/VectorEffectLayer.tsx",
-          "frontend/src/components/Hero.tsx"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Make the hero section background controls more robust by improving configurability and reliability: provide clearer admin controls for background behavior (including sensible defaults/validation), handle missing light/dark background variants gracefully, and ensure the hero remains readable across different backgrounds.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/utils/heroThemeDefaults.ts",
-          "frontend/src/components/admin/HeroThemeManager.tsx",
-          "frontend/src/components/Hero.tsx",
-          "frontend/src/hooks/useHeroLayoutPreset.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/utils/heroThemeDefaults.ts",
-          "frontend/src/components/Hero.tsx"
+          "frontend/src/components/Footer.tsx",
+          "frontend/src/hooks/useQueries.ts"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/EditableFooterContent.tsx",
+    "frontend/src/App.tsx",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/components/Hero.tsx",
-    "frontend/src/components/Reviews.tsx",
-    "frontend/src/components/SocialMedia.tsx",
-    "frontend/src/components/admin/ContentManager.tsx",
-    "frontend/src/components/admin/ReviewsManager.tsx",
-    "frontend/src/components/admin/SocialMediaManager.tsx",
-    "frontend/src/components/blogs/BlogPostEditorDialog.tsx",
-    "frontend/src/components/blogs/RichContentRenderer.tsx",
-    "frontend/src/components/blogs/RichTextEditor.tsx",
-    "frontend/src/components/hero/effects/MotionEffectLayer.tsx",
-    "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
-    "frontend/src/components/hero/effects/VectorEffectLayer.tsx",
-    "frontend/src/config.ts",
     "frontend/src/hooks/useQueries.ts",
-    "frontend/src/utils/heroThemeDefaults.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

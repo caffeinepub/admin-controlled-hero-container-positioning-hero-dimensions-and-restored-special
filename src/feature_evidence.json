@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-patient-review-submission-flow-so-that-creating-a-new-review-cannot-result-in-duplicate-review-entries-being-stored-or-displayed-even-if-the-user-clicks-submit-multiple-times-the-request-retries-or-the-ui-re-renders",
-      "featureTitle": "Fix the patient review submission flow so that creating a new review cannot result in duplicate review entries being stored or displayed (even if the user clicks submit multiple times, the request retries, or the UI re-renders).",
+      "featureId": "feature-diagnose-and-fix-the-issue-causing-the-entire-page-content-to-fail-to-load-investigate-react-rendering-errors-query-failures-component-mounting-issues-or-authentication-actor-initialization-problems-that-may-be-preventing-the-page-from-displaying",
+      "featureTitle": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
       "files": [
-        "frontend/src/components/Reviews.tsx",
-        "frontend/src/components/admin/ReviewsManager.tsx",
+        "frontend/src/App.tsx",
+        "frontend/src/components/Footer.tsx",
         "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
@@ -24,12 +24,11 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-user-friendly-text-formatting-controls-for-admins-while-writing-blog-posts-covering-common-formatting-options-e-g-headings-bold-italic-underline-links-ordered-unordered-lists-quotes-and-ensure-the-formatted-content-is-stored-and-rendered-correctly-on-blog-list-detail-views",
-      "featureTitle": "Add user-friendly text formatting controls for admins while writing blog posts, covering common formatting options (e.g., headings, bold/italic/underline, links, ordered/unordered lists, quotes) and ensure the formatted content is stored and rendered correctly on blog list/detail views.",
+      "featureId": "feature-update-the-footer-component-s-background-animation-to-match-the-hero-section-s-animation-style-apply-the-same-particle-motion-vector-effects-system-used-in-heromultieffectslayer-to-the-footer-background-respecting-the-current-hero-theme-settings-particle-effects-motion-effects-vector-effects-stored-in-the-backend",
+      "featureTitle": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
       "files": [
-        "frontend/src/components/blogs/BlogPostEditorDialog.tsx",
-        "frontend/src/components/blogs/RichContentRenderer.tsx",
-        "frontend/src/components/blogs/RichTextEditor.tsx"
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -42,70 +41,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-blogs-option-to-the-footer-quick-links-that-navigates-users-to-the-blogs-page-using-the-app-s-existing-hash-based-routing",
-      "featureTitle": "Add a “Blogs” option to the Footer Quick Links that navigates users to the blogs page using the app’s existing hash-based routing.",
-      "files": [
-        "frontend/src/components/Footer.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-expand-the-hero-theme-system-with-additional-material-design-inspired-effects-and-transitions-and-allow-multiple-effect-types-to-be-enabled-configured-in-the-hero-theme-section-without-visual-glitches-or-performance-issues",
-      "featureTitle": "Expand the hero theme system with additional Material Design-inspired effects and transitions, and allow multiple effect types to be enabled/configured in the hero theme section without visual glitches or performance issues.",
-      "files": [
-        "frontend/src/components/Hero.tsx",
-        "frontend/src/components/hero/effects/MotionEffectLayer.tsx",
-        "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
-        "frontend/src/components/hero/effects/VectorEffectLayer.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-make-the-hero-section-background-controls-more-robust-by-improving-configurability-and-reliability-provide-clearer-admin-controls-for-background-behavior-including-sensible-defaults-validation-handle-missing-light-dark-background-variants-gracefully-and-ensure-the-hero-remains-readable-across-different-backgrounds",
-      "featureTitle": "Make the hero section background controls more robust by improving configurability and reliability: provide clearer admin controls for background behavior (including sensible defaults/validation), handle missing light/dark background variants gracefully, and ensure the hero remains readable across different backgrounds.",
-      "files": [
-        "frontend/src/components/Hero.tsx",
-        "frontend/src/utils/heroThemeDefaults.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
       ],
       "confidence": "high"
     }

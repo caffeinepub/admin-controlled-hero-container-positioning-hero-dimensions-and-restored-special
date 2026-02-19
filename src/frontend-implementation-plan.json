@@ -1,158 +1,79 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Dr Malay Site: Prevent duplicate review submissions; richer blog editor; footer blogs link; stronger hero effects & background robustness",
+  "title": "Fix page loading failure and update footer animation",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Prevent duplicate review creation by making the review submit flow idempotent in the UI and deduplicating displayed review lists.",
+      "summary": "Diagnose and fix the issue causing the entire page content to fail to load by investigating React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems",
       "acceptanceCriteria": [
-        "Submitting a new review once results in exactly one new review appearing in the admin reviews list and on the public Reviews section.",
-        "Rapid repeated clicks on the submit button (or enter key) while a submission is in progress do not create additional review records.",
-        "If the same create-review request is retried (e.g., transient failure + retry), the backend does not create a second record for the same intended submission.",
-        "No regression: editing an existing review updates the existing record and does not create a new one."
+        "The page loads successfully without errors",
+        "All page sections render correctly",
+        "Console shows no critical errors preventing page display",
+        "Users can view and interact with all page content"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/admin/ReviewsManager.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add a single-submission guard for create-review: generate and persist a per-dialog submission id (used as Review.id) for the entire create attempt (including retries), disable submit while mutation is pending, and ensure Enter key cannot trigger concurrent submits (e.g., via an in-flight ref)."
+          "description": "Add comprehensive error boundaries and error state handling to catch and display React rendering errors. Add loading state checks to prevent premature rendering of dependent components. Ensure proper conditional rendering based on authentication state, actor availability, and data loading states."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Add error handling and retry logic for actor initialization failures. Ensure the actor is properly initialized for both authenticated and anonymous users. Add detailed error logging to diagnose actor creation issues."
+        },
+        {
+          "path": "frontend/src/hooks/useInternetIdentity.ts",
+          "operation": "modify",
+          "description": "Add error handling for authentication state initialization failures. Ensure identity loading and validation doesn't block page rendering. Add fallback behavior for authentication errors that allows the page to render with limited functionality."
         },
         {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Harden the addReview mutation behavior against accidental replays: ensure the mutation is not retried automatically for create-review (or is retried without changing the Review.id), and on success invalidate reviews once (avoid duplicate invalidations triggering duplicate optimistic UI inserts)."
+          "description": "Review all query hooks for proper error handling and enabled state logic. Ensure queries don't prevent page rendering when they fail. Add fallback values and graceful degradation for failed data fetches. Verify that dependent queries properly wait for actor availability."
         },
         {
-          "path": "frontend/src/components/Reviews.tsx",
+          "path": "frontend/src/components/Hero.tsx",
           "operation": "modify",
-          "description": "Deduplicate reviews at render time (e.g., by id) before displaying the public Reviews section so transient cache duplication or repeated fetch merges cannot display duplicates."
+          "description": "Add error boundaries and loading state handling to prevent hero section from blocking page render. Ensure background image loading failures don't crash the component. Add fallback rendering when theme data is unavailable."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add error handling for navigation state and authentication state failures. Ensure header renders even when some data is unavailable. Add loading skeletons for authentication-dependent elements."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Add error handling and loading states to prevent footer from blocking page render. Ensure footer content loads gracefully with fallback values when queries fail."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Add top-level error boundary to catch and display unhandled errors. Ensure React Query client has proper default error handling configuration. Add fallback UI for critical initialization failures."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Add a user-friendly rich text formatting toolbar to the admin blog editor and render formatted content correctly on blog list/detail views without breaking older posts.",
+      "summary": "Update the Footer component's background animation to match the hero section's animation style by applying the same particle/motion/vector effects system using HeroMultiEffectsLayer",
       "acceptanceCriteria": [
-        "The blog post editor provides a visible formatting toolbar for text blocks that can apply formatting without the admin needing to manually type markup.",
-        "Formatted text is rendered correctly in the blog detail view and matches the formatting applied in the editor.",
-        "Existing blog posts created before this change still render correctly (no breaking changes to previously stored content)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/blogs/RichTextEditor.tsx",
-          "operation": "create",
-          "description": "Create a lightweight rich-text editor component (contenteditable-based) with a formatting toolbar (headings, bold/italic/underline, links, ordered/unordered lists, quotes) that outputs a safe HTML string to be stored in RichContentElement.text.content. Use existing shadcn/ui components for controls; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/blogs/BlogPostEditorDialog.tsx",
-          "operation": "modify",
-          "description": "Replace the plain Textarea for text blocks with the new RichTextEditor component so admins can apply formatting via toolbar actions; keep the stored data in the existing RichContentElement.text.content field to avoid backend schema changes. Use existing shadcn/ui components for layout; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/blogs/RichContentRenderer.tsx",
-          "operation": "modify",
-          "description": "Update text rendering to support formatted HTML content safely (sanitize/allowlist tags used by the editor) while preserving legacy behavior for older plain-text posts (continue to render as text when no formatting markup is present)."
-        },
-        {
-          "path": "frontend/src/components/blogs/BlogList.tsx",
-          "operation": "modify",
-          "description": "Ensure blog previews derived from text blocks degrade gracefully for formatted content (e.g., strip HTML tags for previews) so list cards remain readable and consistent."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Add a Blogs quick link in the footer that navigates via existing hash-based routing without breaking smooth-scroll section links.",
-      "acceptanceCriteria": [
-        "Footer Quick Links includes a link labeled \"Blogs\".",
-        "Clicking \"Blogs\" navigates to the blogs page (without a full page refresh) and works from any current section/page.",
-        "Existing quick links (Home/About/Services/Clinics/Contact) keep their current behavior (smooth scroll for section anchors)."
+        "Footer displays the same type of background animation as the hero section",
+        "Animation respects the hero theme settings (particle/motion/vector effects configuration)",
+        "Footer animation performs smoothly without impacting page performance",
+        "Animation style remains consistent with the hero section's visual treatment"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Add a \"Blogs\" item to the quickLinks list and update click handling: keep smooth scroll for section anchors (#hero/#about/...) but for blogs route hashes (e.g., #/blogs) set window.location.hash to navigate using the existing hash router."
+          "description": "Integrate HeroMultiEffectsLayer component into the Footer background. Fetch hero theme settings using useGetHeroSectionTheme hook to access particle, motion, and vector effect configurations. Add a positioned container for the effects layer that sits behind footer content. Apply the same effect settings (particleEffect, motionEffect, vectorEffect) from the hero theme to the footer's effects layer. Ensure the effects layer respects the effectsEnabled flag from the theme settings. Reference the generated images at frontend/public/assets/generated/hero-background.dim_1200x600.jpg if needed for consistent visual treatment."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Confirm the existing hash-routing logic recognizes the blogs hash used by the new footer link and navigates without a full refresh; adjust route parsing only if needed to match the footer's hash format."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Expand hero theming with additional Material Design-inspired motion/elevation transitions and ensure multiple hero effects can be enabled together without glitches.",
-      "acceptanceCriteria": [
-        "Hero theme settings expose additional effect/transition options that follow a Material Design-like motion/elevation style.",
-        "Multiple hero effects can be enabled simultaneously and render together correctly.",
-        "Switching hero effect settings results in smooth transitions rather than abrupt changes.",
-        "All effect type options exposed in the admin hero theme UI are actually supported by the hero rendering layer (no 'selectable but does nothing' options)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
-          "operation": "modify",
-          "description": "Extend the admin UI to expose additional Material-like effect/transition options (e.g., elevation/blur strength, crossfade duration, subtle parallax amount) while keeping them mapped to supported rendering behaviors in the hero (avoid offering options that are not implemented). Use existing shadcn/ui components; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/hero/HeroMultiEffectsLayer.tsx",
-          "operation": "modify",
-          "description": "Ensure the multi-layer effect compositor can render multiple enabled layers together reliably (particle + motion + vector), add smooth crossfade/transition handling between effect configuration changes, and prevent duplicate canvas/SVG mounts that can cause performance issues."
-        },
-        {
-          "path": "frontend/src/components/hero/effects/MotionEffectLayer.tsx",
-          "operation": "modify",
-          "description": "Add Material-inspired motion refinements (smoother easing curves, reduced jank on config changes, optional subtle elevation-like shadow/blur cues) and make effect switching transition smoothly (no abrupt frame resets)."
-        },
-        {
-          "path": "frontend/src/components/hero/effects/ParticleEffectLayer.tsx",
-          "operation": "modify",
-          "description": "Improve transitions when changing particle effect settings (crossfade intensity, preserve animation continuity where possible) and ensure multiple enabled hero effect layers remain performant."
-        },
-        {
-          "path": "frontend/src/components/hero/effects/VectorEffectLayer.tsx",
-          "operation": "modify",
-          "description": "Add Material-style vector transitions (opacity/transform-based transitions) and ensure switching vector styles animates smoothly without layout shifts or flicker."
-        },
-        {
-          "path": "frontend/src/components/Hero.tsx",
-          "operation": "modify",
-          "description": "Wire new effect/transition settings into the hero rendering layer and apply Material-inspired transitions (e.g., elevation/blur/opacity/transform) when settings change; ensure multiple enabled effects render together correctly."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Make hero background controls robust with validation/defaults, graceful fallback behavior for missing variants, and guaranteed hero readability via overlays/contrast handling.",
-      "acceptanceCriteria": [
-        "Admin-facing background controls validate and clamp inputs to safe ranges (no broken hero layout due to out-of-range values).",
-        "If no hero background image exists, the hero still renders with an intentional fallback background and readable text.",
-        "If a dark-mode background variant is missing, dark mode still renders acceptably (fallback to standard image or theme fallback) without runtime errors.",
-        "Hero text/buttons remain readable (contrast) across typical background images using overlays/gradients according to theme settings."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/utils/heroThemeDefaults.ts",
-          "operation": "modify",
-          "description": "Centralize clamping/normalization helpers for hero theme numeric inputs (dimensions, positions, gradient intensity, glassmorphism values) so admin UI and hero rendering share the same safe defaults and bounds."
-        },
-        {
-          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
-          "operation": "modify",
-          "description": "Apply validation/clamping consistently for background-related theme controls (via heroThemeDefaults helpers), add clearer helper text for safe ranges, and prevent saving values that would break layout or readability. Use existing shadcn/ui components; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/Hero.tsx",
-          "operation": "modify",
-          "description": "Harden hero background rendering: add an intentional fallback background when no image is available, gracefully fall back to the standard image when dark variant is missing, and enforce text readability using overlays/gradients computed from theme settings and/or image analysis."
-        },
-        {
-          "path": "frontend/src/hooks/useHeroLayoutPreset.ts",
-          "operation": "modify",
-          "description": "Ensure hero layout and overlay decisions handle missing/failed image analysis safely (fallback preset + overlay defaults) so the hero remains readable and does not crash when images are absent or not analyzable."
+          "description": "Verify that useGetHeroSectionTheme hook is exported and accessible for use in Footer component. Ensure the hook properly handles loading and error states to prevent footer rendering issues when theme data is unavailable."
         }
       ]
     }

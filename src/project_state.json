@@ -1,50 +1,26 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "App/site improvements: fix duplicate patient review submissions; enhance admin blog editor formatting; add Blogs link to footer quick links; expand hero section material design effects/transitions and improve hero background controls.",
+  "summary": "New project",
   "architectural_notes": [],
   "known_issues": [
-    "Posting patient reviews is creating duplicate entries."
+    "Page content failing to load"
   ],
   "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-fix-the-patient-review-submission-flow-so-that-creating-a-new-review-cannot-result-in-duplicate-review-entries-being-stored-or-displayed-even-if-the-user-clicks-submit-multiple-times-the-request-retries-or-the-ui-re-renders",
-      "title": "Fix the patient review submission flow so that creating a new review cannot result in duplicate review entries being stored or displayed (even if the user clicks submit multiple times, the request retries, or the UI re-renders).",
+      "id": "feature-diagnose-and-fix-the-issue-causing-the-entire-page-content-to-fail-to-load-investigate-react-rendering-errors-query-failures-component-mounting-issues-or-authentication-actor-initialization-problems-that-may-be-preventing-the-page-from-displaying",
+      "title": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-user-friendly-text-formatting-controls-for-admins-while-writing-blog-posts-covering-common-formatting-options-e-g-headings-bold-italic-underline-links-ordered-unordered-lists-quotes-and-ensure-the-formatted-content-is-stored-and-rendered-correctly-on-blog-list-detail-views",
-      "title": "Add user-friendly text formatting controls for admins while writing blog posts, covering common formatting options (e.g., headings, bold/italic/underline, links, ordered/unordered lists, quotes) and ensure the formatted content is stored and rendered correctly on blog list/detail views.",
+      "id": "feature-update-the-footer-component-s-background-animation-to-match-the-hero-section-s-animation-style-apply-the-same-particle-motion-vector-effects-system-used-in-heromultieffectslayer-to-the-footer-background-respecting-the-current-hero-theme-settings-particle-effects-motion-effects-vector-effects-stored-in-the-backend",
+      "title": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-blogs-option-to-the-footer-quick-links-that-navigates-users-to-the-blogs-page-using-the-app-s-existing-hash-based-routing",
-      "title": "Add a “Blogs” option to the Footer Quick Links that navigates users to the blogs page using the app’s existing hash-based routing.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-expand-the-hero-theme-system-with-additional-material-design-inspired-effects-and-transitions-and-allow-multiple-effect-types-to-be-enabled-configured-in-the-hero-theme-section-without-visual-glitches-or-performance-issues",
-      "title": "Expand the hero theme system with additional Material Design-inspired effects and transitions, and allow multiple effect types to be enabled/configured in the hero theme section without visual glitches or performance issues.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-make-the-hero-section-background-controls-more-robust-by-improving-configurability-and-reliability-provide-clearer-admin-controls-for-background-behavior-including-sensible-defaults-validation-handle-missing-light-dark-background-variants-gracefully-and-ensure-the-hero-remains-readable-across-different-backgrounds",
-      "title": "Make the hero section background controls more robust by improving configurability and reliability: provide clearer admin controls for background behavior (including sensible defaults/validation), handle missing light/dark background variants gracefully, and ensure the hero remains readable across different backgrounds.",
-      "reqIds": [
-        "REQ-5"
       ],
       "version": 1
     }
@@ -52,36 +28,18 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Fix glitch where posting patient reviews creates duplicate entries.",
+      "summary": "Fix page content loading failure",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Add user-friendly rich text formatting options for admins when writing blog posts.",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Add a \"Blogs\" option/link in the Footer Quick Links.",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Add multiple Material Design-style effects and transitions to the hero theme section.",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Make hero section background controls more robust (improved configurability/reliability).",
+      "summary": "Update footer background animation to match hero section",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Dr Malay Site",
+  "projectName": "Fix page loading failure and update footer animation",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

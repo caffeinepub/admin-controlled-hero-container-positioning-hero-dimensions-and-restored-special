@@ -13,6 +13,16 @@ interface HeaderProps {
   onNavigate: (view: 'home' | 'blogs') => void;
 }
 
+// Export navigation sections for use in Footer
+export const navigationSections = [
+  { id: 'overview', label: 'Overview', type: 'section' as const },
+  { id: 'about', label: 'About', type: 'section' as const },
+  { id: 'services', label: 'Services', type: 'section' as const },
+  { id: 'clinics', label: 'Clinics', type: 'section' as const },
+  { id: 'social', label: 'Contact', type: 'section' as const },
+  { id: 'blogs', label: 'Blogs', type: 'route' as const },
+];
+
 export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel, currentView, onNavigate }: HeaderProps) {
   const { login, clear, loginStatus, identity } = useInternetIdentity();
   const queryClient = useQueryClient();
@@ -84,44 +94,19 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel, cu
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <button 
-            onClick={() => scrollToSection('overview')} 
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Overview
-          </button>
-          <button 
-            onClick={() => scrollToSection('about')} 
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            About
-          </button>
-          <button 
-            onClick={() => scrollToSection('services')} 
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Services
-          </button>
-          <button 
-            onClick={() => scrollToSection('clinics')} 
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Clinics
-          </button>
-          <button 
-            onClick={() => scrollToSection('social')} 
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Contact
-          </button>
-          <button 
-            onClick={navigateToBlogs}
-            className={`text-sm font-medium transition-colors ${
-              currentView === 'blogs' ? 'text-primary' : 'text-muted-foreground hover:text-primary'
-            }`}
-          >
-            Blogs
-          </button>
+          {navigationSections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => section.type === 'route' ? navigateToBlogs() : scrollToSection(section.id)}
+              className={`text-sm font-medium transition-colors ${
+                section.type === 'route' && currentView === 'blogs'
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-primary'
+              }`}
+            >
+              {section.label}
+            </button>
+          ))}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -169,52 +154,27 @@ export default function Header({ isAdmin, showAdminPanel, onToggleAdminPanel, cu
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-background animate-fade-in">
-          <nav className="container py-4 flex flex-col gap-2">
-            <button 
-              onClick={() => scrollToSection('overview')} 
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-left py-2 px-3 rounded-md hover:bg-accent"
-            >
-              Overview
-            </button>
-            <button 
-              onClick={() => scrollToSection('about')} 
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-left py-2 px-3 rounded-md hover:bg-accent"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => scrollToSection('services')} 
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-left py-2 px-3 rounded-md hover:bg-accent"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('clinics')} 
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-left py-2 px-3 rounded-md hover:bg-accent"
-            >
-              Clinics
-            </button>
-            <button 
-              onClick={() => scrollToSection('social')} 
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-left py-2 px-3 rounded-md hover:bg-accent"
-            >
-              Contact
-            </button>
-            <button 
-              onClick={navigateToBlogs}
-              className={`text-sm font-medium transition-colors text-left py-2 px-3 rounded-md hover:bg-accent ${
-                currentView === 'blogs' ? 'text-primary bg-accent' : 'text-muted-foreground'
-              }`}
-            >
-              Blogs
-            </button>
+        <div className="md:hidden border-t bg-background/95 backdrop-blur">
+          <nav className="container py-4 flex flex-col gap-3">
+            {navigationSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => section.type === 'route' ? navigateToBlogs() : scrollToSection(section.id)}
+                className={`text-sm font-medium text-left transition-colors ${
+                  section.type === 'route' && currentView === 'blogs'
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-primary'
+                }`}
+              >
+                {section.label}
+              </button>
+            ))}
             <Button
               onClick={handleAuth}
               disabled={disabled}
               variant={isAuthenticated ? "outline" : "default"}
-              className="w-full mt-2"
               size="sm"
+              className="w-full mt-2"
             >
               {loginStatus === 'logging-in' ? 'Logging in...' : isAuthenticated ? 'Logout' : 'Login'}
             </Button>

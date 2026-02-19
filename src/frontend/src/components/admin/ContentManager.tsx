@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react';
-import { useGetAllImages, useAddImage, useUpdateImage, useGetWebsiteContent, useUpdateWebsiteContent } from '../../hooks/useQueries';
+import { useGetAllImages, useAddImage, useUpdateImage, useDeleteImage, useGetWebsiteContent, useUpdateWebsiteContent } from '../../hooks/useQueries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Pencil, Upload, Loader2, Image as ImageIcon, Type } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Plus, Pencil, Upload, Loader2, Image as ImageIcon, Type, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ExternalBlob } from '../../backend';
 import type { WebsiteImage } from '../../backend';
@@ -16,11 +17,13 @@ export default function ContentManager() {
   const { data: websiteContent } = useGetWebsiteContent();
   const addMutation = useAddImage();
   const updateMutation = useUpdateImage();
+  const deleteMutation = useDeleteImage();
   const updateContentMutation = useUpdateWebsiteContent();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isHeroDialogOpen, setIsHeroDialogOpen] = useState(false);
   const [editingImage, setEditingImage] = useState<WebsiteImage | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     id: '',
     description: '',
@@ -86,6 +89,19 @@ export default function ContentManager() {
       });
     }
     setIsHeroDialogOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteMutation.mutateAsync(id);
+      toast.success('Image deleted successfully');
+      setDeleteConfirmId(null);
+    } catch (error: any) {
+      toast.error('Failed to delete image', {
+        description: error?.message || 'Please try again',
+      });
+      console.error(error);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isDarkMode: boolean = false) => {
@@ -221,293 +237,422 @@ export default function ContentManager() {
             Manage all website images and content. Use hover-to-edit on the main site for quick updates.
           </p>
         </div>
-        <div className="flex gap-2">
-          <Dialog open={isHeroDialogOpen} onOpenChange={setIsHeroDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" onClick={handleEditHero}>
-                <Type className="h-4 w-4 mr-2" />
-                Edit Hero Section
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Edit Hero Section Content</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleHeroSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="headline">Headline</Label>
-                  <Input
-                    id="headline"
-                    value={heroFormData.headline}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, headline: e.target.value })}
-                    placeholder="Welcome to Dr. Malay Akechan's Practice"
-                  />
-                </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={resetForm} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Custom Image
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{editingImage ? 'Edit Image' : 'Add New Image'}</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="id">Image ID</Label>
+                <Input
+                  id="id"
+                  value={formData.id}
+                  onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+                  placeholder="e.g., custom-image-1"
+                  disabled={!!editingImage}
+                  required
+                />
+                <p className="text-xs text-muted-foreground">
+                  Use a unique identifier (lowercase, hyphens allowed)
+                </p>
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="subtext">Subtext</Label>
-                  <Textarea
-                    id="subtext"
-                    value={heroFormData.subtext}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, subtext: e.target.value })}
-                    placeholder="Providing exceptional medical care..."
-                    rows={3}
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Brief description of the image"
+                  required
+                />
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="primaryButtonText">Primary Button Text</Label>
-                  <Input
-                    id="primaryButtonText"
-                    value={heroFormData.primaryButtonText}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, primaryButtonText: e.target.value })}
-                    placeholder="Book Appointment"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="primaryButtonLink">Primary Button Link</Label>
-                  <Input
-                    id="primaryButtonLink"
-                    value={heroFormData.primaryButtonLink}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, primaryButtonLink: e.target.value })}
-                    placeholder="#contact"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="secondaryButtonText">Secondary Button Text (Optional)</Label>
-                  <Input
-                    id="secondaryButtonText"
-                    value={heroFormData.secondaryButtonText}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, secondaryButtonText: e.target.value })}
-                    placeholder="Learn More"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="secondaryButtonLink">Secondary Button Link (Optional)</Label>
-                  <Input
-                    id="secondaryButtonLink"
-                    value={heroFormData.secondaryButtonLink}
-                    onChange={(e) => setHeroFormData({ ...heroFormData, secondaryButtonLink: e.target.value })}
-                    placeholder="#about"
-                  />
-                </div>
-
-                <div className="flex gap-2">
-                  <Button type="submit" disabled={updateContentMutation.isPending}>
-                    {updateContentMutation.isPending ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      'Save Changes'
-                    )}
+              <div className="space-y-2">
+                <Label>Standard Image</Label>
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    {selectedFile || editingImage ? 'Change Image' : 'Upload Image'}
                   </Button>
-                  <Button type="button" variant="outline" onClick={() => setIsHeroDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog open={isDialogOpen} onOpenChange={(open) => {
-            setIsDialogOpen(open);
-            if (!open) resetForm();
-          }}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Image
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>{editingImage ? 'Edit Image' : 'Add New Image'}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="imageId">Image ID *</Label>
-                  <Input
-                    id="imageId"
-                    value={formData.id}
-                    onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-                    placeholder="e.g., hero-background"
-                    disabled={!!editingImage}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Predefined IDs: {predefinedImages.map(img => img.id).join(', ')}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description *</Label>
-                  <Input
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Brief description of the image"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Standard Image *</Label>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={isUploading}
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Choose Image
-                    </Button>
-                    {selectedFile && <span className="text-sm self-center">{selectedFile.name}</span>}
-                  </div>
                   <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
-                    className="hidden"
                     onChange={(e) => handleFileChange(e, false)}
+                    className="hidden"
                   />
-                  {previewUrl && (
-                    <div className="mt-2">
-                      <img src={previewUrl} alt="Preview" className="w-full max-h-64 object-cover rounded-md" />
-                    </div>
-                  )}
                 </div>
-
-                <div className="space-y-2">
-                  <Label>Dark Mode Image (Optional)</Label>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => darkFileInputRef.current?.click()}
-                      disabled={isUploading}
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Choose Dark Image
-                    </Button>
-                    {selectedDarkFile && <span className="text-sm self-center">{selectedDarkFile.name}</span>}
+                {previewUrl && (
+                  <div className="mt-4 relative w-full h-48 rounded-lg overflow-hidden border">
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label>Dark Mode Image (Optional)</Label>
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => darkFileInputRef.current?.click()}
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    {selectedDarkFile || editingImage?.darkModeImage ? 'Change Dark Image' : 'Upload Dark Image'}
+                  </Button>
                   <input
                     ref={darkFileInputRef}
                     type="file"
                     accept="image/*"
-                    className="hidden"
                     onChange={(e) => handleFileChange(e, true)}
+                    className="hidden"
                   />
-                  {darkPreviewUrl && (
-                    <div className="mt-2">
-                      <img src={darkPreviewUrl} alt="Dark Preview" className="w-full max-h-64 object-cover rounded-md" />
-                    </div>
-                  )}
                 </div>
-
-                {isUploading && uploadProgress > 0 && (
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Uploading...</span>
-                      <span>{uploadProgress}%</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div 
-                        className="bg-chart-1 h-2 rounded-full transition-all"
-                        style={{ width: `${uploadProgress}%` }}
-                      />
-                    </div>
+                {darkPreviewUrl && (
+                  <div className="mt-4 relative w-full h-48 rounded-lg overflow-hidden border bg-gray-900">
+                    <img
+                      src={darkPreviewUrl}
+                      alt="Dark mode preview"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 )}
+              </div>
 
-                <div className="flex gap-2">
-                  <Button type="submit" disabled={isUploading}>
-                    {isUploading ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Uploading...
-                      </>
-                    ) : (
-                      <>{editingImage ? 'Update' : 'Add'} Image</>
-                    )}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
-                  </Button>
+              {isUploading && uploadProgress > 0 && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Uploading...</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full bg-secondary rounded-full h-2">
+                    <div
+                      className="bg-primary h-2 rounded-full transition-all"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
                 </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+              )}
+
+              <div className="flex justify-end gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsDialogOpen(false);
+                    resetForm();
+                  }}
+                  disabled={isUploading}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isUploading}>
+                  {isUploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Image'
+                  )}
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Hero Section Content Editor */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Type className="h-5 w-5 text-primary" />
+              <CardTitle>Hero Section Content</CardTitle>
+            </div>
+            <Button variant="outline" size="sm" onClick={handleEditHero} className="gap-2">
+              <Pencil className="h-4 w-4" />
+              Edit Content
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4 text-sm">
+            <div>
+              <p className="font-medium text-muted-foreground">Headline:</p>
+              <p className="mt-1">{websiteContent?.heroSection.headline || 'Not set'}</p>
+            </div>
+            <div>
+              <p className="font-medium text-muted-foreground">Subtext:</p>
+              <p className="mt-1">{websiteContent?.heroSection.subtext || 'Not set'}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="font-medium text-muted-foreground">Primary Button:</p>
+                <p className="mt-1">{websiteContent?.heroSection.primaryButton.text || 'Not set'}</p>
+              </div>
+              {websiteContent?.heroSection.secondaryButton && (
+                <div>
+                  <p className="font-medium text-muted-foreground">Secondary Button:</p>
+                  <p className="mt-1">{websiteContent.heroSection.secondaryButton.text}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Hero Content Edit Dialog */}
+      <Dialog open={isHeroDialogOpen} onOpenChange={setIsHeroDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Edit Hero Section Content</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleHeroSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="headline">Headline</Label>
+              <Input
+                id="headline"
+                value={heroFormData.headline}
+                onChange={(e) => setHeroFormData({ ...heroFormData, headline: e.target.value })}
+                placeholder="Main headline"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="subtext">Subtext</Label>
+              <Textarea
+                id="subtext"
+                value={heroFormData.subtext}
+                onChange={(e) => setHeroFormData({ ...heroFormData, subtext: e.target.value })}
+                placeholder="Supporting text"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="primaryButtonText">Primary Button Text</Label>
+                <Input
+                  id="primaryButtonText"
+                  value={heroFormData.primaryButtonText}
+                  onChange={(e) => setHeroFormData({ ...heroFormData, primaryButtonText: e.target.value })}
+                  placeholder="Button text"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="primaryButtonLink">Primary Button Link</Label>
+                <Input
+                  id="primaryButtonLink"
+                  value={heroFormData.primaryButtonLink}
+                  onChange={(e) => setHeroFormData({ ...heroFormData, primaryButtonLink: e.target.value })}
+                  placeholder="URL or #section"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="secondaryButtonText">Secondary Button Text (Optional)</Label>
+                <Input
+                  id="secondaryButtonText"
+                  value={heroFormData.secondaryButtonText}
+                  onChange={(e) => setHeroFormData({ ...heroFormData, secondaryButtonText: e.target.value })}
+                  placeholder="Button text"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="secondaryButtonLink">Secondary Button Link</Label>
+                <Input
+                  id="secondaryButtonLink"
+                  value={heroFormData.secondaryButtonLink}
+                  onChange={(e) => setHeroFormData({ ...heroFormData, secondaryButtonLink: e.target.value })}
+                  placeholder="URL or #section"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsHeroDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Predefined Image Slots */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <ImageIcon className="h-5 w-5 text-primary" />
+          Predefined Image Slots
+        </h3>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {predefinedImages.map((slot) => {
+            const existingImage = getImageStatus(slot.id);
+            return (
+              <Card key={slot.id} className="overflow-hidden">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">{slot.description}</CardTitle>
+                  <p className="text-xs text-muted-foreground">ID: {slot.id}</p>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {existingImage ? (
+                    <>
+                      <div className="relative w-full h-32 rounded-lg overflow-hidden border">
+                        <img
+                          src={existingImage.image.getDirectURL()}
+                          alt={existingImage.description}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(existingImage)}
+                          className="flex-1 gap-2"
+                        >
+                          <Pencil className="h-3 w-3" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setDeleteConfirmId(existingImage.id)}
+                          className="gap-2 text-destructive hover:text-destructive"
+                          disabled={deleteMutation.isPending}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                          Delete
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setFormData({ id: slot.id, description: slot.description });
+                        setIsDialogOpen(true);
+                      }}
+                      className="w-full gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Image
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ImageIcon className="h-5 w-5" />
-            Predefined Image Slots
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="text-center py-8 text-muted-foreground">Loading images...</div>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {predefinedImages.map((slot) => {
-                const existingImage = getImageStatus(slot.id);
-                return (
-                  <Card key={slot.id} className="overflow-hidden">
-                    <CardContent className="p-4">
-                      <div className="aspect-video bg-muted rounded-md mb-3 overflow-hidden">
-                        {existingImage ? (
-                          <img
-                            src={existingImage.image.getDirectURL()}
-                            alt={slot.description}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ImageIcon className="h-12 w-12 text-muted-foreground" />
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="font-semibold text-sm mb-1">{slot.description}</h3>
-                      <p className="text-xs text-muted-foreground mb-3">ID: {slot.id}</p>
-                      {existingImage ? (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="w-full"
-                          onClick={() => handleEdit(existingImage)}
-                        >
-                          <Pencil className="h-3 w-3 mr-2" />
-                          Edit
-                        </Button>
-                      ) : (
-                        <Button
-                          size="sm"
-                          className="w-full"
-                          onClick={() => {
-                            setFormData({ id: slot.id, description: slot.description });
-                            setIsDialogOpen(true);
-                          }}
-                        >
-                          <Plus className="h-3 w-3 mr-2" />
-                          Add Image
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* Custom Images */}
+      {images && images.filter(img => !predefinedImages.some(p => p.id === img.id)).length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">Custom Images</h3>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {images
+              .filter(img => !predefinedImages.some(p => p.id === img.id))
+              .map((image) => (
+                <Card key={image.id} className="overflow-hidden">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">{image.description}</CardTitle>
+                    <p className="text-xs text-muted-foreground">ID: {image.id}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="relative w-full h-32 rounded-lg overflow-hidden border">
+                      <img
+                        src={image.image.getDirectURL()}
+                        alt={image.description}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(image)}
+                        className="flex-1 gap-2"
+                      >
+                        <Pencil className="h-3 w-3" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setDeleteConfirmId(image.id)}
+                        className="gap-2 text-destructive hover:text-destructive"
+                        disabled={deleteMutation.isPending}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                        Delete
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteConfirmId} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this image. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+              disabled={deleteMutation.isPending}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {deleteMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                'Delete'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )}
     </div>
   );
 }

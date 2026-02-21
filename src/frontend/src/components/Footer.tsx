@@ -22,6 +22,7 @@ export default function Footer() {
 
   const contact = footerContent?.contact;
   const copyright = footerContent?.copyright ?? '';
+  const customSections = footerContent?.sections ?? [];
 
   const socialIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     facebook: SiFacebook,
@@ -87,6 +88,207 @@ export default function Footer() {
   const visibleSocialLinks = socialLinks?.filter(link => link.isVisible) ?? [];
   const appIdentifier = encodeURIComponent(window.location.hostname || 'drmalay-app');
 
+  // Sort custom sections by order
+  const sortedCustomSections = [...customSections].sort((a, b) => Number(a.order) - Number(b.order));
+
+  // Build all sections array (Contact, Quick Links, Social Media, then custom sections)
+  const allSections = [
+    {
+      id: 'contact',
+      title: 'Contact Us',
+      order: 0,
+      component: (
+        <div className="space-y-4 text-muted-foreground">
+          {/* Address */}
+          <div className="flex items-start gap-3 group/item">
+            <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+            {isAdmin ? (
+              <EditableFooterContent
+                field="address"
+                content={contact?.address ?? ''}
+                isAdmin={isAdmin}
+                className="hover:text-foreground transition-colors duration-300 leading-relaxed flex-1"
+              />
+            ) : contact?.address ? (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors duration-300 leading-relaxed flex-1"
+              >
+                {contact.address}
+              </a>
+            ) : null}
+          </div>
+
+          {/* Phone */}
+          <div className="flex items-center gap-3 group/item">
+            <Phone className="h-5 w-5 text-primary flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+            {isAdmin ? (
+              <EditableFooterContent
+                field="phone"
+                content={contact?.phone ?? ''}
+                isAdmin={isAdmin}
+                className="hover:text-foreground transition-colors duration-300 flex-1"
+              />
+            ) : contact?.phone ? (
+              <a
+                href={`tel:${contact.phone}`}
+                className="hover:text-foreground transition-colors duration-300 flex-1"
+              >
+                {contact.phone}
+              </a>
+            ) : null}
+          </div>
+
+          {/* Email */}
+          <div className="flex items-center gap-3 group/item">
+            <Mail className="h-5 w-5 text-primary flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+            {isAdmin ? (
+              <EditableFooterContent
+                field="email"
+                content={contact?.email ?? ''}
+                isAdmin={isAdmin}
+                className="hover:text-foreground transition-colors duration-300 flex-1"
+              />
+            ) : contact?.email ? (
+              <a
+                href={`mailto:${contact.email}`}
+                className="hover:text-foreground transition-colors duration-300 flex-1"
+              >
+                {contact.email}
+              </a>
+            ) : null}
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'quick-links',
+      title: 'Quick Links',
+      order: 1,
+      component: (
+        <div className="relative">
+          <div className="flex items-center justify-between mb-6">
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-8 w-8 p-0 absolute -top-2 right-0"
+                onClick={() => setEditingQuickLinks(!editingQuickLinks)}
+                title="Edit quick links in Admin Panel > Content & Images"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <ul className="space-y-3">
+            {navigationSections.map((section) => {
+              const url = section.type === 'route' ? `#/${section.id}` : `#${section.id}`;
+              return (
+                <li key={section.id} className="transform hover:translate-x-2 transition-transform duration-300">
+                  <a
+                    href={url}
+                    onClick={(e) => handleQuickLinkClick(e, url)}
+                    className="text-muted-foreground hover:text-primary transition-colors duration-300 inline-flex items-center gap-2 group/link"
+                  >
+                    <span className="w-0 h-0.5 bg-primary group-hover/link:w-4 transition-all duration-300" />
+                    {section.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          {isAdmin && editingQuickLinks && (
+            <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-lg shadow-lg z-10 w-full max-w-sm glass-effect">
+              <p className="text-sm text-muted-foreground">
+                Quick links are automatically synced with the header navigation. To customize, edit the navigation sections in the Header component.
+              </p>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: 'social-media',
+      title: 'Follow Us',
+      order: 2,
+      component: (
+        <div className="relative">
+          <div className="flex items-center justify-between mb-6">
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-8 w-8 p-0 absolute -top-2 right-0"
+                onClick={() => setEditingSocialMedia(!editingSocialMedia)}
+                title="Edit social media links in Admin Panel > Social Media"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-4">
+            {visibleSocialLinks.map((link) => {
+              const IconComponent = socialIconMap[link.platform.toLowerCase()];
+              
+              return (
+                <a
+                  key={link.platform}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/social relative"
+                  aria-label={link.displayName}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full blur-lg opacity-0 group-hover/social:opacity-50 transition-opacity duration-300" />
+                  <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 border-2 border-primary/20 hover:border-primary/50 hover:scale-110 hover:rotate-6 transition-all duration-300 backdrop-blur-sm elevation-2 hover:elevation-glow-primary">
+                    {link.icon ? (
+                      <img
+                        src={link.icon.getDirectURL()}
+                        alt={link.displayName}
+                        className="w-6 h-6 object-contain"
+                      />
+                    ) : IconComponent ? (
+                      <IconComponent className="text-foreground group-hover/social:text-primary transition-colors duration-300" />
+                    ) : (
+                      <span className="text-xs font-bold text-foreground group-hover/social:text-primary transition-colors duration-300">
+                        {link.platform.substring(0, 2).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+          {isAdmin && editingSocialMedia && (
+            <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-lg shadow-lg z-10 w-full max-w-sm glass-effect">
+              <p className="text-sm text-muted-foreground">
+                Manage social media links in the Admin Panel under the "Social Media" tab.
+              </p>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    // Add custom sections
+    ...sortedCustomSections.map((section) => ({
+      id: `custom-${section.order}`,
+      title: section.title,
+      order: 3 + Number(section.order),
+      component: (
+        <div className="space-y-4">
+          <p className="text-muted-foreground leading-relaxed hover:text-foreground transition-colors duration-300 whitespace-pre-wrap">
+            {section.content}
+          </p>
+        </div>
+      ),
+    })),
+  ];
+
+  // Calculate grid columns based on number of sections
+  const gridCols = allSections.length <= 2 ? 'md:grid-cols-2' : allSections.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4';
+
   return (
     <footer className="relative bg-background border-t border-border/50 overflow-hidden">
       {/* Animated Background Effects Layer - Matching Hero Section */}
@@ -108,191 +310,15 @@ export default function Footer() {
       
       <div className="container relative z-10 py-16">
         {/* Main Footer Grid */}
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 animate-fade-in">
-          
-          {/* Contact Information Section */}
-          <div className="space-y-6 group">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-              Contact Us
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              {/* Address */}
-              <div className="flex items-start gap-3 group/item">
-                <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
-                {isAdmin ? (
-                  <EditableFooterContent
-                    field="address"
-                    content={contact?.address ?? ''}
-                    isAdmin={isAdmin}
-                    className="hover:text-foreground transition-colors duration-300 leading-relaxed flex-1"
-                  />
-                ) : contact?.address ? (
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-foreground transition-colors duration-300 leading-relaxed flex-1"
-                  >
-                    {contact.address}
-                  </a>
-                ) : null}
-              </div>
-
-              {/* Phone */}
-              <div className="flex items-center gap-3 group/item">
-                <Phone className="h-5 w-5 text-primary flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
-                {isAdmin ? (
-                  <EditableFooterContent
-                    field="phone"
-                    content={contact?.phone ?? ''}
-                    isAdmin={isAdmin}
-                    className="hover:text-foreground transition-colors duration-300 flex-1"
-                  />
-                ) : contact?.phone ? (
-                  <a
-                    href={`tel:${contact.phone}`}
-                    className="hover:text-foreground transition-colors duration-300 flex-1"
-                  >
-                    {contact.phone}
-                  </a>
-                ) : null}
-              </div>
-
-              {/* Email */}
-              <div className="flex items-center gap-3 group/item">
-                <Mail className="h-5 w-5 text-primary flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
-                {isAdmin ? (
-                  <EditableFooterContent
-                    field="email"
-                    content={contact?.email ?? ''}
-                    isAdmin={isAdmin}
-                    className="hover:text-foreground transition-colors duration-300 flex-1"
-                  />
-                ) : contact?.email ? (
-                  <a
-                    href={`mailto:${contact.email}`}
-                    className="hover:text-foreground transition-colors duration-300 flex-1"
-                  >
-                    {contact.email}
-                  </a>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links Section - Now using Header navigation */}
-          <div className="space-y-6 group relative">
-            <div className="flex items-center justify-between">
+        <div className={`grid gap-12 ${gridCols} animate-fade-in`}>
+          {allSections.map((section) => (
+            <div key={section.id} className="space-y-6 group">
               <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-                Quick Links
+                {section.title}
               </h3>
-              {isAdmin && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-8 w-8 p-0"
-                  onClick={() => setEditingQuickLinks(!editingQuickLinks)}
-                  title="Edit quick links in Admin Panel > Content & Images"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              )}
+              {section.component}
             </div>
-            <ul className="space-y-3">
-              {navigationSections.map((section) => {
-                const url = section.type === 'route' ? `#/${section.id}` : `#${section.id}`;
-                return (
-                  <li key={section.id} className="transform hover:translate-x-2 transition-transform duration-300">
-                    <a
-                      href={url}
-                      onClick={(e) => handleQuickLinkClick(e, url)}
-                      className="text-muted-foreground hover:text-primary transition-colors duration-300 inline-flex items-center gap-2 group/link"
-                    >
-                      <span className="w-0 h-0.5 bg-primary group-hover/link:w-4 transition-all duration-300" />
-                      {section.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-            {isAdmin && editingQuickLinks && (
-              <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-lg shadow-lg z-10 w-full max-w-sm glass-effect">
-                <p className="text-sm text-muted-foreground">
-                  Quick links are automatically synced with the header navigation. To customize, edit the navigation sections in the Header component.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Social Media Section */}
-          <div className="space-y-6 group relative">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-                Follow Us
-              </h3>
-              {isAdmin && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-8 w-8 p-0"
-                  onClick={() => setEditingSocialMedia(!editingSocialMedia)}
-                  title="Edit social media links in Admin Panel > Social Media"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-4">
-              {visibleSocialLinks.map((link) => {
-                const IconComponent = socialIconMap[link.platform.toLowerCase()];
-                
-                return (
-                  <a
-                    key={link.platform}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/social relative"
-                    aria-label={link.displayName}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full blur-lg opacity-0 group-hover/social:opacity-50 transition-opacity duration-300" />
-                    <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 border-2 border-primary/20 hover:border-primary/50 hover:scale-110 hover:rotate-6 transition-all duration-300 backdrop-blur-sm elevation-2 hover:elevation-glow-primary">
-                      {link.icon ? (
-                        <img
-                          src={link.icon.getDirectURL()}
-                          alt={link.displayName}
-                          className="w-6 h-6 object-contain"
-                        />
-                      ) : IconComponent ? (
-                        <IconComponent className="text-foreground group-hover/social:text-primary transition-colors duration-300" />
-                      ) : (
-                        <span className="text-xs font-bold text-foreground group-hover/social:text-primary transition-colors duration-300">
-                          {link.platform.substring(0, 2).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-            {isAdmin && editingSocialMedia && (
-              <div className="absolute top-full left-0 mt-2 p-4 bg-card border border-border rounded-lg shadow-lg z-10 w-full max-w-sm glass-effect">
-                <p className="text-sm text-muted-foreground">
-                  Manage social media links in the Admin Panel under the "Social Media" tab.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* About Section */}
-          <div className="space-y-6 group">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-              About
-            </h3>
-            <p className="text-muted-foreground leading-relaxed hover:text-foreground transition-colors duration-300">
-              Providing quality healthcare services with compassion and expertise. Your health is our priority.
-            </p>
-          </div>
+          ))}
         </div>
 
         {/* Footer Bottom Section */}

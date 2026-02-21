@@ -167,6 +167,7 @@ export interface FooterContent {
     contact: FooterContact;
     background?: ExternalBlob;
     quickLinks: Array<FooterLink>;
+    sections: Array<FooterSection>;
     copyright: string;
 }
 export interface WebsiteContent {
@@ -328,6 +329,12 @@ export interface ThemeType {
 export interface ColorAccents {
     secondary: Color;
     primary: Color;
+}
+export interface FooterSection {
+    title: string;
+    content: string;
+    order: bigint;
+    divider: boolean;
 }
 export interface Glassmorphism {
     transparency: bigint;
@@ -546,7 +553,7 @@ export interface backendInterface {
     updateSocialMediaLink(link: SocialMediaLink): Promise<void>;
     updateWebsiteContent(content: WebsiteContent): Promise<void>;
 }
-import type { AreaDimensions as _AreaDimensions, BlogPost as _BlogPost, Button as _Button, CTARowLayout as _CTARowLayout, Clinic as _Clinic, Color as _Color, ColorAccentScheme as _ColorAccentScheme, ColorAccents as _ColorAccents, ColorVariation as _ColorVariation, DoctorCredentials as _DoctorCredentials, EffectIntensity as _EffectIntensity, EffectSpeed as _EffectSpeed, ExternalBlob as _ExternalBlob, FooterContact as _FooterContact, FooterContent as _FooterContent, FooterLink as _FooterLink, Glassmorphism as _Glassmorphism, Gradient as _Gradient, HeroLayoutOverride as _HeroLayoutOverride, HeroSection as _HeroSection, HeroSectionTheme as _HeroSectionTheme, HorizontalAlignment as _HorizontalAlignment, MaxWidthPreset as _MaxWidthPreset, MotionAmplitude as _MotionAmplitude, MotionEffect as _MotionEffect, MotionEffectType as _MotionEffectType, MotionPattern as _MotionPattern, MotionSpeed as _MotionSpeed, ParticleEffect as _ParticleEffect, ParticleEffectType as _ParticleEffectType, Position as _Position, RevealAnimation as _RevealAnimation, Review as _Review, ReviewColor as _ReviewColor, ReviewContentLayout as _ReviewContentLayout, ReviewDisplayMode as _ReviewDisplayMode, ReviewGlassmorphism as _ReviewGlassmorphism, ReviewGradient as _ReviewGradient, ReviewTransitionType as _ReviewTransitionType, ReviewsPanelSettings as _ReviewsPanelSettings, RichContentElement as _RichContentElement, SocialMediaLink as _SocialMediaLink, Spacing as _Spacing, TextSizePreset as _TextSizePreset, ThemePreference as _ThemePreference, ThemeType as _ThemeType, UserProfile as _UserProfile, UserRole as _UserRole, VectorComplexity as _VectorComplexity, VectorEffect as _VectorEffect, VectorEffectType as _VectorEffectType, VerticalPosition as _VerticalPosition, WebsiteContent as _WebsiteContent, WebsiteImage as _WebsiteImage, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
+import type { AreaDimensions as _AreaDimensions, BlogPost as _BlogPost, Button as _Button, CTARowLayout as _CTARowLayout, Clinic as _Clinic, Color as _Color, ColorAccentScheme as _ColorAccentScheme, ColorAccents as _ColorAccents, ColorVariation as _ColorVariation, DoctorCredentials as _DoctorCredentials, EffectIntensity as _EffectIntensity, EffectSpeed as _EffectSpeed, ExternalBlob as _ExternalBlob, FooterContact as _FooterContact, FooterContent as _FooterContent, FooterLink as _FooterLink, FooterSection as _FooterSection, Glassmorphism as _Glassmorphism, Gradient as _Gradient, HeroLayoutOverride as _HeroLayoutOverride, HeroSection as _HeroSection, HeroSectionTheme as _HeroSectionTheme, HorizontalAlignment as _HorizontalAlignment, MaxWidthPreset as _MaxWidthPreset, MotionAmplitude as _MotionAmplitude, MotionEffect as _MotionEffect, MotionEffectType as _MotionEffectType, MotionPattern as _MotionPattern, MotionSpeed as _MotionSpeed, ParticleEffect as _ParticleEffect, ParticleEffectType as _ParticleEffectType, Position as _Position, RevealAnimation as _RevealAnimation, Review as _Review, ReviewColor as _ReviewColor, ReviewContentLayout as _ReviewContentLayout, ReviewDisplayMode as _ReviewDisplayMode, ReviewGlassmorphism as _ReviewGlassmorphism, ReviewGradient as _ReviewGradient, ReviewTransitionType as _ReviewTransitionType, ReviewsPanelSettings as _ReviewsPanelSettings, RichContentElement as _RichContentElement, SocialMediaLink as _SocialMediaLink, Spacing as _Spacing, TextSizePreset as _TextSizePreset, ThemePreference as _ThemePreference, ThemeType as _ThemeType, UserProfile as _UserProfile, UserRole as _UserRole, VectorComplexity as _VectorComplexity, VectorEffect as _VectorEffect, VectorEffectType as _VectorEffectType, VerticalPosition as _VerticalPosition, WebsiteContent as _WebsiteContent, WebsiteImage as _WebsiteImage, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _caffeineStorageBlobIsLive(arg0: Uint8Array): Promise<boolean> {
@@ -1814,17 +1821,20 @@ async function from_candid_record_n51(_uploadFile: (file: ExternalBlob) => Promi
     contact: _FooterContact;
     background: [] | [_ExternalBlob];
     quickLinks: Array<_FooterLink>;
+    sections: Array<_FooterSection>;
     copyright: string;
 }): Promise<{
     contact: FooterContact;
     background?: ExternalBlob;
     quickLinks: Array<FooterLink>;
+    sections: Array<FooterSection>;
     copyright: string;
 }> {
     return {
         contact: value.contact,
         background: record_opt_to_undefined(await from_candid_opt_n36(_uploadFile, _downloadFile, value.background)),
         quickLinks: value.quickLinks,
+        sections: value.sections,
         copyright: value.copyright
     };
 }
@@ -2609,17 +2619,20 @@ async function to_candid_record_n140(_uploadFile: (file: ExternalBlob) => Promis
     contact: FooterContact;
     background?: ExternalBlob;
     quickLinks: Array<FooterLink>;
+    sections: Array<FooterSection>;
     copyright: string;
 }): Promise<{
     contact: _FooterContact;
     background: [] | [_ExternalBlob];
     quickLinks: Array<_FooterLink>;
+    sections: Array<_FooterSection>;
     copyright: string;
 }> {
     return {
         contact: value.contact,
         background: value.background ? candid_some(await to_candid_ExternalBlob_n10(_uploadFile, _downloadFile, value.background)) : candid_none(),
         quickLinks: value.quickLinks,
+        sections: value.sections,
         copyright: value.copyright
     };
 }

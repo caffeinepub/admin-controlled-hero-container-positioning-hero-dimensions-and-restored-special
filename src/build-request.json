@@ -1,57 +1,107 @@
 {
   "kind": "build_request",
-  "title": "Fix page loading failure and update footer animation",
-  "priority": "high",
+  "title": "Add comprehensive admin panel for footer section management",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
-      "target": "both",
+      "text": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "msg-latest"
         ],
         "quotes": [
-          "Fix the entire page content failing to load"
+          "give option to modify all sections and headings present in the footer section"
         ]
       },
       "acceptanceCriteria": [
-        "The page loads successfully without errors",
-        "All page sections render correctly",
-        "Console shows no critical errors preventing page display",
-        "Users can view and interact with all page content"
+        "FooterManager component displays all current footer sections with their headings",
+        "Admin can edit the heading text for each footer section",
+        "Admin can modify contact information fields (address, phone, email)",
+        "Admin can edit or add/remove quick navigation links",
+        "Changes are persisted to the backend and reflected in the Footer component"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
+      "text": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "msg-latest"
         ],
         "quotes": [
-          "Change Footer background animation and make it like hero section"
+          "have the option to rearrange the order of sections in the footer"
         ]
       },
       "acceptanceCriteria": [
-        "Footer displays the same type of background animation as the hero section",
-        "Animation respects the hero theme settings (particle/motion/vector effects configuration)",
-        "Footer animation performs smoothly without impacting page performance",
-        "Animation style remains consistent with the hero section's visual treatment"
+        "Admin can change the display order of footer sections (Contact, Quick Links, Social Media)",
+        "Reordering is intuitive using either drag-and-drop or arrow buttons",
+        "New section order is saved and persists across sessions",
+        "Footer component renders sections in the admin-specified order"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Extend backend data model to support footer section configuration including section titles, content, and display order",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores footer section headings as configurable text fields",
+        "Backend stores section order as a sortable array or numeric positions",
+        "Query and mutation functions exist for retrieving and updating footer section configuration",
+        "State migration handles the new footer configuration structure"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Powerful Admin panel for footer"
+        ]
+      },
+      "acceptanceCriteria": [
+        "New 'Footer' tab appears in AdminPanel component",
+        "Tab displays the FooterManager component when selected",
+        "Tab follows the same design pattern as existing admin tabs"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer fetches section configuration from backend",
+        "Footer renders sections in the order specified by admin",
+        "Footer displays custom heading text for each section",
+        "Layout remains responsive and consistent with existing UI design"
       ]
     }
   ],
   "constraints": [
-    "Preserve existing footer functionality including editable content, quick links, and social media integration",
-    "Do not modify the HeroMultiEffectsLayer, ParticleEffectLayer, MotionEffectLayer, or VectorEffectLayer components",
-    "Maintain the current hero theme management system in HeroThemeManager"
+    "Maintain the current UI design and visual styling of the footer",
+    "Preserve existing footer functionality including EditableFooterContent and social media integration",
+    "Follow single-actor backend architecture in main.mo"
   ],
   "nonGoals": [
-    "Changing the footer layout or content structure",
-    "Modifying hero section animations or effects",
-    "Adding new animation types beyond what exists in the hero section",
-    "Redesigning the footer styling beyond the animation update"
+    "Changing the overall visual design or color scheme of the footer",
+    "Adding new footer sections beyond the existing Contact, Quick Links, and Social Media",
+    "Implementing footer templates or presets"
   ],
   "imageRequirements": {
     "required": [],

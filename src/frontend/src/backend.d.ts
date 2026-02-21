@@ -92,6 +92,7 @@ export interface FooterContent {
     contact: FooterContact;
     background?: ExternalBlob;
     quickLinks: Array<FooterLink>;
+    sections: Array<FooterSection>;
     copyright: string;
 }
 export interface WebsiteContent {
@@ -242,6 +243,12 @@ export interface ThemeType {
 export interface ColorAccents {
     secondary: Color;
     primary: Color;
+}
+export interface FooterSection {
+    title: string;
+    content: string;
+    order: bigint;
+    divider: boolean;
 }
 export interface Glassmorphism {
     transparency: bigint;

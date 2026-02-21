@@ -1,201 +1,52 @@
 import Map "mo:core/Map";
-import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
-import Text "mo:core/Text";
 import Storage "blob-storage/Storage";
 
 module {
-  // Old Types (identical to previous main.mo)
-  type OldPosition = {
-    x : Int;
-    y : Int;
-  };
+  type Position = { x : Int; y : Int };
+  type AreaDimensions = { width : Nat; height : Nat };
+  type ThemeType = { mode : { #light; #dark }; accent : { #blue; #teal; #magenta }; gradientStyle : { #linear; #radial } };
+  type ParticleEffect = { effectType : { #bubbles; #confetti; #sparkles; #stethoscopeParticles; #crossParticles; #dots; #rings; #swirls; #lines }; intensity : { #subtle; #moderate; #dynamic }; colorVariation : { #mono; #accent; #gradient }; speed : { #slow; #medium; #fast }; enabled : Bool; };
+  type MotionEffect = { effectType : { #floatingMotion; #waveMotion; #wave; #bounce; #spiral; #random }; speed : { #slow; #medium; #fast }; amplitude : { #low; #medium; #high }; pattern : { patternType : { #wave; #bounce; #spiral; #random }; complexity : Nat }; enabled : Bool; };
+  type VectorEffect = { effectType : { #geometricPatterns; #animatedPaths; #gradientOverlays }; complexity : { #simple; #moderate; #complex }; colorScheme : { #primary; #secondary; #gradient }; enabled : Bool; };
+  type Spacing = { verticalPadding : Nat; contentAlignment : { #left; #center; #right }; elementSpacing : Nat };
+  type Glassmorphism = { transparency : Nat; blurIntensity : Nat; overlayEffect : { #subtle; #medium; #strong } };
+  type ColorAccents = { primary : Color; secondary : Color };
+  type Color = { red : Nat; green : Nat; blue : Nat };
+  type Gradient = { direction : { #leftToRight; #topToBottom }; intensity : Nat; colors : [Color] };
+  type SocialMediaLink = { platform : Text; displayName : Text; url : Text; icon : ?Storage.ExternalBlob; iconSize : Nat; order : Nat; isVisible : Bool };
 
-  type OldAreaDimensions = {
-    width : Nat;
-    height : Nat;
-  };
+  type Clinic = { id : Text; name : Text; address : Text; contactDetails : Text; hours : Text; mapLink : Text; bookingUrl : ?Text; image : ?Storage.ExternalBlob };
+  type Service = { id : Text; name : Text; description : Text };
 
-  type OldHeroSectionTheme = {
-    themeType : OldThemeType;
-    particleEffect : OldParticleEffect;
-    motionEffect : OldMotionEffect;
-    vectorEffect : OldVectorEffect;
-    spacing : OldSpacing;
-    glassmorphism : OldGlassmorphism;
-    colorAccents : OldColorAccents;
-    gradient : OldGradient;
-    layoutOverride : OldHeroLayoutOverride;
-    contentPosition : OldPosition;
-    areaDimensions : OldAreaDimensions;
-    effectsEnabled : Bool;
-  };
+  type FooterContact = { address : Text; phone : Text; email : Text };
+  type FooterLink = { name : Text; url : Text };
 
-  type OldThemeType = {
-    mode : { #light; #dark };
-    accent : { #blue; #teal; #magenta };
-    gradientStyle : { #linear; #radial };
-  };
-
-  type OldParticleEffect = {
-    effectType : OldParticleEffectType;
-    intensity : OldEffectIntensity;
-    colorVariation : OldColorVariation;
-    speed : OldEffectSpeed;
-    enabled : Bool;
-  };
-
-  type OldParticleEffectType = {
-    #bubbles;
-    #confetti;
-    #sparkles;
-    #stethoscopeParticles;
-    #crossParticles;
-  };
-
-  type OldEffectIntensity = { #subtle; #moderate; #dynamic };
-  type OldColorVariation = { #mono; #accent; #gradient };
-  type OldEffectSpeed = { #slow; #medium; #fast };
-
-  type OldMotionEffect = {
-    effectType : OldMotionEffectType;
-    speed : OldMotionSpeed;
-    amplitude : OldMotionAmplitude;
-    pattern : OldMotionPattern;
-    enabled : Bool;
-  };
-
-  type OldMotionEffectType = {
-    #floatingMotion;
-    #waveMotion;
-    #wave;
-    #bounce;
-    #spiral;
-    #random;
-  };
-
-  type OldMotionSpeed = { #slow; #medium; #fast };
-  type OldMotionAmplitude = { #low; #medium; #high };
-
-  type OldMotionPattern = {
-    patternType : { #wave; #bounce; #spiral; #random };
-    complexity : Nat;
-  };
-
-  type OldVectorEffect = {
-    effectType : OldVectorEffectType;
-    complexity : OldVectorComplexity;
-    colorScheme : OldColorAccentScheme;
-    enabled : Bool;
-  };
-
-  type OldVectorEffectType = {
-    #geometricPatterns;
-    #animatedPaths;
-    #gradientOverlays;
-  };
-
-  type OldVectorComplexity = { #simple; #moderate; #complex };
-  type OldColorAccentScheme = { #primary; #secondary; #gradient };
-
-  type OldSpacing = {
-    verticalPadding : Nat;
-    contentAlignment : { #left; #center; #right };
-    elementSpacing : Nat;
-  };
-
-  type OldGlassmorphism = {
-    transparency : Nat;
-    blurIntensity : Nat;
-    overlayEffect : { #subtle; #medium; #strong };
-  };
-
-  type OldColorAccents = {
-    primary : OldColor;
-    secondary : OldColor;
-  };
-
-  type OldColor = {
-    red : Nat;
-    green : Nat;
-    blue : Nat;
-  };
-
-  type OldGradient = {
-    direction : { #leftToRight; #topToBottom };
-    intensity : Nat;
-    colors : [OldColor];
-  };
-
-  type OldSocialMediaLink = {
-    platform : Text;
-    displayName : Text;
-    url : Text;
-    icon : ?Storage.ExternalBlob;
-    iconSize : Nat;
-    order : Nat;
-    isVisible : Bool;
-  };
-
-  type OldClinic = {
-    id : Text;
-    name : Text;
-    address : Text;
-    contactDetails : Text;
-    hours : Text;
-    mapLink : Text;
-    bookingUrl : ?Text;
-    image : ?Storage.ExternalBlob;
-  };
-
-  type OldService = {
-    id : Text;
-    name : Text;
-    description : Text;
-  };
-
-  type OldFooterContact = {
-    address : Text;
-    phone : Text;
-    email : Text;
-  };
-
-  type OldFooterLink = {
-    name : Text;
-    url : Text;
-  };
-
+  // Types for Old and New FooterContent
   type OldFooterContent = {
-    contact : OldFooterContact;
-    quickLinks : [OldFooterLink];
+    contact : FooterContact;
+    quickLinks : [FooterLink];
     copyright : Text;
     background : ?Storage.ExternalBlob;
   };
 
-  type OldWebsiteImage = {
+  type WebsiteImage = {
     id : Text;
     description : Text;
     image : Storage.ExternalBlob;
     darkModeImage : ?Storage.ExternalBlob;
   };
 
-  type OldHeroSection = {
+  type HeroSection = {
     headline : Text;
     subtext : Text;
-    primaryButton : OldButton;
-    secondaryButton : ?OldButton;
+    primaryButton : Button;
+    secondaryButton : ?Button;
   };
 
-  type OldButton = {
-    text : Text;
-    link : Text;
-  };
-
-  type OldUserProfile = {
-    name : Text;
-  };
-
-  type OldDoctorCredentials = {
+  type Button = { text : Text; link : Text };
+  type UserProfile = { name : Text };
+  type DoctorCredentials = {
     name : Text;
     qualifications : Text;
     specializations : Text;
@@ -203,118 +54,147 @@ module {
     achievements : Text;
     profileImage : ?Storage.ExternalBlob;
   };
-
-  type OldHeroLayoutOverride = {
-    contentContainerPreset : OldMaxWidthPreset;
-    explicitMaxWidth : ?Nat;
-    textSizePreset : OldTextSizePreset;
-    verticalPlacement : OldVerticalPosition;
-    horizontalAlignment : OldHorizontalAlignment;
-    ctaRowLayout : OldCTARowLayout;
-  };
-
-  type OldMaxWidthPreset = { #medium; #large; #full };
-  type OldTextSizePreset = { #medium; #large; #extraLarge };
-  type OldVerticalPosition = { #top; #center; #bottom };
-  type OldHorizontalAlignment = { #left; #center; #right };
-  type OldCTARowLayout = { #row; #stacked };
-  type OldAnimationPattern = { #wave; #bounce; #spiral; #random };
-
-  type OldWebsiteContent = {
+  type Review = { id : Text; patientName : Text; rating : Nat; reviewText : Text; patientImage : ?Storage.ExternalBlob };
+  type HeroLayoutOverride = { contentContainerPreset : { #medium; #large; #full }; explicitMaxWidth : ?Nat; textSizePreset : { #medium; #large; #extraLarge }; verticalPlacement : { #top; #center; #bottom }; horizontalAlignment : { #left; #center; #right }; ctaRowLayout : { #row; #stacked } };
+  type AnimationPattern = { #wave; #bounce; #spiral; #random };
+  type WebsiteContent = {
     overviewContent : Text;
     aboutContent : Text;
     theme : { #light; #dark };
-    heroSection : OldHeroSection;
-    doctorCredentials : OldDoctorCredentials;
+    heroSection : HeroSection;
+    doctorCredentials : DoctorCredentials;
   };
 
-  type OldConfig = {
-    canonicalUrl : Text;
-    terms : Text;
+  type ReviewsPanelSettings = {
+    carouselEnabled : Bool;
+    autoScrollSpeed : Nat;
+    transitionType : { #slide; #fade; #card; #glassmorphic; #blur; #none };
+    displayMode : { #single; #multi; #centered; #masonry };
+    maxReviews : Nat;
+    contentLayout : {
+      layoutType : { #singleColumn; #multiColumn; #cardStyle; #overlay };
+      style : { #minimalist; #card; #glassmorphic; #gradient; #frosted };
+      spacingUnit : Nat;
+      paddingUnit : Nat;
+    };
+    overlayEffect : {
+      transparency : Nat;
+      blurIntensity : Nat;
+      overlayEffect : { #subtle; #medium; #strong };
+    };
+    primaryColor : { red : Nat; green : Nat; blue : Nat };
+    secondaryColor : { red : Nat; green : Nat; blue : Nat };
+    gradientSettings : {
+      direction : { #leftToRight; #topToBottom; #diagonal };
+      intensity : Nat;
+      colors : [{
+        red : Nat;
+        green : Nat;
+        blue : Nat;
+      }];
+    };
+    darkModeSupport : Bool;
+    revealAnimation : {
+      animationType : { #slideIn; #pop; #fade; #expand; #none };
+      delayUnit : Nat;
+      speedUnit : Nat;
+      easing : { #easeInOut; #linear; #bounce };
+    };
   };
 
+  type Config = { canonicalUrl : Text; terms : Text };
+
+  // Blog Data Types
+  type RichContentElement = {
+    #text : { content : Text };
+    #image : { blob : Storage.ExternalBlob; description : Text };
+    #video : { blob : Storage.ExternalBlob; description : Text };
+  };
+  type BlogPost = {
+    id : Text;
+    title : Text;
+    author : Text;
+    content : [RichContentElement];
+    createdAt : Nat;
+    updatedAt : Nat;
+  };
+
+  // Types for new FooterContent with FooterSection support
+  type FooterSection = { title : Text; content : Text; order : Nat; divider : Bool };
+  type NewFooterContent = {
+    contact : FooterContact;
+    quickLinks : [FooterLink];
+    sections : [FooterSection];
+    copyright : Text;
+    background : ?Storage.ExternalBlob;
+  };
+
+  // Old actor state (no FooterSection support)
   type OldActor = {
-    clinics : Map.Map<Text, OldClinic>;
-    services : Map.Map<Text, OldService>;
-    socialMediaLinks : Map.Map<Text, OldSocialMediaLink>;
-    images : Map.Map<Text, OldWebsiteImage>;
-    userProfiles : Map.Map<Principal, OldUserProfile>;
-    websiteContent : OldWebsiteContent;
-    config : OldConfig;
+    clinics : Map.Map<Text, Clinic>;
+    services : Map.Map<Text, Service>;
+    socialMediaLinks : Map.Map<Text, SocialMediaLink>;
+    images : Map.Map<Text, WebsiteImage>;
+    userProfiles : Map.Map<Principal, UserProfile>;
+    reviews : Map.Map<Text, Review>;
+    blogPosts : Map.Map<Text, BlogPost>;
+    reviewsPanelSettings : ReviewsPanelSettings;
+    websiteContent : WebsiteContent;
+    config : Config;
     footerContent : OldFooterContent;
-    heroSectionTheme : OldHeroSectionTheme;
+    heroSectionTheme : {
+      themeType : ThemeType;
+      particleEffect : ParticleEffect;
+      motionEffect : MotionEffect;
+      vectorEffect : VectorEffect;
+      spacing : Spacing;
+      glassmorphism : Glassmorphism;
+      colorAccents : ColorAccents;
+      gradient : Gradient;
+      layoutOverride : HeroLayoutOverride;
+      contentPosition : Position;
+      areaDimensions : AreaDimensions;
+      effectsEnabled : Bool;
+    };
   };
 
-  // New Types (as current main.mo type definitions)
-  type NewParticleEffectType = {
-    #bubbles;
-    #confetti;
-    #sparkles;
-    #stethoscopeParticles;
-    #crossParticles;
-    #dots;
-    #rings;
-    #swirls;
-    #lines;
-  };
-
-  type NewParticleEffect = {
-    effectType : NewParticleEffectType;
-    intensity : { #subtle; #moderate; #dynamic };
-    colorVariation : { #mono; #accent; #gradient };
-    speed : { #slow; #medium; #fast };
-    enabled : Bool;
-  };
-
-  type NewHeroSectionTheme = {
-    themeType : OldThemeType;
-    particleEffect : NewParticleEffect;
-    motionEffect : OldMotionEffect;
-    vectorEffect : OldVectorEffect;
-    spacing : OldSpacing;
-    glassmorphism : OldGlassmorphism;
-    colorAccents : OldColorAccents;
-    gradient : OldGradient;
-    layoutOverride : OldHeroLayoutOverride;
-    contentPosition : OldPosition;
-    areaDimensions : OldAreaDimensions;
-    effectsEnabled : Bool;
-  };
-
+  // New actor state (with FooterSection support)
   type NewActor = {
-    clinics : Map.Map<Text, OldClinic>;
-    services : Map.Map<Text, OldService>;
-    socialMediaLinks : Map.Map<Text, OldSocialMediaLink>;
-    images : Map.Map<Text, OldWebsiteImage>;
-    userProfiles : Map.Map<Principal, OldUserProfile>;
-    websiteContent : OldWebsiteContent;
-    config : OldConfig;
-    footerContent : OldFooterContent;
-    heroSectionTheme : NewHeroSectionTheme;
+    clinics : Map.Map<Text, Clinic>;
+    services : Map.Map<Text, Service>;
+    socialMediaLinks : Map.Map<Text, SocialMediaLink>;
+    images : Map.Map<Text, WebsiteImage>;
+    userProfiles : Map.Map<Principal, UserProfile>;
+    reviews : Map.Map<Text, Review>;
+    blogPosts : Map.Map<Text, BlogPost>;
+    reviewsPanelSettings : ReviewsPanelSettings;
+    websiteContent : WebsiteContent;
+    config : Config;
+    footerContent : NewFooterContent;
+    heroSectionTheme : {
+      themeType : ThemeType;
+      particleEffect : ParticleEffect;
+      motionEffect : MotionEffect;
+      vectorEffect : VectorEffect;
+      spacing : Spacing;
+      glassmorphism : Glassmorphism;
+      colorAccents : ColorAccents;
+      gradient : Gradient;
+      layoutOverride : HeroLayoutOverride;
+      contentPosition : Position;
+      areaDimensions : AreaDimensions;
+      effectsEnabled : Bool;
+    };
   };
 
+  // Migration function
   public func run(old : OldActor) : NewActor {
-    let newParticleEffect : NewParticleEffect = {
-      effectType = switch (old.heroSectionTheme.particleEffect.effectType) {
-        case (#bubbles) { #bubbles };
-        case (#confetti) { #confetti };
-        case (#sparkles) { #sparkles };
-        case (#stethoscopeParticles) { #stethoscopeParticles };
-        case (#crossParticles) { #crossParticles };
-      };
-      intensity = old.heroSectionTheme.particleEffect.intensity;
-      colorVariation = old.heroSectionTheme.particleEffect.colorVariation;
-      speed = old.heroSectionTheme.particleEffect.speed;
-      enabled = old.heroSectionTheme.particleEffect.enabled;
-    };
-
-    let newHeroSectionTheme : NewHeroSectionTheme = {
-      old.heroSectionTheme with
-      particleEffect = newParticleEffect
-    };
-
     {
-      old with heroSectionTheme = newHeroSectionTheme
+      old with
+      footerContent = {
+        old.footerContent with
+        sections = [];
+      };
     };
   };
 };

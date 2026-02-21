@@ -2,12 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-diagnose-and-fix-the-issue-causing-the-entire-page-content-to-fail-to-load-investigate-react-rendering-errors-query-failures-component-mounting-issues-or-authentication-actor-initialization-problems-that-may-be-preventing-the-page-from-displaying",
-      "featureTitle": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
+      "featureId": "feature-create-a-new-footermanager-admin-component-that-allows-editing-of-all-footer-sections-contact-information-quick-links-social-media-and-their-headings",
+      "featureTitle": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Footer.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/admin/FooterManager.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -24,11 +22,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-footer-component-s-background-animation-to-match-the-hero-section-s-animation-style-apply-the-same-particle-motion-vector-effects-system-used-in-heromultieffectslayer-to-the-footer-background-respecting-the-current-hero-theme-settings-particle-effects-motion-effects-vector-effects-stored-in-the-backend",
-      "featureTitle": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
+      "featureId": "feature-implement-drag-and-drop-or-up-down-controls-in-footermanager-to-allow-reordering-of-footer-sections",
+      "featureTitle": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
       "files": [
-        "frontend/src/components/Footer.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/admin/FooterManager.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -41,6 +38,46 @@
       ],
       "testIds": [
         "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-footermanager-tab-to-the-adminpanel-component-alongside-existing-content-hero-theme-clinics-services-reviews-and-social-media-tabs",
+      "featureTitle": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+      "files": [
+        "frontend/src/components/AdminPanel.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-footer-component-to-render-sections-dynamically-based-on-admin-configured-order-and-headings-from-backend",
+      "featureTitle": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
+      "files": [
+        "frontend/src/components/Footer.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
       ],
       "confidence": "high"
     }

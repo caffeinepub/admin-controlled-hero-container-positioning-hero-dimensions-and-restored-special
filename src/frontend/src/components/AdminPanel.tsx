@@ -7,6 +7,7 @@ import SocialMediaManager from './admin/SocialMediaManager';
 import ContentManager from './admin/ContentManager';
 import HeroThemeManager from './admin/HeroThemeManager';
 import ReviewsManager from './admin/ReviewsManager';
+import FooterManager from './admin/FooterManager';
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -26,13 +27,14 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
         </div>
 
         <Tabs defaultValue="content" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-8">
+          <TabsList className="grid w-full grid-cols-7 mb-8">
             <TabsTrigger value="content">Content & Images</TabsTrigger>
             <TabsTrigger value="hero-theme">Hero Theme</TabsTrigger>
             <TabsTrigger value="clinics">Clinics</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="social">Social Media</TabsTrigger>
+            <TabsTrigger value="footer">Footer</TabsTrigger>
           </TabsList>
 
           <TabsContent value="content">
@@ -57,6 +59,10 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 
           <TabsContent value="social">
             <SocialMediaManager />
+          </TabsContent>
+
+          <TabsContent value="footer">
+            <FooterManager />
           </TabsContent>
         </Tabs>
       </div>

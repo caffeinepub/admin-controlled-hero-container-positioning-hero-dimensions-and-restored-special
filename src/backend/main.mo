@@ -10,7 +10,9 @@ import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
 import AccessControl "authorization/access-control";
+import Migration "migration";
 
+(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -174,6 +176,14 @@ actor {
     description : Text;
   };
 
+  // New for footer sections
+  public type FooterSection = {
+    title : Text;
+    content : Text;
+    order : Nat;
+    divider : Bool;
+  };
+
   public type FooterContact = {
     address : Text;
     phone : Text;
@@ -188,6 +198,7 @@ actor {
   public type FooterContent = {
     contact : FooterContact;
     quickLinks : [FooterLink];
+    sections : [FooterSection];
     copyright : Text;
     background : ?Storage.ExternalBlob;
   };
@@ -474,6 +485,7 @@ actor {
       email = "";
     };
     quickLinks = [];
+    sections = [];
     copyright = "";
     background = null;
   };

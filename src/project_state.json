@@ -1,26 +1,44 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
-  "known_issues": [
-    "Page content failing to load"
+  "summary": "Healthcare website with admin panel for footer customization",
+  "architectural_notes": [
+    "Healthcare/medical website with patient reviews functionality",
+    "Admin panel system for content management",
+    "Footer section requires dynamic content management"
   ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-diagnose-and-fix-the-issue-causing-the-entire-page-content-to-fail-to-load-investigate-react-rendering-errors-query-failures-component-mounting-issues-or-authentication-actor-initialization-problems-that-may-be-preventing-the-page-from-displaying",
-      "title": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
+      "id": "feature-create-a-new-footermanager-admin-component-that-allows-editing-of-all-footer-sections-contact-information-quick-links-social-media-and-their-headings",
+      "title": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-the-footer-component-s-background-animation-to-match-the-hero-section-s-animation-style-apply-the-same-particle-motion-vector-effects-system-used-in-heromultieffectslayer-to-the-footer-background-respecting-the-current-hero-theme-settings-particle-effects-motion-effects-vector-effects-stored-in-the-backend",
-      "title": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
+      "id": "feature-implement-drag-and-drop-or-up-down-controls-in-footermanager-to-allow-reordering-of-footer-sections",
+      "title": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
       "reqIds": [
         "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-footermanager-tab-to-the-adminpanel-component-alongside-existing-content-hero-theme-clinics-services-reviews-and-social-media-tabs",
+      "title": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-footer-component-to-render-sections-dynamically-based-on-admin-configured-order-and-headings-from-backend",
+      "title": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
+      "reqIds": [
+        "REQ-5"
       ],
       "version": 1
     }
@@ -28,18 +46,21 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Fix page content loading failure",
+      "summary": "Admin panel for footer with ability to modify sections/headings and rearrange section order",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-2",
-      "summary": "Update footer background animation to match hero section",
-      "reqIds": [],
+      "id": "AR-4",
+      "summary": "Extend backend data model to support footer section configuration including section titles, content, and display order",
+      "reqIds": [
+        "REQ-3"
+      ],
       "status": "pending"
     }
   ],
-  "projectName": "Fix page loading failure and update footer animation",
+  "gameProjectType": "none",
+  "projectName": "Add comprehensive admin panel for footer section management",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

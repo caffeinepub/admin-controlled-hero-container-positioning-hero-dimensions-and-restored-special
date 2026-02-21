@@ -65,9 +65,16 @@ export interface FooterContent {
   'contact' : FooterContact,
   'background' : [] | [ExternalBlob],
   'quickLinks' : Array<FooterLink>,
+  'sections' : Array<FooterSection>,
   'copyright' : string,
 }
 export interface FooterLink { 'url' : string, 'name' : string }
+export interface FooterSection {
+  'title' : string,
+  'content' : string,
+  'order' : bigint,
+  'divider' : boolean,
+}
 export interface Glassmorphism {
   'transparency' : bigint,
   'blurIntensity' : bigint,

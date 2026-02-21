@@ -1,58 +1,83 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-19T15:17:52.611Z",
+  "generatedAt": "2026-02-21T02:22:39.744Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 5,
+    "implemented": 4,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Diagnose and fix the issue causing the entire page content to fail to load. Investigate React rendering errors, query failures, component mounting issues, or authentication/actor initialization problems that may be preventing the page from displaying.",
+        "summary": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/hooks/useInternetIdentity.ts",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/Hero.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/main.tsx"
+          "frontend/src/components/admin/FooterManager.tsx",
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/Footer.tsx"
+          "frontend/src/components/admin/FooterManager.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Update the Footer component's background animation to match the hero section's animation style. Apply the same particle/motion/vector effects system used in HeroMultiEffectsLayer to the footer background, respecting the current hero theme settings (particle effects, motion effects, vector effects) stored in the backend.",
+        "summary": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/admin/FooterManager.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/Footer.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/admin/FooterManager.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Extend backend data model to support footer section configuration including section titles, content, and display order",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/AdminPanel.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/AdminPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Footer.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Footer.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/AdminPanel.tsx",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/components/admin/FooterManager.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

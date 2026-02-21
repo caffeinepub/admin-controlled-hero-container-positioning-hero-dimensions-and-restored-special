@@ -94,10 +94,17 @@ export const FooterContact = IDL.Record({
   'phone' : IDL.Text,
 });
 export const FooterLink = IDL.Record({ 'url' : IDL.Text, 'name' : IDL.Text });
+export const FooterSection = IDL.Record({
+  'title' : IDL.Text,
+  'content' : IDL.Text,
+  'order' : IDL.Nat,
+  'divider' : IDL.Bool,
+});
 export const FooterContent = IDL.Record({
   'contact' : FooterContact,
   'background' : IDL.Opt(ExternalBlob),
   'quickLinks' : IDL.Vec(FooterLink),
+  'sections' : IDL.Vec(FooterSection),
   'copyright' : IDL.Text,
 });
 export const VerticalPosition = IDL.Variant({
@@ -566,10 +573,17 @@ export const idlFactory = ({ IDL }) => {
     'phone' : IDL.Text,
   });
   const FooterLink = IDL.Record({ 'url' : IDL.Text, 'name' : IDL.Text });
+  const FooterSection = IDL.Record({
+    'title' : IDL.Text,
+    'content' : IDL.Text,
+    'order' : IDL.Nat,
+    'divider' : IDL.Bool,
+  });
   const FooterContent = IDL.Record({
     'contact' : FooterContact,
     'background' : IDL.Opt(ExternalBlob),
     'quickLinks' : IDL.Vec(FooterLink),
+    'sections' : IDL.Vec(FooterSection),
     'copyright' : IDL.Text,
   });
   const VerticalPosition = IDL.Variant({

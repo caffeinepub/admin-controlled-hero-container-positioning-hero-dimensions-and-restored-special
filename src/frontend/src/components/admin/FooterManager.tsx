@@ -29,15 +29,17 @@ export default function FooterManager() {
   // Initialize state when data loads
   useEffect(() => {
     if (footerContent) {
-      setContact(footerContent.contact);
-      setCopyright(footerContent.copyright);
-      setSections(footerContent.sections || []);
-      setQuickLinks(footerContent.quickLinks || []);
+      setContact(footerContent.contact || { address: '', phone: '', email: '' });
+      setCopyright(footerContent.copyright || '');
+      setSections(Array.isArray(footerContent.sections) ? footerContent.sections : []);
+      setQuickLinks(Array.isArray(footerContent.quickLinks) ? footerContent.quickLinks : []);
       setHasChanges(false);
     }
   }, [footerContent]);
 
   const handleSave = async () => {
+    if (!footerContent) return;
+    
     try {
       const updatedContent: FooterContent = {
         contact,
@@ -47,7 +49,7 @@ export default function FooterManager() {
           order: BigInt(index),
         })),
         quickLinks,
-        background: footerContent?.background,
+        background: footerContent.background,
       };
 
       await updateFooterContent.mutateAsync(updatedContent);
@@ -152,6 +154,14 @@ export default function FooterManager() {
     return (
       <Alert variant="destructive">
         <AlertDescription>Failed to load footer content. Please try again.</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (!footerContent) {
+    return (
+      <Alert>
+        <AlertDescription>No footer content available.</AlertDescription>
       </Alert>
     );
   }

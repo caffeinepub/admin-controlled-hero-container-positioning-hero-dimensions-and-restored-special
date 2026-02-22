@@ -1,72 +1,53 @@
 {
   "kind": "build_request",
-  "title": "Fix footer settings error and admin panel mobile issues",
+  "title": "Revert to Version 59 and Fix Footer Settings Error",
   "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the error that occurs when opening footer settings in the admin panel",
-      "target": "frontend",
+      "text": "Revert all code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-last"
+          "msg-user-revert"
         ],
         "quotes": [
-          "Opening footer settings in admin panel is causing error. Fix it"
+          "Revert fully to version 59"
         ]
       },
       "acceptanceCriteria": [
-        "Footer settings tab in admin panel opens without errors",
-        "All footer management functionality is accessible",
-        "Console shows no errors when accessing footer settings"
+        "All frontend and backend code matches Version 59 state",
+        "Application functions as it did in Version 59",
+        "No Version 60 changes remain in the codebase"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Make footer section headings consistent with the rest of the UI styling and typography",
+      "text": "Fix the error that appears when opening the footer settings in the admin panel",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-last"
+          "msg-user-revert"
         ],
         "quotes": [
-          "Footer section headings should be consistent witj rest of the UI"
+          "Fix the error which appears after opening the footer sertings in admin panel"
         ]
       },
       "acceptanceCriteria": [
-        "Footer section headings use the same font family, weight, and sizing as other UI headings",
-        "Footer section heading colors match the theme color scheme",
-        "Spacing and margins around footer headings are consistent with other sections"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-last"
-        ],
-        "quotes": [
-          "Menu of the admin panel which lets us choise different setting sections is getting crowded and overlapped in the mobile mode. Fix it"
-        ]
-      },
-      "acceptanceCriteria": [
-        "All admin panel tabs are fully visible and accessible on mobile screens",
-        "Tab labels do not overlap or get cut off",
-        "Navigation between settings sections works smoothly on mobile devices",
-        "Layout adapts properly to different mobile screen sizes"
+        "Footer settings tab in admin panel opens without errors",
+        "No console errors appear when accessing footer settings",
+        "All footer management functionality works correctly",
+        "FooterManager component renders and operates properly"
       ]
     }
   ],
   "constraints": [
-    "Do not modify the existing footer data structure in the backend",
-    "Preserve all existing footer management features including drag-and-drop reordering"
+    "Must restore exact Version 59 code state before applying any fixes",
+    "Fix must not reintroduce any issues that were resolved in Version 60"
   ],
   "nonGoals": [
-    "Redesigning the entire admin panel layout",
-    "Adding new footer configuration options",
-    "Changing the desktop admin panel appearance"
+    "Adding new features beyond the Version 59 state",
+    "Modifying functionality that was working correctly in Version 59"
   ],
   "imageRequirements": {
     "required": [],

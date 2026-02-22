@@ -2,10 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-error-that-occurs-when-opening-footer-settings-in-the-admin-panel",
-      "featureTitle": "Fix the error that occurs when opening footer settings in the admin panel",
+      "featureId": "feature-revert-all-code-changes-to-match-version-59-exactly-restoring-the-previous-working-state-before-version-60-was-deployed",
+      "featureTitle": "Revert all code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
       "files": [
-        "frontend/src/components/AdminPanel.tsx",
         "frontend/src/components/admin/FooterManager.tsx"
       ],
       "components": [
@@ -23,10 +22,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-make-footer-section-headings-consistent-with-the-rest-of-the-ui-styling-and-typography",
-      "featureTitle": "Make footer section headings consistent with the rest of the UI styling and typography",
+      "featureId": "feature-fix-the-error-that-appears-when-opening-the-footer-settings-in-the-admin-panel",
+      "featureTitle": "Fix the error that appears when opening the footer settings in the admin panel",
       "files": [
-        "frontend/src/components/Footer.tsx"
+        "frontend/src/components/admin/FooterManager.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -39,26 +38,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-fix-the-admin-panel-settings-menu-layout-in-mobile-mode-to-prevent-crowding-and-overlapping-of-section-options",
-      "featureTitle": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
-      "files": [
-        "frontend/src/components/AdminPanel.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
       ],
       "confidence": "high"
     }

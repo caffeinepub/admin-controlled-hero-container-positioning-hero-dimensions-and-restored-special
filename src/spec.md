@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Fix footer settings error and improve admin panel mobile responsiveness.
+**Goal:** Revert the application to Version 59 and fix the footer settings error in the admin panel.
 
 **Planned changes:**
+- Revert all frontend and backend code to match Version 59 exactly
 - Fix the error that occurs when opening footer settings in the admin panel
-- Make footer section headings consistent with the rest of the UI styling and typography
-- Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options
+- Ensure FooterManager component renders and operates without console errors
 
-**User-visible outcome:** Users can access footer settings without errors, footer headings match the overall UI design, and the admin panel navigation works smoothly on mobile devices without overlapping or crowded elements.
+**User-visible outcome:** The application functions as it did in Version 59, and administrators can open and manage footer settings without encountering errors.

@@ -4,39 +4,29 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [
-    "Footer settings in admin panel causing error when opened",
-    "Footer section headings inconsistent with rest of UI",
-    "Admin panel settings menu crowded and overlapped in mobile mode"
+    "Error occurs when opening footer settings in admin panel (reported in v60)"
   ],
   "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-fix-the-error-that-occurs-when-opening-footer-settings-in-the-admin-panel",
-      "title": "Fix the error that occurs when opening footer settings in the admin panel",
+      "id": "feature-revert-all-code-changes-to-match-version-59-exactly-restoring-the-previous-working-state-before-version-60-was-deployed",
+      "title": "Revert all code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-make-footer-section-headings-consistent-with-the-rest-of-the-ui-styling-and-typography",
-      "title": "Make footer section headings consistent with the rest of the UI styling and typography",
+      "id": "feature-fix-the-error-that-appears-when-opening-the-footer-settings-in-the-admin-panel",
+      "title": "Fix the error that appears when opening the footer settings in the admin panel",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-fix-the-admin-panel-settings-menu-layout-in-mobile-mode-to-prevent-crowding-and-overlapping-of-section-options",
-      "title": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
-      "reqIds": [
-        "REQ-3"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [],
-  "projectName": "Fix footer settings error and admin panel mobile issues",
+  "projectName": "Revert to Version 59 and Fix Footer Settings Error",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

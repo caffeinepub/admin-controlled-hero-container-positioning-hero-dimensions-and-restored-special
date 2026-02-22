@@ -1,64 +1,93 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix footer settings error and admin panel mobile issues",
+  "title": "Revert to Version 59 and Fix Footer Settings Error",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Fix the error that occurs when opening footer settings in the admin panel",
+      "summary": "Revert all frontend code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
       "acceptanceCriteria": [
-        "Footer settings tab in admin panel opens without errors",
-        "All footer management functionality is accessible",
-        "Console shows no errors when accessing footer settings"
+        "All frontend code matches Version 59 state",
+        "Application functions as it did in Version 59",
+        "No Version 60 changes remain in the frontend codebase"
       ],
       "file_operations": [
         {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the main application component including routing, authentication flow, and admin panel rendering logic"
+        },
+        {
+          "path": "frontend/src/components/Hero.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the hero section including layout, styling, effects integration, and content rendering"
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the header component including navigation, authentication controls, and routing logic"
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the footer component including content rendering, social media links, and admin editing capabilities"
+        },
+        {
           "path": "frontend/src/components/admin/FooterManager.tsx",
           "operation": "modify",
-          "description": "Debug and fix the error occurring when the footer settings tab is opened. Common issues to check: missing null/undefined checks for footer data properties, incorrect data access patterns, missing error boundaries, improper array handling for sections or quick links, and issues with drag-and-drop state management. Ensure all footer content fields (contact, sections, quickLinks, copyright) are safely accessed with optional chaining or null checks before rendering."
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the footer management interface including form handling, section reordering, and save functionality"
+        },
+        {
+          "path": "frontend/src/components/admin/ContentManager.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the content management interface"
+        },
+        {
+          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the hero theme configuration interface"
         },
         {
           "path": "frontend/src/components/AdminPanel.tsx",
           "operation": "modify",
-          "description": "Add error boundary or try-catch handling around the Footer tab content to gracefully handle any errors in FooterManager and display a helpful error message instead of crashing. Ensure tab switching to Footer does not cause the entire admin panel to become unusable."
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the admin panel container including tab navigation and manager component integration"
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of React Query hooks including query definitions and mutation handlers"
+        },
+        {
+          "path": "frontend/src/utils/heroThemeDefaults.ts",
+          "operation": "modify",
+          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of hero theme utility functions"
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Make footer section headings consistent with the rest of the UI styling and typography",
+      "summary": "Fix the error that appears when opening the footer settings in the admin panel",
       "acceptanceCriteria": [
-        "Footer section headings use the same font family, weight, and sizing as other UI headings",
-        "Footer section heading colors match the theme color scheme",
-        "Spacing and margins around footer headings are consistent with other sections"
+        "Footer settings tab in admin panel opens without errors",
+        "No console errors appear when accessing footer settings",
+        "All footer management functionality works correctly",
+        "FooterManager component renders and operates properly"
       ],
       "file_operations": [
+        {
+          "path": "frontend/src/components/admin/FooterManager.tsx",
+          "operation": "modify",
+          "description": "Debug and fix the error occurring when the footer settings tab is opened. Review component initialization, state management, data fetching hooks, and form field rendering to identify the root cause. Ensure all footer content properties are properly handled with null checks and default values. Fix any issues with array manipulation, drag-and-drop handlers, or mutation callbacks that may cause runtime errors"
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review and fix the useFooterContent query hook to ensure it properly handles loading states, error states, and data transformations. Verify that the query returns data in the expected format for the FooterManager component and that all required fields are present with appropriate fallback values"
+        },
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Update footer section heading styles to match the global heading design system. Apply consistent font family, weight (likely font-semibold or font-bold), and sizing classes (e.g., text-lg or text-xl) that match headings in other sections like Overview, Services, or Clinics. Ensure heading colors use theme variables (e.g., text-foreground or text-primary) and spacing (margin-bottom) is consistent with other section headings throughout the application."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Review and ensure global heading styles are properly defined and applicable to footer headings. If footer headings need special targeting, consider adding a CSS rule that ensures .footer h2, .footer h3 classes inherit from the global heading styles. Verify theme color variables are correctly applied for both light and dark modes."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
-      "acceptanceCriteria": [
-        "All admin panel tabs are fully visible and accessible on mobile screens",
-        "Tab labels do not overlap or get cut off",
-        "Navigation between settings sections works smoothly on mobile devices",
-        "Layout adapts properly to different mobile screen sizes"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/AdminPanel.tsx",
-          "operation": "modify",
-          "description": "Fix the mobile layout of the admin panel tabs to prevent crowding and overlapping. Implement responsive design strategies: (1) Use Tailwind responsive classes to make tabs scrollable horizontally on mobile (e.g., add overflow-x-auto and flex-nowrap to the tabs list), (2) Reduce tab padding and font size on small screens using responsive utilities like sm:px-4 px-2 and sm:text-base text-sm, (3) Consider using a dropdown/select menu for tab navigation on mobile screens (below md breakpoint), or (4) Stack tabs vertically on very small screens. Ensure the TabsList component from shadcn/ui is wrapped with appropriate responsive container classes and test on various mobile viewport sizes (320px, 375px, 414px)."
+          "description": "Review footer content data consumption to ensure consistency with FooterManager expectations. Verify that the component properly handles all footer content properties and that any shared utilities or type definitions are correctly implemented"
         }
       ]
     }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetFooterContent, useUpdateFooterContent } from '../../hooks/useQueries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowUp, ArrowDown, Plus, Trash2, Save } from 'lucide-react';
+import { GripVertical, Plus, Trash2, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import type { FooterContent, FooterSection, FooterLink } from '../../backend';
 
@@ -24,33 +24,18 @@ export default function FooterManager() {
   const [sections, setSections] = useState<FooterSection[]>([]);
   const [quickLinks, setQuickLinks] = useState<FooterLink[]>([]);
   const [hasChanges, setHasChanges] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   // Initialize state when data loads
-  useState(() => {
+  useEffect(() => {
     if (footerContent) {
       setContact(footerContent.contact);
       setCopyright(footerContent.copyright);
       setSections(footerContent.sections || []);
       setQuickLinks(footerContent.quickLinks || []);
+      setHasChanges(false);
     }
-  });
-
-  // Update state when footerContent changes
-  if (footerContent && !hasChanges) {
-    if (
-      contact.address !== footerContent.contact.address ||
-      contact.phone !== footerContent.contact.phone ||
-      contact.email !== footerContent.contact.email ||
-      copyright !== footerContent.copyright ||
-      JSON.stringify(sections) !== JSON.stringify(footerContent.sections) ||
-      JSON.stringify(quickLinks) !== JSON.stringify(footerContent.quickLinks)
-    ) {
-      setContact(footerContent.contact);
-      setCopyright(footerContent.copyright);
-      setSections(footerContent.sections || []);
-      setQuickLinks(footerContent.quickLinks || []);
-    }
-  }
+  }, [footerContent]);
 
   const handleSave = async () => {
     try {
@@ -97,20 +82,31 @@ export default function FooterManager() {
     setHasChanges(true);
   };
 
-  const moveSectionUp = (index: number) => {
-    if (index === 0) return;
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    
+    if (draggedIndex === null || draggedIndex === index) return;
+
     const updated = [...sections];
-    [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
+    const draggedItem = updated[draggedIndex];
+    
+    // Remove dragged item
+    updated.splice(draggedIndex, 1);
+    
+    // Insert at new position
+    updated.splice(index, 0, draggedItem);
+    
     setSections(updated);
+    setDraggedIndex(index);
     setHasChanges(true);
   };
 
-  const moveSectionDown = (index: number) => {
-    if (index === sections.length - 1) return;
-    const updated = [...sections];
-    [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
-    setSections(updated);
-    setHasChanges(true);
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
   };
 
   const addQuickLink = () => {
@@ -289,7 +285,7 @@ export default function FooterManager() {
             <div>
               <CardTitle>Footer Sections</CardTitle>
               <CardDescription>
-                Create custom sections with headings and content. Use arrows to reorder.
+                Create custom sections with headings and content. Drag and drop to reorder.
               </CardDescription>
             </div>
             <Button onClick={addSection} size="sm" variant="outline" className="gap-2">
@@ -305,30 +301,24 @@ export default function FooterManager() {
             </p>
           ) : (
             sections.map((section, index) => (
-              <div key={index} className="p-4 border rounded-lg bg-muted/30 space-y-4">
+              <div
+                key={index}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`p-4 border rounded-lg bg-muted/30 space-y-4 transition-all cursor-move ${
+                  draggedIndex === index ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
+                }`}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    Section {index + 1}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <GripVertical className="h-5 w-5 text-muted-foreground" />
+                    <span className="text-sm font-medium text-muted-foreground">
+                      Section {index + 1}
+                    </span>
+                  </div>
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => moveSectionUp(index)}
-                      disabled={index === 0}
-                      title="Move up"
-                    >
-                      <ArrowUp className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => moveSectionDown(index)}
-                      disabled={index === sections.length - 1}
-                      title="Move down"
-                    >
-                      <ArrowDown className="h-4 w-4" />
-                    </Button>
                     <Button
                       variant="destructive"
                       size="icon"

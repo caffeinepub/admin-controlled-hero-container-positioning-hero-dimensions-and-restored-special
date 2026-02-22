@@ -381,6 +381,7 @@ export interface _SERVICE {
   'updateClinic' : ActorMethod<[Clinic], undefined>,
   'updateDoctorCredentials' : ActorMethod<[DoctorCredentials], undefined>,
   'updateFooterContent' : ActorMethod<[FooterContent], undefined>,
+  'updateFooterSectionOrder' : ActorMethod<[Array<bigint>], undefined>,
   'updateHeroSectionTheme' : ActorMethod<[HeroSectionTheme], undefined>,
   'updateImage' : ActorMethod<[WebsiteImage], undefined>,
   'updateReview' : ActorMethod<[Review], undefined>,

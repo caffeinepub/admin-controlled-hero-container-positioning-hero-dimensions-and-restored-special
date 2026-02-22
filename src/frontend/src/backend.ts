@@ -545,6 +545,7 @@ export interface backendInterface {
     updateClinic(clinic: Clinic): Promise<void>;
     updateDoctorCredentials(credentials: DoctorCredentials): Promise<void>;
     updateFooterContent(content: FooterContent): Promise<void>;
+    updateFooterSectionOrder(newOrder: Array<bigint>): Promise<void>;
     updateHeroSectionTheme(theme: HeroSectionTheme): Promise<void>;
     updateImage(image: WebsiteImage): Promise<void>;
     updateReview(review: Review): Promise<void>;
@@ -1186,6 +1187,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.updateFooterContent(await to_candid_FooterContent_n139(this._uploadFile, this._downloadFile, arg0));
+            return result;
+        }
+    }
+    async updateFooterSectionOrder(arg0: Array<bigint>): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateFooterSectionOrder(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateFooterSectionOrder(arg0);
             return result;
         }
     }

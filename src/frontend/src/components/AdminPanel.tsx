@@ -27,15 +27,31 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
         </div>
 
         <Tabs defaultValue="content" className="w-full">
-          <TabsList className="grid w-full grid-cols-7 mb-8">
-            <TabsTrigger value="content">Content & Images</TabsTrigger>
-            <TabsTrigger value="hero-theme">Hero Theme</TabsTrigger>
-            <TabsTrigger value="clinics">Clinics</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="social">Social Media</TabsTrigger>
-            <TabsTrigger value="footer">Footer</TabsTrigger>
-          </TabsList>
+          <div className="mb-8 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+            <TabsList className="grid w-full grid-cols-7 min-w-[700px] md:min-w-0">
+              <TabsTrigger value="content" className="text-xs sm:text-sm px-2 sm:px-4">
+                Content
+              </TabsTrigger>
+              <TabsTrigger value="hero-theme" className="text-xs sm:text-sm px-2 sm:px-4">
+                Hero
+              </TabsTrigger>
+              <TabsTrigger value="clinics" className="text-xs sm:text-sm px-2 sm:px-4">
+                Clinics
+              </TabsTrigger>
+              <TabsTrigger value="services" className="text-xs sm:text-sm px-2 sm:px-4">
+                Services
+              </TabsTrigger>
+              <TabsTrigger value="reviews" className="text-xs sm:text-sm px-2 sm:px-4">
+                Reviews
+              </TabsTrigger>
+              <TabsTrigger value="social" className="text-xs sm:text-sm px-2 sm:px-4">
+                Social
+              </TabsTrigger>
+              <TabsTrigger value="footer" className="text-xs sm:text-sm px-2 sm:px-4">
+                Footer
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="content">
             <ContentManager />

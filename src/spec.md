@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Add a comprehensive admin panel for managing all footer sections, their headings, content, and display order.
+**Goal:** Fix footer settings error and improve admin panel mobile responsiveness.
 
 **Planned changes:**
-- Create a new FooterManager component in the admin panel that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings
-- Implement drag-and-drop or up/down controls to reorder footer sections
-- Extend backend data model to store footer section configuration including titles, content, and display order
-- Add a new "Footer" tab to the AdminPanel component
-- Update the Footer component to dynamically render sections based on admin-configured order and headings
+- Fix the error that occurs when opening footer settings in the admin panel
+- Make footer section headings consistent with the rest of the UI styling and typography
+- Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options
 
-**User-visible outcome:** Admin users can customize all footer section headings, modify contact information and quick links, and rearrange the order of footer sections through a dedicated admin interface. Changes are immediately reflected on the website footer.
+**User-visible outcome:** Users can access footer settings without errors, footer headings match the overall UI design, and the admin panel navigation works smoothly on mobile devices without overlapping or crowded elements.

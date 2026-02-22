@@ -10,9 +10,7 @@ import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
 import AccessControl "authorization/access-control";
-import Migration "migration";
 
-(with migration = Migration.run)
 actor {
   include MixinStorage();
 
@@ -176,7 +174,6 @@ actor {
     description : Text;
   };
 
-  // New for footer sections
   public type FooterSection = {
     title : Text;
     content : Text;
@@ -842,5 +839,29 @@ actor {
       Runtime.trap("Unauthorized: Only admins can delete reviews");
     };
     reviews.remove(id);
+  };
+
+  // === Footer Section Ordering ===
+  public shared ({ caller }) func updateFooterSectionOrder(newOrder : [Nat]) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can update footer section order");
+    };
+
+    if (footerContent.sections.size() != newOrder.size()) {
+      Runtime.trap("Invalid order: Mismatched section count");
+    };
+
+    let reorderedSections = Array.tabulate(
+      footerContent.sections.size(),
+      func(i : Nat) : FooterSection {
+        {
+          footerContent.sections[i] with order = newOrder[i];
+        };
+      },
+    );
+
+    footerContent := {
+      footerContent with sections = reorderedSections;
+    };
   };
 };

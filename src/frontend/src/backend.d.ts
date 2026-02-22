@@ -452,6 +452,7 @@ export interface backendInterface {
     updateClinic(clinic: Clinic): Promise<void>;
     updateDoctorCredentials(credentials: DoctorCredentials): Promise<void>;
     updateFooterContent(content: FooterContent): Promise<void>;
+    updateFooterSectionOrder(newOrder: Array<bigint>): Promise<void>;
     updateHeroSectionTheme(theme: HeroSectionTheme): Promise<void>;
     updateImage(image: WebsiteImage): Promise<void>;
     updateReview(review: Review): Promise<void>;

@@ -2,9 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-new-footermanager-admin-component-that-allows-editing-of-all-footer-sections-contact-information-quick-links-social-media-and-their-headings",
-      "featureTitle": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
+      "featureId": "feature-fix-the-error-that-occurs-when-opening-footer-settings-in-the-admin-panel",
+      "featureTitle": "Fix the error that occurs when opening footer settings in the admin panel",
       "files": [
+        "frontend/src/components/AdminPanel.tsx",
         "frontend/src/components/admin/FooterManager.tsx"
       ],
       "components": [
@@ -22,10 +23,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-drag-and-drop-or-up-down-controls-in-footermanager-to-allow-reordering-of-footer-sections",
-      "featureTitle": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
+      "featureId": "feature-make-footer-section-headings-consistent-with-the-rest-of-the-ui-styling-and-typography",
+      "featureTitle": "Make footer section headings consistent with the rest of the UI styling and typography",
       "files": [
-        "frontend/src/components/admin/FooterManager.tsx"
+        "frontend/src/components/Footer.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -42,8 +43,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-footermanager-tab-to-the-adminpanel-component-alongside-existing-content-hero-theme-clinics-services-reviews-and-social-media-tabs",
-      "featureTitle": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+      "featureId": "feature-fix-the-admin-panel-settings-menu-layout-in-mobile-mode-to-prevent-crowding-and-overlapping-of-section-options",
+      "featureTitle": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
       "files": [
         "frontend/src/components/AdminPanel.tsx"
       ],
@@ -57,27 +58,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-footer-component-to-render-sections-dynamically-based-on-admin-configured-order-and-headings-from-backend",
-      "featureTitle": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
-      "files": [
-        "frontend/src/components/Footer.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
+        "REQ-3"
       ],
       "confidence": "high"
     }

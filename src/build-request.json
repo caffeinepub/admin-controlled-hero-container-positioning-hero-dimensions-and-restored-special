@@ -1,107 +1,72 @@
 {
   "kind": "build_request",
-  "title": "Add comprehensive admin panel for footer section management",
-  "priority": "normal",
+  "title": "Fix footer settings error and admin panel mobile issues",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create a new FooterManager admin component that allows editing of all footer sections (Contact Information, Quick Links, Social Media) and their headings",
+      "text": "Fix the error that occurs when opening footer settings in the admin panel",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-last"
         ],
         "quotes": [
-          "give option to modify all sections and headings present in the footer section"
+          "Opening footer settings in admin panel is causing error. Fix it"
         ]
       },
       "acceptanceCriteria": [
-        "FooterManager component displays all current footer sections with their headings",
-        "Admin can edit the heading text for each footer section",
-        "Admin can modify contact information fields (address, phone, email)",
-        "Admin can edit or add/remove quick navigation links",
-        "Changes are persisted to the backend and reflected in the Footer component"
+        "Footer settings tab in admin panel opens without errors",
+        "All footer management functionality is accessible",
+        "Console shows no errors when accessing footer settings"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement drag-and-drop or up/down controls in FooterManager to allow reordering of footer sections",
+      "text": "Make footer section headings consistent with the rest of the UI styling and typography",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-last"
         ],
         "quotes": [
-          "have the option to rearrange the order of sections in the footer"
+          "Footer section headings should be consistent witj rest of the UI"
         ]
       },
       "acceptanceCriteria": [
-        "Admin can change the display order of footer sections (Contact, Quick Links, Social Media)",
-        "Reordering is intuitive using either drag-and-drop or arrow buttons",
-        "New section order is saved and persists across sessions",
-        "Footer component renders sections in the admin-specified order"
+        "Footer section headings use the same font family, weight, and sizing as other UI headings",
+        "Footer section heading colors match the theme color scheme",
+        "Spacing and margins around footer headings are consistent with other sections"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Extend backend data model to support footer section configuration including section titles, content, and display order",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend stores footer section headings as configurable text fields",
-        "Backend stores section order as a sortable array or numeric positions",
-        "Query and mutation functions exist for retrieving and updating footer section configuration",
-        "State migration handles the new footer configuration structure"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Add FooterManager tab to the AdminPanel component alongside existing Content, Hero Theme, Clinics, Services, Reviews, and Social Media tabs",
+      "text": "Fix the admin panel settings menu layout in mobile mode to prevent crowding and overlapping of section options",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-last"
         ],
         "quotes": [
-          "Powerful Admin panel for footer"
+          "Menu of the admin panel which lets us choise different setting sections is getting crowded and overlapped in the mobile mode. Fix it"
         ]
       },
       "acceptanceCriteria": [
-        "New 'Footer' tab appears in AdminPanel component",
-        "Tab displays the FooterManager component when selected",
-        "Tab follows the same design pattern as existing admin tabs"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Update Footer component to render sections dynamically based on admin-configured order and headings from backend",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Footer fetches section configuration from backend",
-        "Footer renders sections in the order specified by admin",
-        "Footer displays custom heading text for each section",
-        "Layout remains responsive and consistent with existing UI design"
+        "All admin panel tabs are fully visible and accessible on mobile screens",
+        "Tab labels do not overlap or get cut off",
+        "Navigation between settings sections works smoothly on mobile devices",
+        "Layout adapts properly to different mobile screen sizes"
       ]
     }
   ],
   "constraints": [
-    "Maintain the current UI design and visual styling of the footer",
-    "Preserve existing footer functionality including EditableFooterContent and social media integration",
-    "Follow single-actor backend architecture in main.mo"
+    "Do not modify the existing footer data structure in the backend",
+    "Preserve all existing footer management features including drag-and-drop reordering"
   ],
   "nonGoals": [
-    "Changing the overall visual design or color scheme of the footer",
-    "Adding new footer sections beyond the existing Contact, Quick Links, and Social Media",
-    "Implementing footer templates or presets"
+    "Redesigning the entire admin panel layout",
+    "Adding new footer configuration options",
+    "Changing the desktop admin panel appearance"
   ],
   "imageRequirements": {
     "required": [],

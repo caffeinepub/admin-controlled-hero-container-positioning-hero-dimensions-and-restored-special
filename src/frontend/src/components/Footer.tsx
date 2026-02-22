@@ -1,4 +1,4 @@
-import { useGetFooterContent, useGetSortedSocialMediaLinks, useIsCallerAdmin, useGetHeroSectionTheme } from '../hooks/useQueries';
+import { useGetFooterContent, useGetSortedSocialMediaLinks, useIsCallerAdmin, useGetHeroSectionTheme, useGetHomepageTextFormatting } from '../hooks/useQueries';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import EditableFooterContent from './EditableFooterContent';
@@ -8,12 +8,14 @@ import { Heart, MapPin, Phone, Mail, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import HeroMultiEffectsLayer from './hero/HeroMultiEffectsLayer';
+import type { TextFormattingBundle } from '../backend';
 
 export default function Footer() {
   const { data: footerContent, isLoading: contentLoading, error: contentError } = useGetFooterContent();
   const { data: socialLinks, isLoading: linksLoading, error: linksError } = useGetSortedSocialMediaLinks();
   const { data: isAdmin } = useIsCallerAdmin();
   const { data: heroTheme, isLoading: themeLoading } = useGetHeroSectionTheme();
+  const { data: textFormatting } = useGetHomepageTextFormatting();
   const [editingQuickLinks, setEditingQuickLinks] = useState(false);
   const [editingSocialMedia, setEditingSocialMedia] = useState(false);
 
@@ -63,6 +65,21 @@ export default function Footer() {
   // Sort sections by order field
   const sortedSections = [...customSections].sort((a, b) => Number(a.order) - Number(b.order));
 
+  // Text formatting styles
+  const getFormattingStyle = (bundle: TextFormattingBundle | undefined) => {
+    if (!bundle) return {};
+    return {
+      fontSize: `${Number(bundle.fontSize)}px`,
+      fontFamily: bundle.fontFamily,
+      fontWeight: bundle.fontWeight,
+      letterSpacing: `${Number(bundle.letterSpacing) / 100}em`,
+      textTransform: bundle.textTransform as any,
+    };
+  };
+
+  const headingStyle = getFormattingStyle(textFormatting?.footerHeading);
+  const bodyStyle = getFormattingStyle(textFormatting?.footerBody);
+
   if (isLoading) {
     return (
       <footer className="relative bg-gradient-to-br from-background via-muted/30 to-background border-t overflow-hidden">
@@ -98,7 +115,7 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gradient-to-br from-background via-muted/30 to-background border-t overflow-hidden">
-      {/* Background Effects Layer */}
+      {/* Background Effects Layer - matching hero section */}
       {heroTheme && !themeLoading && (
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <HeroMultiEffectsLayer
@@ -113,12 +130,17 @@ export default function Footer() {
       <div className="relative z-10 container py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Contact Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">Contact</h3>
-            <div className="space-y-3 text-sm text-muted-foreground">
+          <div className="space-y-4 group">
+            <h3 
+              className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+              style={headingStyle}
+            >
+              Contact
+            </h3>
+            <div className="space-y-3 text-sm text-muted-foreground" style={bodyStyle}>
               {contact?.address && (
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
+                  <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
                   <EditableFooterContent
                     content={contact.address}
                     field="address"
@@ -127,8 +149,8 @@ export default function Footer() {
                 </div>
               )}
               {contact?.phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 flex-shrink-0" />
+                <div className="flex items-center gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
+                  <Phone className="h-4 w-4 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
                   <EditableFooterContent
                     content={contact.phone}
                     field="phone"
@@ -137,8 +159,8 @@ export default function Footer() {
                 </div>
               )}
               {contact?.email && (
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 flex-shrink-0" />
+                <div className="flex items-center gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
+                  <Mail className="h-4 w-4 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
                   <EditableFooterContent
                     content={contact.email}
                     field="email"
@@ -150,27 +172,32 @@ export default function Footer() {
           </div>
 
           {/* Quick Links Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 group">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-foreground">Quick Links</h3>
+              <h3 
+                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+                style={headingStyle}
+              >
+                Quick Links
+              </h3>
               {isAdmin && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:text-primary"
                   onClick={() => setEditingQuickLinks(!editingQuickLinks)}
                 >
                   <Pencil className="h-3 w-3" />
                 </Button>
               )}
             </div>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-sm" style={bodyStyle}>
               {footerContent?.quickLinks && footerContent.quickLinks.length > 0 ? (
                 footerContent.quickLinks.map((link, index) => (
                   <li key={index}>
                     <button
                       onClick={() => handleQuickLinkClick(link.url)}
-                      className="text-muted-foreground hover:text-primary transition-colors text-left"
+                      className="text-muted-foreground hover:text-primary transition-all duration-300 text-left hover:translate-x-2 inline-block hover:shadow-glow-primary hover:scale-105"
                     >
                       {link.name}
                     </button>
@@ -184,23 +211,36 @@ export default function Footer() {
 
           {/* Custom Sections */}
           {sortedSections.map((section, index) => (
-            <div key={index} className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground">{section.title}</h3>
-              <div className="text-sm text-muted-foreground whitespace-pre-line">
+            <div key={index} className="space-y-4 group">
+              <h3 
+                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+                style={headingStyle}
+              >
+                {section.title}
+              </h3>
+              <div 
+                className="text-sm text-muted-foreground whitespace-pre-line transition-all duration-300 hover:text-foreground"
+                style={bodyStyle}
+              >
                 {section.content}
               </div>
             </div>
           ))}
 
           {/* Social Media Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 group">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-foreground">Follow Us</h3>
+              <h3 
+                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+                style={headingStyle}
+              >
+                Follow Us
+              </h3>
               {isAdmin && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:text-primary"
                   onClick={() => setEditingSocialMedia(!editingSocialMedia)}
                 >
                   <Pencil className="h-3 w-3" />
@@ -217,11 +257,11 @@ export default function Footer() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
+                      className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-glow-primary rounded-full p-1"
                       aria-label={link.displayName}
                     >
                       {IconComponent ? (
-                        <IconComponent className="h-5 w-5" />
+                        <IconComponent className="h-5 w-5 transition-all duration-300" />
                       ) : (
                         <span className="text-sm">{link.displayName}</span>
                       )}
@@ -238,14 +278,14 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border/50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 transition-all duration-300 hover:text-foreground" style={bodyStyle}>
               <EditableFooterContent
                 content={copyright || `© ${new Date().getFullYear()} Dr. Malay Akechan. All rights reserved.`}
                 field="copyright"
                 isAdmin={!!isAdmin}
               />
             </div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 transition-all duration-300 hover:scale-105">
               <span>Built with</span>
               <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
               <span>using</span>
@@ -253,7 +293,7 @@ export default function Footer() {
                 href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium hover:text-primary transition-colors"
+                className="font-medium hover:text-primary transition-all duration-300 hover:shadow-glow-primary hover:scale-110 inline-block"
               >
                 caffeine.ai
               </a>

@@ -1,32 +1,81 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
-  "known_issues": [
-    "Error occurs when opening footer settings in admin panel (reported in v60)"
+  "summary": "Website with admin panel for content and styling management",
+  "architectural_notes": [
+    "Admin panel with separate text formatting section",
+    "Homepage sections: hero, about, services, footer with independent styling controls",
+    "Font customization applies category-wise (per section) and element-wise (headings vs body)"
   ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-revert-all-code-changes-to-match-version-59-exactly-restoring-the-previous-working-state-before-version-60-was-deployed",
-      "title": "Revert all code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
+      "id": "feature-create-a-new-text-formatting-section-in-the-admin-panel-as-a-separate-tab-alongside-existing-sections-content-hero-theme-clinics-services-reviews-social-media-footer",
+      "title": "Create a new 'Text Formatting' section in the admin panel as a separate tab alongside existing sections (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-fix-the-error-that-appears-when-opening-the-footer-settings-in-the-admin-panel",
-      "title": "Fix the error that appears when opening the footer settings in the admin panel",
+      "id": "feature-create-textformattingmanager-admin-component-with-section-based-controls-allowing-independent-adjustment-of-font-size-font-family-font-weight-letter-spacing-and-text-transform-for-both-headings-and-body-text-in-each-homepage-section-hero-overview-about-services-footer",
+      "title": "Create TextFormattingManager admin component with section-based controls allowing independent adjustment of font size, font family, font weight, letter spacing, and text transform for both headings and body text in each homepage section (hero, overview/about, services, footer)",
       "reqIds": [
-        "REQ-2"
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-stored-text-formatting-settings-to-hero-component-s-text-elements-using-heading-settings-for-headline-and-body-settings-for-subtext-without-affecting-blog-pages",
+      "title": "Apply stored text formatting settings to Hero component's text elements, using heading settings for headline and body settings for subtext, without affecting blog pages",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-stored-text-formatting-settings-to-overview-about-components-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-description-text-without-affecting-blog-pages",
+      "title": "Apply stored text formatting settings to Overview/About components' text elements, using heading settings for section titles and body settings for description text, without affecting blog pages",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-stored-text-formatting-settings-to-services-component-s-text-elements-using-heading-settings-for-service-titles-and-body-settings-for-service-descriptions-without-affecting-blog-pages",
+      "title": "Apply stored text formatting settings to Services component's text elements, using heading settings for service titles and body settings for service descriptions, without affecting blog pages",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-stored-text-formatting-settings-to-footer-component-s-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-footer-content-text-without-affecting-blog-pages",
+      "title": "Apply stored text formatting settings to Footer component's text elements, using heading settings for section titles and body settings for footer content text, without affecting blog pages",
+      "reqIds": [
+        "REQ-7"
       ],
       "version": 1
     }
   ],
-  "new_feature_requests": [],
-  "projectName": "Revert to Version 59 and Fix Footer Settings Error",
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Admin panel text formatting controls for homepage sections (hero, about, services, footer) with category-wise font size and letter formatting options for headings and body text separately",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add backend storage for text formatting settings that stores font size and letter formatting (font family, font weight, letter spacing, text transform) separately for headings and body text across homepage sections: hero, overview/about, services, and footer",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Add text formatting controls in admin panel for homepage sections",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

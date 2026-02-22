@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useGetWebsiteContent, useUpdateWebsiteContent } from '../hooks/useQueries';
 import { Pencil } from 'lucide-react';
+import React from 'react';
 
 interface EditableHeroContentProps {
   field: 'headline' | 'subtext' | 'primaryButton' | 'secondaryButton';
@@ -13,6 +14,7 @@ interface EditableHeroContentProps {
   link?: string;
   isAdmin: boolean;
   className?: string;
+  style?: React.CSSProperties;
   isButton?: boolean;
   buttonVariant?: 'primary' | 'secondary';
 }
@@ -23,6 +25,7 @@ export default function EditableHeroContent({
   link = '',
   isAdmin,
   className = '',
+  style,
   isButton = false,
   buttonVariant = 'primary',
 }: EditableHeroContentProps) {
@@ -154,7 +157,7 @@ export default function EditableHeroContent({
     <>
       {isAdmin ? (
         <div className="relative inline-block group/edit w-full">
-          <div className={className}>
+          <div className={className} style={style}>
             {content || (
               <span className="text-muted-foreground italic">
                 Click edit to add {field}
@@ -170,7 +173,7 @@ export default function EditableHeroContent({
           </button>
         </div>
       ) : content ? (
-        <div className={className}>{content}</div>
+        <div className={className} style={style}>{content}</div>
       ) : null}
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

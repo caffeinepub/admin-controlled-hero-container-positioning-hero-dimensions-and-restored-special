@@ -1,14 +1,16 @@
-import { useGetWebsiteContent, useIsCallerAdmin } from '../hooks/useQueries';
+import { useGetWebsiteContent, useIsCallerAdmin, useGetHomepageTextFormatting } from '../hooks/useQueries';
 import { Card, CardContent } from '@/components/ui/card';
 import { Stethoscope, Heart, Award, Users, AlertCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import EditableContent from './EditableContent';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import type { TextFormattingBundle } from '../backend';
 
 export default function Overview() {
   const { data: content, isLoading: contentLoading, error: contentError } = useGetWebsiteContent();
   const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
+  const { data: textFormatting } = useGetHomepageTextFormatting();
 
   const overviewContent = content?.overviewContent ?? '';
   const isLoading = contentLoading || adminLoading;
@@ -19,6 +21,21 @@ export default function Overview() {
     { icon: Award, title: 'Experienced', description: 'Years of medical excellence', gradient: 'from-accent via-accent/80 to-accent/60' },
     { icon: Users, title: 'Trusted', description: 'Serving the community', gradient: 'from-success via-success/80 to-success/60' },
   ];
+
+  // Text formatting styles
+  const getFormattingStyle = (bundle: TextFormattingBundle | undefined) => {
+    if (!bundle) return {};
+    return {
+      fontSize: `${Number(bundle.fontSize)}px`,
+      fontFamily: bundle.fontFamily,
+      fontWeight: bundle.fontWeight,
+      letterSpacing: `${Number(bundle.letterSpacing) / 100}em`,
+      textTransform: bundle.textTransform as any,
+    };
+  };
+
+  const headingStyle = getFormattingStyle(textFormatting?.overviewHeading);
+  const bodyStyle = getFormattingStyle(textFormatting?.overviewBody);
 
   if (isLoading) {
     return (
@@ -71,10 +88,16 @@ export default function Overview() {
       
       <div className="container relative z-10">
         <div className="text-center mb-16 md:mb-20 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent"
+            style={headingStyle}
+          >
             Overview
           </h2>
-          <div className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed">
+          <div 
+            className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed"
+            style={bodyStyle}
+          >
             <EditableContent
               content={overviewContent}
               field="overviewContent"
@@ -124,34 +147,18 @@ function HighlightCard({ item, index }: HighlightCardProps) {
       {/* Parallax Background Accent */}
       <div 
         className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.gradient} rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-all duration-700`}
-        style={{
-          transform: isHovered ? 'translate(10%, -10%) scale(1.2)' : 'translate(20%, -20%) scale(1)',
+        style={{ 
+          transform: isHovered ? 'translate(10%, -10%) scale(1.2)' : 'translate(0, 0) scale(1)',
         }}
       />
       
       <CardContent className="relative z-10 pt-12 pb-10 px-6 text-center">
-        {/* Icon Container with Enhanced Effects */}
-        <div className="relative inline-flex items-center justify-center mb-8">
-          {/* Outer Glow Ring */}
-          <div className={`absolute inset-0 w-24 h-24 rounded-2xl bg-gradient-to-br ${item.gradient} opacity-20 group-hover:opacity-40 blur-md transition-all duration-700 group-hover:scale-125`} />
-          
-          {/* Icon Background */}
-          <div className={`relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} shadow-elevation-3 group-hover:shadow-elevation-4 transition-all duration-700 group-hover:scale-110 group-hover:rotate-3`}>
-            <item.icon className="h-10 w-10 text-white drop-shadow-lg" />
-          </div>
+        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} mb-8 shadow-elevation-2 group-hover:shadow-glow-primary transition-all duration-700 group-hover:scale-110 group-hover:rotate-6`}>
+          <item.icon className="h-10 w-10 text-white transition-transform duration-700 group-hover:scale-110" />
         </div>
-        
-        {/* Text Content with Enhanced Typography */}
-        <h3 className="text-xl font-bold mb-3 text-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
-          {item.title}
-        </h3>
-        <p className="text-base text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-500">
-          {item.description}
-        </p>
+        <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-500">{item.title}</h3>
+        <p className="text-muted-foreground leading-relaxed text-sm group-hover:text-foreground transition-colors duration-500">{item.description}</p>
       </CardContent>
-      
-      {/* Lift Effect Shadow */}
-      <div className="absolute inset-0 shadow-elevation-2 group-hover:shadow-elevation-4 transition-shadow duration-700 rounded-lg pointer-events-none" />
     </Card>
   );
 }

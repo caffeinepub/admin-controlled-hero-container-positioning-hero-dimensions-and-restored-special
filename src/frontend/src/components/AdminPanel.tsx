@@ -8,6 +8,7 @@ import ContentManager from './admin/ContentManager';
 import HeroThemeManager from './admin/HeroThemeManager';
 import ReviewsManager from './admin/ReviewsManager';
 import FooterManager from './admin/FooterManager';
+import TextFormattingManager from './admin/TextFormattingManager';
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -28,7 +29,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 
         <Tabs defaultValue="content" className="w-full">
           <div className="mb-8 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
-            <TabsList className="grid w-full grid-cols-7 min-w-[700px] md:min-w-0">
+            <TabsList className="grid w-full grid-cols-8 min-w-[800px] md:min-w-0">
               <TabsTrigger value="content" className="text-xs sm:text-sm px-2 sm:px-4">
                 Content
               </TabsTrigger>
@@ -49,6 +50,9 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
               </TabsTrigger>
               <TabsTrigger value="footer" className="text-xs sm:text-sm px-2 sm:px-4">
                 Footer
+              </TabsTrigger>
+              <TabsTrigger value="text-formatting" className="text-xs sm:text-sm px-2 sm:px-4">
+                Text Format
               </TabsTrigger>
             </TabsList>
           </div>
@@ -79,6 +83,10 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 
           <TabsContent value="footer">
             <FooterManager />
+          </TabsContent>
+
+          <TabsContent value="text-formatting">
+            <TextFormattingManager />
           </TabsContent>
         </Tabs>
       </div>

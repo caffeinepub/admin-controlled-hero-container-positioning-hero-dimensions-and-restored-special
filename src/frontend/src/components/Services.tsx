@@ -1,12 +1,14 @@
-import { useGetAllServices, useIsCallerAdmin } from '../hooks/useQueries';
+import { useGetAllServices, useIsCallerAdmin, useGetHomepageTextFormatting } from '../hooks/useQueries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Activity, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import type { TextFormattingBundle } from '../backend';
 
 export default function Services() {
   const { data: services, isLoading: servicesLoading, error: servicesError } = useGetAllServices();
   const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
+  const { data: textFormatting } = useGetHomepageTextFormatting();
 
   const hasServices = services && services.length > 0;
   const isLoading = servicesLoading || adminLoading;
@@ -18,6 +20,21 @@ export default function Services() {
     'from-success to-success/70',
     'from-warning to-warning/70',
   ];
+
+  // Text formatting styles
+  const getFormattingStyle = (bundle: TextFormattingBundle | undefined) => {
+    if (!bundle) return {};
+    return {
+      fontSize: `${Number(bundle.fontSize)}px`,
+      fontFamily: bundle.fontFamily,
+      fontWeight: bundle.fontWeight,
+      letterSpacing: `${Number(bundle.letterSpacing) / 100}em`,
+      textTransform: bundle.textTransform as any,
+    };
+  };
+
+  const headingStyle = getFormattingStyle(textFormatting?.servicesHeading);
+  const bodyStyle = getFormattingStyle(textFormatting?.servicesBody);
 
   if (isLoading) {
     return (
@@ -97,11 +114,21 @@ export default function Services() {
                     <div className={`flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br ${gradients[index % gradients.length]} text-white font-bold text-lg shadow-elevation-2 group-hover:scale-110 group-hover:shadow-glow-primary transition-all duration-500`}>
                       {index + 1}
                     </div>
-                    <span className="leading-tight font-bold text-foreground group-hover:text-primary transition-colors">{service.name}</span>
+                    <span 
+                      className="leading-tight font-bold text-foreground group-hover:text-primary transition-colors"
+                      style={headingStyle}
+                    >
+                      {service.name}
+                    </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed text-base">{service.description}</p>
+                  <p 
+                    className="text-muted-foreground leading-relaxed text-base"
+                    style={bodyStyle}
+                  >
+                    {service.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}

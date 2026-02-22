@@ -1,53 +1,159 @@
 {
   "kind": "build_request",
-  "title": "Revert to Version 59 and Fix Footer Settings Error",
-  "priority": "high",
+  "title": "Add text formatting controls in admin panel for homepage sections",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Revert all code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
-      "target": "both",
+      "text": "Create a new 'Text Formatting' section in the admin panel as a separate tab alongside existing sections (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-revert"
+          "msg-latest"
         ],
         "quotes": [
-          "Revert fully to version 59"
+          "Create a saparate section for text formarting in admin panel"
         ]
       },
       "acceptanceCriteria": [
-        "All frontend and backend code matches Version 59 state",
-        "Application functions as it did in Version 59",
-        "No Version 60 changes remain in the codebase"
+        "A new tab labeled 'Text Formatting' appears in the AdminPanel component",
+        "The tab is accessible alongside other existing admin tabs",
+        "Clicking the tab displays the text formatting controls"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Fix the error that appears when opening the footer settings in the admin panel",
-      "target": "frontend",
+      "text": "Add backend storage for text formatting settings that stores font size and letter formatting (font family, font weight, letter spacing, text transform) separately for headings and body text across homepage sections: hero, overview/about, services, and footer",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-revert"
+          "msg-latest"
         ],
         "quotes": [
-          "Fix the error which appears after opening the footer sertings in admin panel"
+          "adjust font size and letter formatting of every text on the homepage",
+          "category wise adjustment possible like hero section, about, services, footer"
         ]
       },
       "acceptanceCriteria": [
-        "Footer settings tab in admin panel opens without errors",
-        "No console errors appear when accessing footer settings",
-        "All footer management functionality works correctly",
-        "FooterManager component renders and operates properly"
+        "Backend type defines text formatting settings with separate configurations for headings and body text",
+        "Settings are organized by section: hero, overview/about, services, footer",
+        "Each section stores font size, font family, font weight, letter spacing, and text transform",
+        "Query and mutation methods exist to retrieve and update text formatting settings"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create TextFormattingManager admin component with section-based controls allowing independent adjustment of font size, font family, font weight, letter spacing, and text transform for both headings and body text in each homepage section (hero, overview/about, services, footer)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "adjust font size and letter formatting",
+          "It will apply to all headings and body saparately and category wise adjustment possible"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Component displays separate subsections for hero, overview/about, services, and footer",
+        "Each subsection has separate controls for 'Headings' and 'Body Text'",
+        "Controls include inputs for font size (px), font family dropdown, font weight dropdown, letter spacing (em), and text transform options",
+        "Changes can be previewed and saved per section",
+        "A save button persists all formatting changes to the backend"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Apply stored text formatting settings to Hero component's text elements, using heading settings for headline and body settings for subtext, without affecting blog pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "every text on the homepage not blog page",
+          "like hero section"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hero headline applies heading formatting from hero section settings",
+        "Hero subtext applies body formatting from hero section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Apply stored text formatting settings to Overview/About components' text elements, using heading settings for section titles and body settings for description text, without affecting blog pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "every text on the homepage not blog page",
+          "about"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Overview and About section headings apply heading formatting from overview/about section settings",
+        "Overview and About body text applies body formatting from overview/about section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply stored text formatting settings to Services component's text elements, using heading settings for service titles and body settings for service descriptions, without affecting blog pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "every text on the homepage not blog page",
+          "services"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Service card titles apply heading formatting from services section settings",
+        "Service card descriptions apply body formatting from services section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Apply stored text formatting settings to Footer component's text elements, using heading settings for section titles and body settings for footer content text, without affecting blog pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "every text on the homepage not blog page",
+          "footer"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer section headings apply heading formatting from footer section settings",
+        "Footer body text (contact info, links, copyright) applies body formatting from footer section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
       ]
     }
   ],
   "constraints": [
-    "Must restore exact Version 59 code state before applying any fixes",
-    "Fix must not reintroduce any issues that were resolved in Version 60"
+    "Text formatting changes must not affect blog page content",
+    "Formatting settings must be stored in the backend for persistence across sessions",
+    "Each homepage section (hero, overview/about, services, footer) must have independent formatting controls",
+    "Headings and body text within each section must have separate formatting options"
   ],
   "nonGoals": [
-    "Adding new features beyond the Version 59 state",
-    "Modifying functionality that was working correctly in Version 59"
+    "Formatting controls for blog pages",
+    "Formatting controls for header/navigation elements",
+    "Individual element-level formatting (formatting applies to all headings or all body text within a section)",
+    "Advanced typography features like line height, text decoration, or text shadow"
   ],
   "imageRequirements": {
     "required": [],

@@ -1,93 +1,117 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Revert to Version 59 and Fix Footer Settings Error",
+  "title": "Add text formatting controls in admin panel for homepage sections",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Revert all frontend code changes to match Version 59 exactly, restoring the previous working state before Version 60 was deployed",
+      "summary": "Create a new 'Text Formatting' tab in the admin panel alongside existing sections",
       "acceptanceCriteria": [
-        "All frontend code matches Version 59 state",
-        "Application functions as it did in Version 59",
-        "No Version 60 changes remain in the frontend codebase"
+        "A new tab labeled 'Text Formatting' appears in the AdminPanel component",
+        "The tab is accessible alongside other existing admin tabs",
+        "Clicking the tab displays the text formatting controls"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the main application component including routing, authentication flow, and admin panel rendering logic"
-        },
-        {
-          "path": "frontend/src/components/Hero.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the hero section including layout, styling, effects integration, and content rendering"
-        },
-        {
-          "path": "frontend/src/components/Header.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the header component including navigation, authentication controls, and routing logic"
-        },
-        {
-          "path": "frontend/src/components/Footer.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the footer component including content rendering, social media links, and admin editing capabilities"
-        },
-        {
-          "path": "frontend/src/components/admin/FooterManager.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the footer management interface including form handling, section reordering, and save functionality"
-        },
-        {
-          "path": "frontend/src/components/admin/ContentManager.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the content management interface"
-        },
-        {
-          "path": "frontend/src/components/admin/HeroThemeManager.tsx",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the hero theme configuration interface"
-        },
-        {
           "path": "frontend/src/components/AdminPanel.tsx",
           "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of the admin panel container including tab navigation and manager component integration"
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of React Query hooks including query definitions and mutation handlers"
-        },
-        {
-          "path": "frontend/src/utils/heroThemeDefaults.ts",
-          "operation": "modify",
-          "description": "Revert all changes made in Version 60 to restore exact Version 59 state of hero theme utility functions"
+          "description": "Add a new tab labeled 'Text Formatting' to the existing tab list in AdminPanel. Insert it after the existing tabs (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer) and wire it to display the TextFormattingManager component when selected."
         }
       ]
     },
     {
-      "id": "REQ-2",
-      "summary": "Fix the error that appears when opening the footer settings in the admin panel",
+      "id": "REQ-3",
+      "summary": "Create TextFormattingManager admin component with section-based controls for font size, font family, font weight, letter spacing, and text transform",
       "acceptanceCriteria": [
-        "Footer settings tab in admin panel opens without errors",
-        "No console errors appear when accessing footer settings",
-        "All footer management functionality works correctly",
-        "FooterManager component renders and operates properly"
+        "Component displays separate subsections for hero, overview/about, services, and footer",
+        "Each subsection has separate controls for 'Headings' and 'Body Text'",
+        "Controls include inputs for font size (px), font family dropdown, font weight dropdown, letter spacing (em), and text transform options",
+        "Changes can be previewed and saved per section",
+        "A save button persists all formatting changes to the backend"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/admin/FooterManager.tsx",
-          "operation": "modify",
-          "description": "Debug and fix the error occurring when the footer settings tab is opened. Review component initialization, state management, data fetching hooks, and form field rendering to identify the root cause. Ensure all footer content properties are properly handled with null checks and default values. Fix any issues with array manipulation, drag-and-drop handlers, or mutation callbacks that may cause runtime errors"
+          "path": "frontend/src/components/admin/TextFormattingManager.tsx",
+          "operation": "create",
+          "description": "Create a new admin component that fetches the current HomepageTextFormatting using the getHomepageTextFormatting backend method. Display four subsections: 'Hero Section', 'Overview/About Section', 'Services Section', and 'Footer Section'. For each subsection, provide two groups of controls: 'Headings' and 'Body Text'. Each group includes input fields for font size (number input in px), font family (dropdown with common web fonts like Arial, Helvetica, Georgia, Times New Roman, Courier New, Verdana, etc.), font weight (dropdown with 'normal' and 'bold' options), letter spacing (number input in em), and text transform (dropdown with 'none', 'uppercase', 'lowercase', 'capitalize' options). Map the subsections to the backend fields: heroHeading, heroBody, overviewHeading, overviewBody, servicesHeading, servicesBody, footerHeading, footerBody. Include a save button that calls updateHomepageTextFormatting mutation with the modified HomepageTextFormatting object. Display loading states and error handling."
         },
         {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Review and fix the useFooterContent query hook to ensure it properly handles loading states, error states, and data transformations. Verify that the query returns data in the expected format for the FooterManager component and that all required fields are present with appropriate fallback values"
+          "description": "Add two new hooks: useGetHomepageTextFormatting (query hook that calls actor.getHomepageTextFormatting) and useUpdateHomepageTextFormatting (mutation hook that calls actor.updateHomepageTextFormatting and invalidates the 'homepageTextFormatting' query key on success). Follow the existing pattern used for other query and mutation hooks in the file."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Apply stored text formatting settings to Hero component's text elements",
+      "acceptanceCriteria": [
+        "Hero headline applies heading formatting from hero section settings",
+        "Hero subtext applies body formatting from hero section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Hero.tsx",
+          "operation": "modify",
+          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply heroHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the headline element using inline styles. Apply heroBody formatting to the subtext element using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage, not on blog pages."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Apply stored text formatting settings to Overview/About components' text elements",
+      "acceptanceCriteria": [
+        "Overview and About section headings apply heading formatting from overview/about section settings",
+        "Overview and About body text applies body formatting from overview/about section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Overview.tsx",
+          "operation": "modify",
+          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply overviewHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the section heading element using inline styles. Apply overviewBody formatting to the content text elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
         },
+        {
+          "path": "frontend/src/components/About.tsx",
+          "operation": "modify",
+          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply overviewHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the section heading element using inline styles. Apply overviewBody formatting to the description text elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply stored text formatting settings to Services component's text elements",
+      "acceptanceCriteria": [
+        "Service card titles apply heading formatting from services section settings",
+        "Service card descriptions apply body formatting from services section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Services.tsx",
+          "operation": "modify",
+          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply servicesHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the service title elements in each service card using inline styles. Apply servicesBody formatting to the service description elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Apply stored text formatting settings to Footer component's text elements",
+      "acceptanceCriteria": [
+        "Footer section headings apply heading formatting from footer section settings",
+        "Footer body text (contact info, links, copyright) applies body formatting from footer section settings",
+        "Formatting updates dynamically when settings change",
+        "Blog pages remain unaffected"
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Review footer content data consumption to ensure consistency with FooterManager expectations. Verify that the component properly handles all footer content properties and that any shared utilities or type definitions are correctly implemented"
+          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply footerHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to all footer section heading elements using inline styles. Apply footerBody formatting to footer body text elements including contact info, links, and copyright text using inline styles. Ensure the formatting is applied dynamically when the query data updates. The Footer component appears on all pages, but the text formatting should only affect the visual presentation without disrupting blog page layouts."
         }
       ]
     }

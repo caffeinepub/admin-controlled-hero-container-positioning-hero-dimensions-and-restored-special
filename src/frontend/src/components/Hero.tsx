@@ -1,4 +1,4 @@
-import { useIsCallerAdmin, useGetWebsiteContent, useGetHeroBackgroundImage, useGetHeroSectionTheme } from '../hooks/useQueries';
+import { useIsCallerAdmin, useGetWebsiteContent, useGetHeroBackgroundImage, useGetHeroSectionTheme, useGetHomepageTextFormatting } from '../hooks/useQueries';
 import { useHeroLayoutPreset } from '../hooks/useHeroLayoutPreset';
 import { Skeleton } from '@/components/ui/skeleton';
 import EditableImage from './EditableImage';
@@ -7,12 +7,14 @@ import HeroMultiEffectsLayer from './hero/HeroMultiEffectsLayer';
 import { Sparkles } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { normalizeHeroTheme, getEffectiveAreaDimensions, getEffectiveContentPosition, isManualPositioningEnabled } from '../utils/heroThemeDefaults';
+import type { TextFormattingBundle } from '../backend';
 
 export default function Hero() {
   const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
   const { data: websiteContent, isLoading: contentLoading } = useGetWebsiteContent();
   const { data: heroBackground, isLoading: backgroundLoading } = useGetHeroBackgroundImage();
   const { data: rawHeroTheme } = useGetHeroSectionTheme();
+  const { data: textFormatting } = useGetHomepageTextFormatting();
   const { theme } = useTheme();
 
   const heroTheme = normalizeHeroTheme(rawHeroTheme ?? null);
@@ -126,6 +128,21 @@ export default function Hero() {
   // Fallback background when no image exists
   const hasFallbackBackground = !backgroundImageUrl;
 
+  // Text formatting styles
+  const getFormattingStyle = (bundle: TextFormattingBundle | undefined) => {
+    if (!bundle) return {};
+    return {
+      fontSize: `${Number(bundle.fontSize)}px`,
+      fontFamily: bundle.fontFamily,
+      fontWeight: bundle.fontWeight,
+      letterSpacing: `${Number(bundle.letterSpacing) / 100}em`,
+      textTransform: bundle.textTransform as any,
+    };
+  };
+
+  const headlineStyle = getFormattingStyle(textFormatting?.heroHeading);
+  const bodyStyle = getFormattingStyle(textFormatting?.heroBody);
+
   return (
     <section 
       className={`relative overflow-hidden flex items-center ${verticalClass}`}
@@ -232,6 +249,7 @@ export default function Hero() {
                         content={headline}
                         isAdmin={isAdmin ?? false}
                         className={`${textSizes.headline} font-extrabold tracking-tight leading-tight mb-0 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg`}
+                        style={headlineStyle}
                       />
                     </div>
                   )}
@@ -249,6 +267,7 @@ export default function Hero() {
                         content={subtext}
                         isAdmin={isAdmin ?? false}
                         className={`${textSizes.subtext} text-foreground/90 dark:text-foreground/80 leading-relaxed ${horizontalAlignment === 'center' ? 'max-w-3xl mx-auto' : 'max-w-3xl'} font-medium drop-shadow-md`}
+                        style={bodyStyle}
                       />
                     </div>
                   )}

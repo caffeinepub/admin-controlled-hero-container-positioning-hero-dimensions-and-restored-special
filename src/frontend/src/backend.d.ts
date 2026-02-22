@@ -120,6 +120,13 @@ export interface SocialMediaLink {
     iconSize: bigint;
     isVisible: boolean;
 }
+export interface TextFormattingBundle {
+    fontFamily: string;
+    fontWeight: Variant_normal_bold;
+    fontSize: bigint;
+    letterSpacing: bigint;
+    textTransform: Variant_none_lowercase_capitalize_uppercase;
+}
 export interface ParticleEffect {
     enabled: boolean;
     speed: EffectSpeed;
@@ -172,6 +179,16 @@ export interface DoctorCredentials {
     qualifications: string;
     achievements: string;
     specializations: string;
+}
+export interface HomepageTextFormatting {
+    heroHeading: TextFormattingBundle;
+    footerHeading: TextFormattingBundle;
+    overviewBody: TextFormattingBundle;
+    heroBody: TextFormattingBundle;
+    overviewHeading: TextFormattingBundle;
+    servicesHeading: TextFormattingBundle;
+    servicesBody: TextFormattingBundle;
+    footerBody: TextFormattingBundle;
 }
 export interface Review {
     id: string;
@@ -358,6 +375,16 @@ export enum Variant_magenta_blue_teal {
     blue = "blue",
     teal = "teal"
 }
+export enum Variant_none_lowercase_capitalize_uppercase {
+    none = "none",
+    lowercase = "lowercase",
+    capitalize = "capitalize",
+    uppercase = "uppercase"
+}
+export enum Variant_normal_bold {
+    normal = "normal",
+    bold = "bold"
+}
 export enum Variant_pop_fade_none_slideIn_expand {
     pop = "pop",
     fade = "fade",
@@ -441,6 +468,7 @@ export interface backendInterface {
         standard: ExternalBlob;
     } | null>;
     getHeroSectionTheme(): Promise<HeroSectionTheme>;
+    getHomepageTextFormatting(): Promise<HomepageTextFormatting>;
     getImage(id: string): Promise<WebsiteImage | null>;
     getReviewSettings(): Promise<ReviewsPanelSettings>;
     getSortedSocialMediaLinks(): Promise<Array<SocialMediaLink>>;
@@ -454,6 +482,7 @@ export interface backendInterface {
     updateFooterContent(content: FooterContent): Promise<void>;
     updateFooterSectionOrder(newOrder: Array<bigint>): Promise<void>;
     updateHeroSectionTheme(theme: HeroSectionTheme): Promise<void>;
+    updateHomepageTextFormatting(formatting: HomepageTextFormatting): Promise<void>;
     updateImage(image: WebsiteImage): Promise<void>;
     updateReview(review: Review): Promise<void>;
     updateReviewSettings(settings: ReviewsPanelSettings): Promise<void>;

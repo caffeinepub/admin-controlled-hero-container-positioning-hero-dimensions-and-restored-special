@@ -14,6 +14,7 @@ import type {
   ReviewsPanelSettings,
   BlogPost,
   Config,
+  HomepageTextFormatting,
 } from '../backend';
 
 // ===== User Profile Queries =====
@@ -603,6 +604,35 @@ export function useDeleteBlogPost() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['blogPosts'] });
+    },
+  });
+}
+
+// ===== Homepage Text Formatting Queries =====
+export function useGetHomepageTextFormatting() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<HomepageTextFormatting>({
+    queryKey: ['homepageTextFormatting'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getHomepageTextFormatting();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useUpdateHomepageTextFormatting() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (formatting: HomepageTextFormatting) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateHomepageTextFormatting(formatting);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['homepageTextFormatting'] });
     },
   });
 }

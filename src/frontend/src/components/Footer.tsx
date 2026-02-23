@@ -1,96 +1,43 @@
-import { useGetFooterContent, useGetSortedSocialMediaLinks, useIsCallerAdmin, useGetHeroSectionTheme, useGetHomepageTextFormatting } from '../hooks/useQueries';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import EditableFooterContent from './EditableFooterContent';
+import { useGetFooterContent, useGetConfig, useIsCallerAdmin } from '../hooks/useQueries';
 import { navigationSections } from './Header';
-import { SiFacebook, SiX, SiInstagram, SiLinkedin, SiYoutube } from 'react-icons/si';
-import { Heart, MapPin, Phone, Mail, Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import HeroMultiEffectsLayer from './hero/HeroMultiEffectsLayer';
-import type { TextFormattingBundle } from '../backend';
+import { SiFacebook, SiX, SiLinkedin, SiInstagram } from 'react-icons/si';
+import { Heart } from 'lucide-react';
+import EditableFooterContent from './EditableFooterContent';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Footer() {
-  const { data: footerContent, isLoading: contentLoading, error: contentError } = useGetFooterContent();
-  const { data: socialLinks, isLoading: linksLoading, error: linksError } = useGetSortedSocialMediaLinks();
-  const { data: isAdmin } = useIsCallerAdmin();
-  const { data: heroTheme, isLoading: themeLoading } = useGetHeroSectionTheme();
-  const { data: textFormatting } = useGetHomepageTextFormatting();
-  const [editingQuickLinks, setEditingQuickLinks] = useState(false);
-  const [editingSocialMedia, setEditingSocialMedia] = useState(false);
+  const { data: footerContent, isLoading: footerLoading } = useGetFooterContent();
+  const { data: config } = useGetConfig();
+  const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
 
-  const isLoading = contentLoading || linksLoading;
-  const hasError = contentError || linksError;
+  const isLoading = footerLoading || adminLoading;
 
-  const contact = footerContent?.contact;
-  const copyright = footerContent?.copyright ?? '';
-  const customSections = footerContent?.sections ?? [];
+  const currentYear = new Date().getFullYear();
+  const appIdentifier = typeof window !== 'undefined' 
+    ? encodeURIComponent(window.location.hostname) 
+    : 'unknown-app';
+  const caffeineUrl = `https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${appIdentifier}`;
 
-  const socialIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    facebook: SiFacebook,
-    x: SiX,
-    twitter: SiX,
-    instagram: SiInstagram,
-    linkedin: SiLinkedin,
-    youtube: SiYoutube,
+  const socialIcons: Record<string, any> = {
+    Facebook: SiFacebook,
+    X: SiX,
+    LinkedIn: SiLinkedin,
+    Instagram: SiInstagram,
   };
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const navigateToBlogs = () => {
-    window.location.hash = '#/blogs';
-  };
-
-  const handleQuickLinkClick = (url: string) => {
-    if (url.startsWith('#')) {
-      const sectionId = url.substring(1);
-      const section = navigationSections.find(s => s.id === sectionId);
-      if (section) {
-        if (section.type === 'route') {
-          navigateToBlogs();
-        } else {
-          scrollToSection(sectionId);
-        }
-      }
-    } else {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  // Sort sections by order field
-  const sortedSections = [...customSections].sort((a, b) => Number(a.order) - Number(b.order));
-
-  // Text formatting styles
-  const getFormattingStyle = (bundle: TextFormattingBundle | undefined) => {
-    if (!bundle) return {};
-    return {
-      fontSize: `${Number(bundle.fontSize)}px`,
-      fontFamily: bundle.fontFamily,
-      fontWeight: bundle.fontWeight,
-      letterSpacing: `${Number(bundle.letterSpacing) / 100}em`,
-      textTransform: bundle.textTransform as any,
-    };
-  };
-
-  const headingStyle = getFormattingStyle(textFormatting?.footerHeading);
-  const bodyStyle = getFormattingStyle(textFormatting?.footerBody);
 
   if (isLoading) {
     return (
-      <footer className="relative bg-gradient-to-br from-background via-muted/30 to-background border-t overflow-hidden">
-        <div className="container py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="relative bg-gradient-to-br from-muted/50 via-background to-muted/30 border-t border-border/50 backdrop-blur-xl overflow-hidden">
+        <div className="container py-16 md:py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="space-y-4">
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
+              <div key={i}>
+                <Skeleton className="h-6 w-32 mb-6 rounded-lg bg-foreground/10" />
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full rounded bg-foreground/10" />
+                  <Skeleton className="h-4 w-3/4 rounded bg-foreground/10" />
+                  <Skeleton className="h-4 w-5/6 rounded bg-foreground/10" />
+                </div>
               </div>
             ))}
           </div>
@@ -99,201 +46,100 @@ export default function Footer() {
     );
   }
 
-  if (hasError) {
-    return (
-      <footer className="bg-muted/30 border-t py-8">
-        <div className="container">
-          <Alert variant="destructive">
-            <AlertDescription>Failed to load footer content.</AlertDescription>
-          </Alert>
-        </div>
-      </footer>
-    );
-  }
+  const contact = footerContent?.contact;
+  const quickLinks = footerContent?.quickLinks ?? [];
+  const sections = footerContent?.sections ?? [];
+  const copyright = footerContent?.copyright ?? '';
 
-  const visibleSocialLinks = socialLinks?.filter(link => link.isVisible) ?? [];
+  const sortedSections = [...sections].sort((a, b) => Number(a.order) - Number(b.order));
 
   return (
-    <footer className="relative bg-gradient-to-br from-background via-muted/30 to-background border-t overflow-hidden">
-      {/* Background Effects Layer - matching hero section */}
-      {heroTheme && !themeLoading && (
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <HeroMultiEffectsLayer
-            particleEffect={heroTheme.particleEffect}
-            motionEffect={heroTheme.motionEffect}
-            vectorEffect={heroTheme.vectorEffect}
-            enabled={heroTheme.effectsEnabled}
-          />
-        </div>
-      )}
-
-      <div className="relative z-10 container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Contact Section */}
-          <div className="space-y-4 group">
-            <h3 
-              className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
-              style={headingStyle}
-            >
+    <footer className="relative bg-gradient-to-br from-muted/50 via-background to-muted/30 border-t border-border/50 backdrop-blur-xl overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+      
+      <div className="container relative z-10 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16">
+          {/* Contact Information */}
+          <div className="animate-fade-in">
+            <h3 className="text-lg font-bold mb-6 text-foreground">
               Contact
             </h3>
-            <div className="space-y-3 text-sm text-muted-foreground" style={bodyStyle}>
-              {contact?.address && (
-                <div className="flex items-start gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
-                  <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
-                  <EditableFooterContent
-                    content={contact.address}
-                    field="address"
-                    isAdmin={!!isAdmin}
-                  />
-                </div>
-              )}
-              {contact?.phone && (
-                <div className="flex items-center gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
-                  <Phone className="h-4 w-4 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
-                  <EditableFooterContent
-                    content={contact.phone}
-                    field="phone"
-                    isAdmin={!!isAdmin}
-                  />
-                </div>
-              )}
-              {contact?.email && (
-                <div className="flex items-center gap-2 transition-all duration-300 hover:translate-x-2 hover:text-primary group/item">
-                  <Mail className="h-4 w-4 flex-shrink-0 transition-all duration-300 group-hover/item:scale-110 group-hover/item:text-primary" />
-                  <EditableFooterContent
-                    content={contact.email}
-                    field="email"
-                    isAdmin={!!isAdmin}
-                  />
-                </div>
-              )}
+            <div className="space-y-3 text-muted-foreground">
+              <EditableFooterContent
+                field="address"
+                content={contact?.address ?? ''}
+                isAdmin={isAdmin ?? false}
+              />
+              <EditableFooterContent
+                field="phone"
+                content={contact?.phone ?? ''}
+                isAdmin={isAdmin ?? false}
+              />
+              <EditableFooterContent
+                field="email"
+                content={contact?.email ?? ''}
+                isAdmin={isAdmin ?? false}
+              />
             </div>
           </div>
 
-          {/* Quick Links Section */}
-          <div className="space-y-4 group">
-            <div className="flex items-center justify-between">
-              <h3 
-                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
-                style={headingStyle}
-              >
-                Quick Links
-              </h3>
-              {isAdmin && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:text-primary"
-                  onClick={() => setEditingQuickLinks(!editingQuickLinks)}
-                >
-                  <Pencil className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-            <ul className="space-y-2 text-sm" style={bodyStyle}>
-              {footerContent?.quickLinks && footerContent.quickLinks.length > 0 ? (
-                footerContent.quickLinks.map((link, index) => (
-                  <li key={index}>
-                    <button
-                      onClick={() => handleQuickLinkClick(link.url)}
-                      className="text-muted-foreground hover:text-primary transition-all duration-300 text-left hover:translate-x-2 inline-block hover:shadow-glow-primary hover:scale-105"
-                    >
-                      {link.name}
-                    </button>
-                  </li>
-                ))
-              ) : (
-                <li className="text-muted-foreground italic">No quick links available</li>
-              )}
+          {/* Quick Links */}
+          <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+            <h3 className="text-lg font-bold mb-6 text-foreground">
+              Quick Links
+            </h3>
+            <ul className="space-y-3">
+              {navigationSections.map((section) => (
+                <li key={section.id}>
+                  <a
+                    href={section.type === 'route' ? '#/blogs' : `#${section.id}`}
+                    className="text-muted-foreground hover:text-primary transition-colors duration-300 inline-block hover:translate-x-1 transform"
+                  >
+                    {section.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Custom Sections */}
-          {sortedSections.map((section, index) => (
-            <div key={index} className="space-y-4 group">
-              <h3 
-                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
-                style={headingStyle}
-              >
-                {section.title}
+          {/* Custom Sections - Display first 2 sections only */}
+          {sortedSections.slice(0, 2).map((section, index) => (
+            <div 
+              key={index} 
+              className="animate-fade-in"
+              style={{ animationDelay: `${(index + 2) * 100}ms` }}
+            >
+              <h3 className="text-lg font-bold mb-6 text-foreground">
+                {section.title || 'Section'}
               </h3>
-              <div 
-                className="text-sm text-muted-foreground whitespace-pre-line transition-all duration-300 hover:text-foreground"
-                style={bodyStyle}
-              >
-                {section.content}
+              <div className="text-muted-foreground leading-relaxed">
+                {section.content || (isAdmin ? 'Click edit in admin panel to add content' : '')}
               </div>
             </div>
           ))}
-
-          {/* Social Media Section */}
-          <div className="space-y-4 group">
-            <div className="flex items-center justify-between">
-              <h3 
-                className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
-                style={headingStyle}
-              >
-                Follow Us
-              </h3>
-              {isAdmin && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 transition-all duration-300 hover:scale-110 hover:text-primary"
-                  onClick={() => setEditingSocialMedia(!editingSocialMedia)}
-                >
-                  <Pencil className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-            {visibleSocialLinks.length > 0 ? (
-              <div className="flex gap-4">
-                {visibleSocialLinks.map((link) => {
-                  const IconComponent = socialIconMap[link.platform.toLowerCase()];
-                  return (
-                    <a
-                      key={link.platform}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-glow-primary rounded-full p-1"
-                      aria-label={link.displayName}
-                    >
-                      {IconComponent ? (
-                        <IconComponent className="h-5 w-5 transition-all duration-300" />
-                      ) : (
-                        <span className="text-sm">{link.displayName}</span>
-                      )}
-                    </a>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground italic">No social media links available</p>
-            )}
-          </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border/50">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2 transition-all duration-300 hover:text-foreground" style={bodyStyle}>
+        <div className="mt-16 pt-8 border-t border-border/50">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-muted-foreground text-sm text-center md:text-left">
               <EditableFooterContent
-                content={copyright || `© ${new Date().getFullYear()} Dr. Malay Akechan. All rights reserved.`}
                 field="copyright"
-                isAdmin={!!isAdmin}
+                content={copyright || `© ${currentYear} Dr. Malay Akechan. All rights reserved.`}
+                isAdmin={isAdmin ?? false}
               />
             </div>
-            <div className="flex items-center gap-1.5 transition-all duration-300 hover:scale-105">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Built with</span>
-              <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
+              <Heart className="h-4 w-4 text-destructive fill-destructive animate-pulse" />
               <span>using</span>
               <a
-                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+                href={caffeineUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium hover:text-primary transition-all duration-300 hover:shadow-glow-primary hover:scale-110 inline-block"
+                className="font-semibold text-primary hover:text-primary/80 transition-colors duration-300 hover:underline"
               >
                 caffeine.ai
               </a>

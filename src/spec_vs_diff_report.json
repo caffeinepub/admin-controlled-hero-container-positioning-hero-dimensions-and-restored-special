@@ -1,18 +1,43 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T21:34:21.541Z",
-  "summary": "All 7 requirements (REQ-1 through REQ-7) have been implemented. The diff shows backend storage for text formatting settings, a new TextFormattingManager component in the admin panel, integration into AdminPanel as a new tab, and application of formatting settings to all specified components (Hero, Overview, About, Services, Footer). No missing requirements or hallucinated features were identified.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.95,
+  "generatedAt": "2026-02-23T21:39:20.485Z",
+  "summary": "The diff introduces a migration module to handle Version 63 state but does not actually revert the codebase to Version 62. The frontend components retain their Version 62-like static styling (no dynamic text formatting applied), and the AdminPanel removes the text formatting tab. However, the backend still contains Version 63 structures (homepageTextFormatting in migration.mo), and there is no evidence of complete removal of text formatting backend functionality or restoration of Version 62 backend state.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Restore all backend code to the exact state from Version 62, including main.mo with all data structures, functions, and logic as they existed in that version",
+      "reason": "The migration.mo file defines OldActor with homepageTextFormatting structure, indicating Version 63 state is still present in the system. No evidence of backend restoration to Version 62 state—main.mo is truncated and shows current complex structures but no clear Version 62 restoration. The migration module suggests handling Version 63→current state, not reverting to Version 62.",
+      "evidence": [
+        "backend/migration.mo",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Remove all text formatting backend functionality including the getTextFormatting and updateTextFormatting functions, and remove text formatting data structures from the backend state",
+      "reason": "The migration.mo file explicitly defines homepageTextFormatting with all text formatting structures (heroHeading, heroBody, overviewHeading, etc.). This indicates text formatting data structures remain in the backend. No evidence of removal of getTextFormatting/updateTextFormatting functions in the truncated main.mo.",
+      "evidence": [
+        "backend/migration.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Migration module added to handle Version 63 state preservation",
+      "reason": "The BuildRequest explicitly requires removing all Version 63 changes and reverting to Version 62. The migration.mo file is designed to preserve/migrate Version 63 state (homepageTextFormatting), which contradicts the requirement to remove all Version 63 functionality.",
+      "evidence": [
+        "backend/migration.mo"
+      ]
+    }
+  ],
+  "confidence": 0.75,
   "changed_files": [
     "backend/main.mo",
     "backend/migration.mo",
     "frontend-file-summaries.txt",
     "frontend/src/components/About.tsx",
     "frontend/src/components/AdminPanel.tsx",
-    "frontend/src/components/EditableHeroContent.tsx",
     "frontend/src/components/Footer.tsx",
     "frontend/src/components/Hero.tsx",
     "frontend/src/components/Overview.tsx",

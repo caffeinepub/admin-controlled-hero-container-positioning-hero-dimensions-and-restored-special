@@ -2,10 +2,14 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-new-text-formatting-section-in-the-admin-panel-as-a-separate-tab-alongside-existing-sections-content-hero-theme-clinics-services-reviews-social-media-footer",
-      "featureTitle": "Create a new 'Text Formatting' section in the admin panel as a separate tab alongside existing sections (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)",
+      "featureId": "feature-restore-all-frontend-components-styles-and-functionality-to-the-exact-state-from-version-62-removing-any-changes-introduced-in-version-63",
+      "featureTitle": "Restore all frontend components, styles, and functionality to the exact state from Version 62, removing any changes introduced in Version 63",
       "files": [
-        "frontend/src/components/AdminPanel.tsx"
+        "frontend/src/components/About.tsx",
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Hero.tsx",
+        "frontend/src/components/Overview.tsx",
+        "frontend/src/components/Services.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -17,14 +21,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-create-textformattingmanager-admin-component-with-section-based-controls-allowing-independent-adjustment-of-font-size-font-family-font-weight-letter-spacing-and-text-transform-for-both-headings-and-body-text-in-each-homepage-section-hero-overview-about-services-footer",
-      "featureTitle": "Create TextFormattingManager admin component with section-based controls allowing independent adjustment of font size, font family, font weight, letter spacing, and text transform for both headings and body text in each homepage section (hero, overview/about, services, footer)",
+      "featureId": "feature-remove-the-textformattingmanager-component-and-all-text-formatting-controls-that-were-added-in-version-63",
+      "featureTitle": "Remove the TextFormattingManager component and all text formatting controls that were added in Version 63",
       "files": [
+        "frontend/src/components/AdminPanel.tsx",
         "frontend/src/components/admin/TextFormattingManager.tsx",
         "frontend/src/hooks/useQueries.ts"
       ],
@@ -43,50 +48,13 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-apply-stored-text-formatting-settings-to-hero-component-s-text-elements-using-heading-settings-for-headline-and-body-settings-for-subtext-without-affecting-blog-pages",
-      "featureTitle": "Apply stored text formatting settings to Hero component's text elements, using heading settings for headline and body settings for subtext, without affecting blog pages",
-      "files": [
-        "frontend/src/components/Hero.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-stored-text-formatting-settings-to-overview-about-components-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-description-text-without-affecting-blog-pages",
-      "featureTitle": "Apply stored text formatting settings to Overview/About components' text elements, using heading settings for section titles and body settings for description text, without affecting blog pages",
+      "featureId": "feature-remove-text-formatting-props-and-dynamic-styling-from-all-homepage-components-hero-overview-about-services-footer-that-were-modified-in-version-63",
+      "featureTitle": "Remove text formatting props and dynamic styling from all homepage components (Hero, Overview, About, Services, Footer) that were modified in Version 63",
       "files": [
         "frontend/src/components/About.tsx",
-        "frontend/src/components/Overview.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-stored-text-formatting-settings-to-services-component-s-text-elements-using-heading-settings-for-service-titles-and-body-settings-for-service-descriptions-without-affecting-blog-pages",
-      "featureTitle": "Apply stored text formatting settings to Services component's text elements, using heading settings for service titles and body settings for service descriptions, without affecting blog pages",
-      "files": [
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Hero.tsx",
+        "frontend/src/components/Overview.tsx",
         "frontend/src/components/Services.tsx"
       ],
       "components": [
@@ -99,27 +67,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-6"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-stored-text-formatting-settings-to-footer-component-s-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-footer-content-text-without-affecting-blog-pages",
-      "featureTitle": "Apply stored text formatting settings to Footer component's text elements, using heading settings for section titles and body settings for footer content text, without affecting blog pages",
-      "files": [
-        "frontend/src/components/Footer.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
+        "REQ-5"
       ],
       "confidence": "high"
     }

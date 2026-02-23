@@ -10,8 +10,6 @@ import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
 import AccessControl "authorization/access-control";
-
-// Upgrade Persistent Migration
 import Migration "migration";
 (with migration = Migration.run)
 actor {
@@ -20,98 +18,6 @@ actor {
   // Authorization State
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
-
-  // Text Formatting Types
-  public type TextFormattingBundle = {
-    fontSize : Nat;
-    fontFamily : Text;
-    fontWeight : { #normal; #bold };
-    letterSpacing : Nat;
-    textTransform : { #none; #uppercase; #lowercase; #capitalize };
-  };
-
-  public type HomepageTextFormatting = {
-    heroHeading : TextFormattingBundle;
-    heroBody : TextFormattingBundle;
-    overviewHeading : TextFormattingBundle;
-    overviewBody : TextFormattingBundle;
-    servicesHeading : TextFormattingBundle;
-    servicesBody : TextFormattingBundle;
-    footerHeading : TextFormattingBundle;
-    footerBody : TextFormattingBundle;
-  };
-
-  // Persist Homepage Text Formatting
-  var homepageTextFormatting : HomepageTextFormatting = {
-    heroHeading = {
-      fontSize = 32;
-      fontFamily = "Roboto";
-      fontWeight = #bold;
-      letterSpacing = 0;
-      textTransform = #none;
-    };
-    heroBody = {
-      fontSize = 16;
-      fontFamily = "Roboto";
-      fontWeight = #normal;
-      letterSpacing = 0;
-      textTransform = #none;
-    };
-    overviewHeading = {
-      fontSize = 24;
-      fontFamily = "Roboto";
-      fontWeight = #bold;
-      letterSpacing = 0;
-      textTransform = #capitalize;
-    };
-    overviewBody = {
-      fontSize = 14;
-      fontFamily = "Roboto";
-      fontWeight = #normal;
-      letterSpacing = 0;
-      textTransform = #none;
-    };
-    servicesHeading = {
-      fontSize = 24;
-      fontFamily = "Roboto";
-      fontWeight = #bold;
-      letterSpacing = 0;
-      textTransform = #capitalize;
-    };
-    servicesBody = {
-      fontSize = 14;
-      fontFamily = "Roboto";
-      fontWeight = #normal;
-      letterSpacing = 0;
-      textTransform = #none;
-    };
-    footerHeading = {
-      fontSize = 18;
-      fontFamily = "Roboto";
-      fontWeight = #bold;
-      letterSpacing = 0;
-      textTransform = #capitalize;
-    };
-    footerBody = {
-      fontSize = 12;
-      fontFamily = "Roboto";
-      fontWeight = #normal;
-      letterSpacing = 0;
-      textTransform = #none;
-    };
-  };
-
-  // Admin (Admin-Only) Text Formatting Update Function
-  public shared ({ caller }) func updateHomepageTextFormatting(formatting : HomepageTextFormatting) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can update text formatting settings");
-    };
-    homepageTextFormatting := formatting;
-  };
-
-  public query ({ caller }) func getHomepageTextFormatting() : async HomepageTextFormatting {
-    homepageTextFormatting;
-  };
 
   // --- Types ---
   public type ThemePreference = { #light; #dark };

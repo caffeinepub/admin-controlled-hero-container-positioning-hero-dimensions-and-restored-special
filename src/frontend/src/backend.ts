@@ -206,13 +206,6 @@ export interface _CaffeineStorageCreateCertificateResult {
     method: string;
     blob_hash: string;
 }
-export interface TextFormattingBundle {
-    fontFamily: string;
-    fontWeight: Variant_normal_bold;
-    fontSize: bigint;
-    letterSpacing: bigint;
-    textTransform: Variant_none_lowercase_capitalize_uppercase;
-}
 export interface ParticleEffect {
     enabled: boolean;
     speed: EffectSpeed;
@@ -265,16 +258,6 @@ export interface DoctorCredentials {
     qualifications: string;
     achievements: string;
     specializations: string;
-}
-export interface HomepageTextFormatting {
-    heroHeading: TextFormattingBundle;
-    footerHeading: TextFormattingBundle;
-    overviewBody: TextFormattingBundle;
-    heroBody: TextFormattingBundle;
-    overviewHeading: TextFormattingBundle;
-    servicesHeading: TextFormattingBundle;
-    servicesBody: TextFormattingBundle;
-    footerBody: TextFormattingBundle;
 }
 export interface Review {
     id: string;
@@ -461,16 +444,6 @@ export enum Variant_magenta_blue_teal {
     blue = "blue",
     teal = "teal"
 }
-export enum Variant_none_lowercase_capitalize_uppercase {
-    none = "none",
-    lowercase = "lowercase",
-    capitalize = "capitalize",
-    uppercase = "uppercase"
-}
-export enum Variant_normal_bold {
-    normal = "normal",
-    bold = "bold"
-}
 export enum Variant_pop_fade_none_slideIn_expand {
     pop = "pop",
     fade = "fade",
@@ -561,7 +534,6 @@ export interface backendInterface {
         standard: ExternalBlob;
     } | null>;
     getHeroSectionTheme(): Promise<HeroSectionTheme>;
-    getHomepageTextFormatting(): Promise<HomepageTextFormatting>;
     getImage(id: string): Promise<WebsiteImage | null>;
     getReviewSettings(): Promise<ReviewsPanelSettings>;
     getSortedSocialMediaLinks(): Promise<Array<SocialMediaLink>>;
@@ -575,7 +547,6 @@ export interface backendInterface {
     updateFooterContent(content: FooterContent): Promise<void>;
     updateFooterSectionOrder(newOrder: Array<bigint>): Promise<void>;
     updateHeroSectionTheme(theme: HeroSectionTheme): Promise<void>;
-    updateHomepageTextFormatting(formatting: HomepageTextFormatting): Promise<void>;
     updateImage(image: WebsiteImage): Promise<void>;
     updateReview(review: Review): Promise<void>;
     updateReviewSettings(settings: ReviewsPanelSettings): Promise<void>;
@@ -583,7 +554,7 @@ export interface backendInterface {
     updateSocialMediaLink(link: SocialMediaLink): Promise<void>;
     updateWebsiteContent(content: WebsiteContent): Promise<void>;
 }
-import type { AreaDimensions as _AreaDimensions, BlogPost as _BlogPost, Button as _Button, CTARowLayout as _CTARowLayout, Clinic as _Clinic, Color as _Color, ColorAccentScheme as _ColorAccentScheme, ColorAccents as _ColorAccents, ColorVariation as _ColorVariation, DoctorCredentials as _DoctorCredentials, EffectIntensity as _EffectIntensity, EffectSpeed as _EffectSpeed, ExternalBlob as _ExternalBlob, FooterContact as _FooterContact, FooterContent as _FooterContent, FooterLink as _FooterLink, FooterSection as _FooterSection, Glassmorphism as _Glassmorphism, Gradient as _Gradient, HeroLayoutOverride as _HeroLayoutOverride, HeroSection as _HeroSection, HeroSectionTheme as _HeroSectionTheme, HomepageTextFormatting as _HomepageTextFormatting, HorizontalAlignment as _HorizontalAlignment, MaxWidthPreset as _MaxWidthPreset, MotionAmplitude as _MotionAmplitude, MotionEffect as _MotionEffect, MotionEffectType as _MotionEffectType, MotionPattern as _MotionPattern, MotionSpeed as _MotionSpeed, ParticleEffect as _ParticleEffect, ParticleEffectType as _ParticleEffectType, Position as _Position, RevealAnimation as _RevealAnimation, Review as _Review, ReviewColor as _ReviewColor, ReviewContentLayout as _ReviewContentLayout, ReviewDisplayMode as _ReviewDisplayMode, ReviewGlassmorphism as _ReviewGlassmorphism, ReviewGradient as _ReviewGradient, ReviewTransitionType as _ReviewTransitionType, ReviewsPanelSettings as _ReviewsPanelSettings, RichContentElement as _RichContentElement, SocialMediaLink as _SocialMediaLink, Spacing as _Spacing, TextFormattingBundle as _TextFormattingBundle, TextSizePreset as _TextSizePreset, ThemePreference as _ThemePreference, ThemeType as _ThemeType, UserProfile as _UserProfile, UserRole as _UserRole, VectorComplexity as _VectorComplexity, VectorEffect as _VectorEffect, VectorEffectType as _VectorEffectType, VerticalPosition as _VerticalPosition, WebsiteContent as _WebsiteContent, WebsiteImage as _WebsiteImage, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
+import type { AreaDimensions as _AreaDimensions, BlogPost as _BlogPost, Button as _Button, CTARowLayout as _CTARowLayout, Clinic as _Clinic, Color as _Color, ColorAccentScheme as _ColorAccentScheme, ColorAccents as _ColorAccents, ColorVariation as _ColorVariation, DoctorCredentials as _DoctorCredentials, EffectIntensity as _EffectIntensity, EffectSpeed as _EffectSpeed, ExternalBlob as _ExternalBlob, FooterContact as _FooterContact, FooterContent as _FooterContent, FooterLink as _FooterLink, FooterSection as _FooterSection, Glassmorphism as _Glassmorphism, Gradient as _Gradient, HeroLayoutOverride as _HeroLayoutOverride, HeroSection as _HeroSection, HeroSectionTheme as _HeroSectionTheme, HorizontalAlignment as _HorizontalAlignment, MaxWidthPreset as _MaxWidthPreset, MotionAmplitude as _MotionAmplitude, MotionEffect as _MotionEffect, MotionEffectType as _MotionEffectType, MotionPattern as _MotionPattern, MotionSpeed as _MotionSpeed, ParticleEffect as _ParticleEffect, ParticleEffectType as _ParticleEffectType, Position as _Position, RevealAnimation as _RevealAnimation, Review as _Review, ReviewColor as _ReviewColor, ReviewContentLayout as _ReviewContentLayout, ReviewDisplayMode as _ReviewDisplayMode, ReviewGlassmorphism as _ReviewGlassmorphism, ReviewGradient as _ReviewGradient, ReviewTransitionType as _ReviewTransitionType, ReviewsPanelSettings as _ReviewsPanelSettings, RichContentElement as _RichContentElement, SocialMediaLink as _SocialMediaLink, Spacing as _Spacing, TextSizePreset as _TextSizePreset, ThemePreference as _ThemePreference, ThemeType as _ThemeType, UserProfile as _UserProfile, UserRole as _UserRole, VectorComplexity as _VectorComplexity, VectorEffect as _VectorEffect, VectorEffectType as _VectorEffectType, VerticalPosition as _VerticalPosition, WebsiteContent as _WebsiteContent, WebsiteImage as _WebsiteImage, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _caffeineStorageBlobIsLive(arg0: Uint8Array): Promise<boolean> {
@@ -1065,60 +1036,46 @@ export class Backend implements backendInterface {
             return from_candid_HeroSectionTheme_n54(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getHomepageTextFormatting(): Promise<HomepageTextFormatting> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getHomepageTextFormatting();
-                return from_candid_HomepageTextFormatting_n109(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getHomepageTextFormatting();
-            return from_candid_HomepageTextFormatting_n109(this._uploadFile, this._downloadFile, result);
-        }
-    }
     async getImage(arg0: string): Promise<WebsiteImage | null> {
         if (this.processError) {
             try {
                 const result = await this.actor.getImage(arg0);
-                return from_candid_opt_n115(this._uploadFile, this._downloadFile, result);
+                return from_candid_opt_n109(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getImage(arg0);
-            return from_candid_opt_n115(this._uploadFile, this._downloadFile, result);
+            return from_candid_opt_n109(this._uploadFile, this._downloadFile, result);
         }
     }
     async getReviewSettings(): Promise<ReviewsPanelSettings> {
         if (this.processError) {
             try {
                 const result = await this.actor.getReviewSettings();
-                return from_candid_ReviewsPanelSettings_n116(this._uploadFile, this._downloadFile, result);
+                return from_candid_ReviewsPanelSettings_n110(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getReviewSettings();
-            return from_candid_ReviewsPanelSettings_n116(this._uploadFile, this._downloadFile, result);
+            return from_candid_ReviewsPanelSettings_n110(this._uploadFile, this._downloadFile, result);
         }
     }
     async getSortedSocialMediaLinks(): Promise<Array<SocialMediaLink>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getSortedSocialMediaLinks();
-                return from_candid_vec_n134(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n128(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getSortedSocialMediaLinks();
-            return from_candid_vec_n134(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n128(this._uploadFile, this._downloadFile, result);
         }
     }
     async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
@@ -1139,14 +1096,14 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.getWebsiteContent();
-                return from_candid_WebsiteContent_n137(this._uploadFile, this._downloadFile, result);
+                return from_candid_WebsiteContent_n131(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getWebsiteContent();
-            return from_candid_WebsiteContent_n137(this._uploadFile, this._downloadFile, result);
+            return from_candid_WebsiteContent_n131(this._uploadFile, this._downloadFile, result);
         }
     }
     async isCallerAdmin(): Promise<boolean> {
@@ -1208,28 +1165,28 @@ export class Backend implements backendInterface {
     async updateDoctorCredentials(arg0: DoctorCredentials): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateDoctorCredentials(await to_candid_DoctorCredentials_n143(this._uploadFile, this._downloadFile, arg0));
+                const result = await this.actor.updateDoctorCredentials(await to_candid_DoctorCredentials_n137(this._uploadFile, this._downloadFile, arg0));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateDoctorCredentials(await to_candid_DoctorCredentials_n143(this._uploadFile, this._downloadFile, arg0));
+            const result = await this.actor.updateDoctorCredentials(await to_candid_DoctorCredentials_n137(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
     async updateFooterContent(arg0: FooterContent): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateFooterContent(await to_candid_FooterContent_n145(this._uploadFile, this._downloadFile, arg0));
+                const result = await this.actor.updateFooterContent(await to_candid_FooterContent_n139(this._uploadFile, this._downloadFile, arg0));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateFooterContent(await to_candid_FooterContent_n145(this._uploadFile, this._downloadFile, arg0));
+            const result = await this.actor.updateFooterContent(await to_candid_FooterContent_n139(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -1250,28 +1207,14 @@ export class Backend implements backendInterface {
     async updateHeroSectionTheme(arg0: HeroSectionTheme): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateHeroSectionTheme(to_candid_HeroSectionTheme_n147(this._uploadFile, this._downloadFile, arg0));
+                const result = await this.actor.updateHeroSectionTheme(to_candid_HeroSectionTheme_n141(this._uploadFile, this._downloadFile, arg0));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateHeroSectionTheme(to_candid_HeroSectionTheme_n147(this._uploadFile, this._downloadFile, arg0));
-            return result;
-        }
-    }
-    async updateHomepageTextFormatting(arg0: HomepageTextFormatting): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.updateHomepageTextFormatting(to_candid_HomepageTextFormatting_n202(this._uploadFile, this._downloadFile, arg0));
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.updateHomepageTextFormatting(to_candid_HomepageTextFormatting_n202(this._uploadFile, this._downloadFile, arg0));
+            const result = await this.actor.updateHeroSectionTheme(to_candid_HeroSectionTheme_n141(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -1306,14 +1249,14 @@ export class Backend implements backendInterface {
     async updateReviewSettings(arg0: ReviewsPanelSettings): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateReviewSettings(to_candid_ReviewsPanelSettings_n208(this._uploadFile, this._downloadFile, arg0));
+                const result = await this.actor.updateReviewSettings(to_candid_ReviewsPanelSettings_n196(this._uploadFile, this._downloadFile, arg0));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateReviewSettings(to_candid_ReviewsPanelSettings_n208(this._uploadFile, this._downloadFile, arg0));
+            const result = await this.actor.updateReviewSettings(to_candid_ReviewsPanelSettings_n196(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -1348,14 +1291,14 @@ export class Backend implements backendInterface {
     async updateWebsiteContent(arg0: WebsiteContent): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateWebsiteContent(await to_candid_WebsiteContent_n226(this._uploadFile, this._downloadFile, arg0));
+                const result = await this.actor.updateWebsiteContent(await to_candid_WebsiteContent_n214(this._uploadFile, this._downloadFile, arg0));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateWebsiteContent(await to_candid_WebsiteContent_n226(this._uploadFile, this._downloadFile, arg0));
+            const result = await this.actor.updateWebsiteContent(await to_candid_WebsiteContent_n214(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -1402,11 +1345,8 @@ function from_candid_HeroLayoutOverride_n56(_uploadFile: (file: ExternalBlob) =>
 function from_candid_HeroSectionTheme_n54(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HeroSectionTheme): HeroSectionTheme {
     return from_candid_record_n55(_uploadFile, _downloadFile, value);
 }
-function from_candid_HeroSection_n140(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HeroSection): HeroSection {
-    return from_candid_record_n141(_uploadFile, _downloadFile, value);
-}
-function from_candid_HomepageTextFormatting_n109(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HomepageTextFormatting): HomepageTextFormatting {
-    return from_candid_record_n110(_uploadFile, _downloadFile, value);
+function from_candid_HeroSection_n134(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HeroSection): HeroSection {
+    return from_candid_record_n135(_uploadFile, _downloadFile, value);
 }
 function from_candid_HorizontalAlignment_n64(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HorizontalAlignment): HorizontalAlignment {
     return from_candid_variant_n65(_uploadFile, _downloadFile, value);
@@ -1435,46 +1375,43 @@ function from_candid_ParticleEffectType_n95(_uploadFile: (file: ExternalBlob) =>
 function from_candid_ParticleEffect_n92(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ParticleEffect): ParticleEffect {
     return from_candid_record_n93(_uploadFile, _downloadFile, value);
 }
-function from_candid_RevealAnimation_n118(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _RevealAnimation): RevealAnimation {
-    return from_candid_record_n119(_uploadFile, _downloadFile, value);
+function from_candid_RevealAnimation_n112(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _RevealAnimation): RevealAnimation {
+    return from_candid_record_n113(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewContentLayout_n122(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewContentLayout): ReviewContentLayout {
-    return from_candid_record_n123(_uploadFile, _downloadFile, value);
+function from_candid_ReviewContentLayout_n116(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewContentLayout): ReviewContentLayout {
+    return from_candid_record_n117(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewDisplayMode_n126(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewDisplayMode): ReviewDisplayMode {
-    return from_candid_variant_n127(_uploadFile, _downloadFile, value);
+function from_candid_ReviewDisplayMode_n120(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewDisplayMode): ReviewDisplayMode {
+    return from_candid_variant_n121(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewGlassmorphism_n133(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewGlassmorphism): ReviewGlassmorphism {
+function from_candid_ReviewGlassmorphism_n127(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewGlassmorphism): ReviewGlassmorphism {
     return from_candid_record_n77(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewGradient_n130(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewGradient): ReviewGradient {
-    return from_candid_record_n131(_uploadFile, _downloadFile, value);
+function from_candid_ReviewGradient_n124(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewGradient): ReviewGradient {
+    return from_candid_record_n125(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewTransitionType_n128(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewTransitionType): ReviewTransitionType {
-    return from_candid_variant_n129(_uploadFile, _downloadFile, value);
+function from_candid_ReviewTransitionType_n122(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewTransitionType): ReviewTransitionType {
+    return from_candid_variant_n123(_uploadFile, _downloadFile, value);
 }
 async function from_candid_Review_n42(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Review): Promise<Review> {
     return await from_candid_record_n43(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReviewsPanelSettings_n116(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewsPanelSettings): ReviewsPanelSettings {
-    return from_candid_record_n117(_uploadFile, _downloadFile, value);
+function from_candid_ReviewsPanelSettings_n110(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReviewsPanelSettings): ReviewsPanelSettings {
+    return from_candid_record_n111(_uploadFile, _downloadFile, value);
 }
 async function from_candid_RichContentElement_n29(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _RichContentElement): Promise<RichContentElement> {
     return await from_candid_variant_n30(_uploadFile, _downloadFile, value);
 }
-async function from_candid_SocialMediaLink_n135(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SocialMediaLink): Promise<SocialMediaLink> {
-    return await from_candid_record_n136(_uploadFile, _downloadFile, value);
+async function from_candid_SocialMediaLink_n129(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _SocialMediaLink): Promise<SocialMediaLink> {
+    return await from_candid_record_n130(_uploadFile, _downloadFile, value);
 }
 function from_candid_Spacing_n79(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Spacing): Spacing {
     return from_candid_record_n80(_uploadFile, _downloadFile, value);
 }
-function from_candid_TextFormattingBundle_n111(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _TextFormattingBundle): TextFormattingBundle {
-    return from_candid_record_n112(_uploadFile, _downloadFile, value);
-}
 function from_candid_TextSizePreset_n60(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _TextSizePreset): TextSizePreset {
     return from_candid_variant_n61(_uploadFile, _downloadFile, value);
 }
-function from_candid_ThemePreference_n139(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ThemePreference): ThemePreference {
+function from_candid_ThemePreference_n133(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ThemePreference): ThemePreference {
     return from_candid_variant_n74(_uploadFile, _downloadFile, value);
 }
 function from_candid_ThemeType_n71(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ThemeType): ThemeType {
@@ -1495,8 +1432,8 @@ function from_candid_VectorEffect_n101(_uploadFile: (file: ExternalBlob) => Prom
 function from_candid_VerticalPosition_n58(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _VerticalPosition): VerticalPosition {
     return from_candid_variant_n59(_uploadFile, _downloadFile, value);
 }
-async function from_candid_WebsiteContent_n137(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _WebsiteContent): Promise<WebsiteContent> {
-    return await from_candid_record_n138(_uploadFile, _downloadFile, value);
+async function from_candid_WebsiteContent_n131(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _WebsiteContent): Promise<WebsiteContent> {
+    return await from_candid_record_n132(_uploadFile, _downloadFile, value);
 }
 async function from_candid_WebsiteImage_n39(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _WebsiteImage): Promise<WebsiteImage> {
     return await from_candid_record_n40(_uploadFile, _downloadFile, value);
@@ -1504,10 +1441,10 @@ async function from_candid_WebsiteImage_n39(_uploadFile: (file: ExternalBlob) =>
 function from_candid__CaffeineStorageRefillResult_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: __CaffeineStorageRefillResult): _CaffeineStorageRefillResult {
     return from_candid_record_n5(_uploadFile, _downloadFile, value);
 }
-async function from_candid_opt_n115(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_WebsiteImage]): Promise<WebsiteImage | null> {
+async function from_candid_opt_n109(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_WebsiteImage]): Promise<WebsiteImage | null> {
     return value.length === 0 ? null : await from_candid_WebsiteImage_n39(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n142(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Button]): Button | null {
+function from_candid_opt_n136(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Button]): Button | null {
     return value.length === 0 ? null : value[0];
 }
 async function from_candid_opt_n36(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_ExternalBlob]): Promise<ExternalBlob | null> {
@@ -1555,70 +1492,7 @@ function from_candid_record_n102(_uploadFile: (file: ExternalBlob) => Promise<Ui
         colorScheme: from_candid_ColorAccentScheme_n107(_uploadFile, _downloadFile, value.colorScheme)
     };
 }
-function from_candid_record_n110(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    heroHeading: _TextFormattingBundle;
-    footerHeading: _TextFormattingBundle;
-    overviewBody: _TextFormattingBundle;
-    heroBody: _TextFormattingBundle;
-    overviewHeading: _TextFormattingBundle;
-    servicesHeading: _TextFormattingBundle;
-    servicesBody: _TextFormattingBundle;
-    footerBody: _TextFormattingBundle;
-}): {
-    heroHeading: TextFormattingBundle;
-    footerHeading: TextFormattingBundle;
-    overviewBody: TextFormattingBundle;
-    heroBody: TextFormattingBundle;
-    overviewHeading: TextFormattingBundle;
-    servicesHeading: TextFormattingBundle;
-    servicesBody: TextFormattingBundle;
-    footerBody: TextFormattingBundle;
-} {
-    return {
-        heroHeading: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.heroHeading),
-        footerHeading: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.footerHeading),
-        overviewBody: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.overviewBody),
-        heroBody: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.heroBody),
-        overviewHeading: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.overviewHeading),
-        servicesHeading: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.servicesHeading),
-        servicesBody: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.servicesBody),
-        footerBody: from_candid_TextFormattingBundle_n111(_uploadFile, _downloadFile, value.footerBody)
-    };
-}
-function from_candid_record_n112(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    fontFamily: string;
-    fontWeight: {
-        normal: null;
-    } | {
-        bold: null;
-    };
-    fontSize: bigint;
-    letterSpacing: bigint;
-    textTransform: {
-        none: null;
-    } | {
-        lowercase: null;
-    } | {
-        capitalize: null;
-    } | {
-        uppercase: null;
-    };
-}): {
-    fontFamily: string;
-    fontWeight: Variant_normal_bold;
-    fontSize: bigint;
-    letterSpacing: bigint;
-    textTransform: Variant_none_lowercase_capitalize_uppercase;
-} {
-    return {
-        fontFamily: value.fontFamily,
-        fontWeight: from_candid_variant_n113(_uploadFile, _downloadFile, value.fontWeight),
-        fontSize: value.fontSize,
-        letterSpacing: value.letterSpacing,
-        textTransform: from_candid_variant_n114(_uploadFile, _downloadFile, value.textTransform)
-    };
-}
-function from_candid_record_n117(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n111(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     revealAnimation: _RevealAnimation;
     contentLayout: _ReviewContentLayout;
     displayMode: _ReviewDisplayMode;
@@ -1646,21 +1520,21 @@ function from_candid_record_n117(_uploadFile: (file: ExternalBlob) => Promise<Ui
     overlayEffect: ReviewGlassmorphism;
 } {
     return {
-        revealAnimation: from_candid_RevealAnimation_n118(_uploadFile, _downloadFile, value.revealAnimation),
-        contentLayout: from_candid_ReviewContentLayout_n122(_uploadFile, _downloadFile, value.contentLayout),
-        displayMode: from_candid_ReviewDisplayMode_n126(_uploadFile, _downloadFile, value.displayMode),
+        revealAnimation: from_candid_RevealAnimation_n112(_uploadFile, _downloadFile, value.revealAnimation),
+        contentLayout: from_candid_ReviewContentLayout_n116(_uploadFile, _downloadFile, value.contentLayout),
+        displayMode: from_candid_ReviewDisplayMode_n120(_uploadFile, _downloadFile, value.displayMode),
         autoScrollSpeed: value.autoScrollSpeed,
         primaryColor: value.primaryColor,
-        transitionType: from_candid_ReviewTransitionType_n128(_uploadFile, _downloadFile, value.transitionType),
+        transitionType: from_candid_ReviewTransitionType_n122(_uploadFile, _downloadFile, value.transitionType),
         maxReviews: value.maxReviews,
         darkModeSupport: value.darkModeSupport,
         secondaryColor: value.secondaryColor,
         carouselEnabled: value.carouselEnabled,
-        gradientSettings: from_candid_ReviewGradient_n130(_uploadFile, _downloadFile, value.gradientSettings),
-        overlayEffect: from_candid_ReviewGlassmorphism_n133(_uploadFile, _downloadFile, value.overlayEffect)
+        gradientSettings: from_candid_ReviewGradient_n124(_uploadFile, _downloadFile, value.gradientSettings),
+        overlayEffect: from_candid_ReviewGlassmorphism_n127(_uploadFile, _downloadFile, value.overlayEffect)
     };
 }
-function from_candid_record_n119(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n113(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     delayUnit: bigint;
     animationType: {
         pop: null;
@@ -1689,12 +1563,12 @@ function from_candid_record_n119(_uploadFile: (file: ExternalBlob) => Promise<Ui
 } {
     return {
         delayUnit: value.delayUnit,
-        animationType: from_candid_variant_n120(_uploadFile, _downloadFile, value.animationType),
+        animationType: from_candid_variant_n114(_uploadFile, _downloadFile, value.animationType),
         speedUnit: value.speedUnit,
-        easing: from_candid_variant_n121(_uploadFile, _downloadFile, value.easing)
+        easing: from_candid_variant_n115(_uploadFile, _downloadFile, value.easing)
     };
 }
-function from_candid_record_n123(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n117(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     style: {
         glassmorphic: null;
     } | {
@@ -1724,13 +1598,13 @@ function from_candid_record_n123(_uploadFile: (file: ExternalBlob) => Promise<Ui
     layoutType: Variant_singleColumn_overlay_multiColumn_cardStyle;
 } {
     return {
-        style: from_candid_variant_n124(_uploadFile, _downloadFile, value.style),
+        style: from_candid_variant_n118(_uploadFile, _downloadFile, value.style),
         paddingUnit: value.paddingUnit,
         spacingUnit: value.spacingUnit,
-        layoutType: from_candid_variant_n125(_uploadFile, _downloadFile, value.layoutType)
+        layoutType: from_candid_variant_n119(_uploadFile, _downloadFile, value.layoutType)
     };
 }
-function from_candid_record_n131(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n125(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     direction: {
         topToBottom: null;
     } | {
@@ -1746,12 +1620,12 @@ function from_candid_record_n131(_uploadFile: (file: ExternalBlob) => Promise<Ui
     intensity: bigint;
 } {
     return {
-        direction: from_candid_variant_n132(_uploadFile, _downloadFile, value.direction),
+        direction: from_candid_variant_n126(_uploadFile, _downloadFile, value.direction),
         colors: value.colors,
         intensity: value.intensity
     };
 }
-async function from_candid_record_n136(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function from_candid_record_n130(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     url: string;
     displayName: string;
     order: bigint;
@@ -1778,7 +1652,7 @@ async function from_candid_record_n136(_uploadFile: (file: ExternalBlob) => Prom
         isVisible: value.isVisible
     };
 }
-async function from_candid_record_n138(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function from_candid_record_n132(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     theme: _ThemePreference;
     overviewContent: string;
     heroSection: _HeroSection;
@@ -1792,14 +1666,14 @@ async function from_candid_record_n138(_uploadFile: (file: ExternalBlob) => Prom
     aboutContent: string;
 }> {
     return {
-        theme: from_candid_ThemePreference_n139(_uploadFile, _downloadFile, value.theme),
+        theme: from_candid_ThemePreference_n133(_uploadFile, _downloadFile, value.theme),
         overviewContent: value.overviewContent,
-        heroSection: from_candid_HeroSection_n140(_uploadFile, _downloadFile, value.heroSection),
+        heroSection: from_candid_HeroSection_n134(_uploadFile, _downloadFile, value.heroSection),
         doctorCredentials: await from_candid_DoctorCredentials_n48(_uploadFile, _downloadFile, value.doctorCredentials),
         aboutContent: value.aboutContent
     };
 }
-function from_candid_record_n141(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n135(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     subtext: string;
     headline: string;
     primaryButton: _Button;
@@ -1814,7 +1688,7 @@ function from_candid_record_n141(_uploadFile: (file: ExternalBlob) => Promise<Ui
         subtext: value.subtext,
         headline: value.headline,
         primaryButton: value.primaryButton,
-        secondaryButton: record_opt_to_undefined(from_candid_opt_n142(_uploadFile, _downloadFile, value.secondaryButton))
+        secondaryButton: record_opt_to_undefined(from_candid_opt_n136(_uploadFile, _downloadFile, value.secondaryButton))
     };
 }
 async function from_candid_record_n27(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
@@ -2245,25 +2119,7 @@ function from_candid_variant_n108(_uploadFile: (file: ExternalBlob) => Promise<U
 }): ColorAccentScheme {
     return "gradient" in value ? ColorAccentScheme.gradient : "secondary" in value ? ColorAccentScheme.secondary : "primary" in value ? ColorAccentScheme.primary : value;
 }
-function from_candid_variant_n113(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    normal: null;
-} | {
-    bold: null;
-}): Variant_normal_bold {
-    return "normal" in value ? Variant_normal_bold.normal : "bold" in value ? Variant_normal_bold.bold : value;
-}
 function from_candid_variant_n114(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    none: null;
-} | {
-    lowercase: null;
-} | {
-    capitalize: null;
-} | {
-    uppercase: null;
-}): Variant_none_lowercase_capitalize_uppercase {
-    return "none" in value ? Variant_none_lowercase_capitalize_uppercase.none : "lowercase" in value ? Variant_none_lowercase_capitalize_uppercase.lowercase : "capitalize" in value ? Variant_none_lowercase_capitalize_uppercase.capitalize : "uppercase" in value ? Variant_none_lowercase_capitalize_uppercase.uppercase : value;
-}
-function from_candid_variant_n120(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     pop: null;
 } | {
     fade: null;
@@ -2276,7 +2132,7 @@ function from_candid_variant_n120(_uploadFile: (file: ExternalBlob) => Promise<U
 }): Variant_pop_fade_none_slideIn_expand {
     return "pop" in value ? Variant_pop_fade_none_slideIn_expand.pop : "fade" in value ? Variant_pop_fade_none_slideIn_expand.fade : "none" in value ? Variant_pop_fade_none_slideIn_expand.none : "slideIn" in value ? Variant_pop_fade_none_slideIn_expand.slideIn : "expand" in value ? Variant_pop_fade_none_slideIn_expand.expand : value;
 }
-function from_candid_variant_n121(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n115(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     easeInOut: null;
 } | {
     bounce: null;
@@ -2285,7 +2141,7 @@ function from_candid_variant_n121(_uploadFile: (file: ExternalBlob) => Promise<U
 }): Variant_easeInOut_bounce_linear {
     return "easeInOut" in value ? Variant_easeInOut_bounce_linear.easeInOut : "bounce" in value ? Variant_easeInOut_bounce_linear.bounce : "linear" in value ? Variant_easeInOut_bounce_linear.linear : value;
 }
-function from_candid_variant_n124(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n118(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     glassmorphic: null;
 } | {
     gradient: null;
@@ -2298,7 +2154,7 @@ function from_candid_variant_n124(_uploadFile: (file: ExternalBlob) => Promise<U
 }): Variant_glassmorphic_gradient_card_frosted_minimalist {
     return "glassmorphic" in value ? Variant_glassmorphic_gradient_card_frosted_minimalist.glassmorphic : "gradient" in value ? Variant_glassmorphic_gradient_card_frosted_minimalist.gradient : "card" in value ? Variant_glassmorphic_gradient_card_frosted_minimalist.card : "frosted" in value ? Variant_glassmorphic_gradient_card_frosted_minimalist.frosted : "minimalist" in value ? Variant_glassmorphic_gradient_card_frosted_minimalist.minimalist : value;
 }
-function from_candid_variant_n125(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n119(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     singleColumn: null;
 } | {
     overlay: null;
@@ -2309,7 +2165,7 @@ function from_candid_variant_n125(_uploadFile: (file: ExternalBlob) => Promise<U
 }): Variant_singleColumn_overlay_multiColumn_cardStyle {
     return "singleColumn" in value ? Variant_singleColumn_overlay_multiColumn_cardStyle.singleColumn : "overlay" in value ? Variant_singleColumn_overlay_multiColumn_cardStyle.overlay : "multiColumn" in value ? Variant_singleColumn_overlay_multiColumn_cardStyle.multiColumn : "cardStyle" in value ? Variant_singleColumn_overlay_multiColumn_cardStyle.cardStyle : value;
 }
-function from_candid_variant_n127(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n121(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     multi: null;
 } | {
     centered: null;
@@ -2320,7 +2176,7 @@ function from_candid_variant_n127(_uploadFile: (file: ExternalBlob) => Promise<U
 }): ReviewDisplayMode {
     return "multi" in value ? ReviewDisplayMode.multi : "centered" in value ? ReviewDisplayMode.centered : "single" in value ? ReviewDisplayMode.single : "masonry" in value ? ReviewDisplayMode.masonry : value;
 }
-function from_candid_variant_n129(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n123(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     glassmorphic: null;
 } | {
     blur: null;
@@ -2335,7 +2191,7 @@ function from_candid_variant_n129(_uploadFile: (file: ExternalBlob) => Promise<U
 }): ReviewTransitionType {
     return "glassmorphic" in value ? ReviewTransitionType.glassmorphic : "blur" in value ? ReviewTransitionType.blur : "card" in value ? ReviewTransitionType.card : "fade" in value ? ReviewTransitionType.fade : "none" in value ? ReviewTransitionType.none : "slide" in value ? ReviewTransitionType.slide : value;
 }
-function from_candid_variant_n132(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n126(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     topToBottom: null;
 } | {
     leftToRight: null;
@@ -2552,8 +2408,8 @@ function from_candid_variant_n98(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): EffectIntensity {
     return "dynamic" in value ? EffectIntensity.dynamic : "subtle" in value ? EffectIntensity.subtle : "moderate" in value ? EffectIntensity.moderate : value;
 }
-async function from_candid_vec_n134(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_SocialMediaLink>): Promise<Array<SocialMediaLink>> {
-    return await Promise.all(value.map(async (x)=>await from_candid_SocialMediaLink_n135(_uploadFile, _downloadFile, x)));
+async function from_candid_vec_n128(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_SocialMediaLink>): Promise<Array<SocialMediaLink>> {
+    return await Promise.all(value.map(async (x)=>await from_candid_SocialMediaLink_n129(_uploadFile, _downloadFile, x)));
 }
 async function from_candid_vec_n25(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_BlogPost>): Promise<Array<BlogPost>> {
     return await Promise.all(value.map(async (x)=>await from_candid_BlogPost_n26(_uploadFile, _downloadFile, x)));
@@ -2573,101 +2429,98 @@ async function from_candid_vec_n41(_uploadFile: (file: ExternalBlob) => Promise<
 async function to_candid_BlogPost_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: BlogPost): Promise<_BlogPost> {
     return await to_candid_record_n20(_uploadFile, _downloadFile, value);
 }
-function to_candid_CTARowLayout_n159(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: CTARowLayout): _CTARowLayout {
-    return to_candid_variant_n160(_uploadFile, _downloadFile, value);
+function to_candid_CTARowLayout_n153(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: CTARowLayout): _CTARowLayout {
+    return to_candid_variant_n154(_uploadFile, _downloadFile, value);
 }
 async function to_candid_Clinic_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Clinic): Promise<_Clinic> {
     return await to_candid_record_n9(_uploadFile, _downloadFile, value);
 }
-function to_candid_ColorAccentScheme_n200(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorAccentScheme): _ColorAccentScheme {
-    return to_candid_variant_n201(_uploadFile, _downloadFile, value);
+function to_candid_ColorAccentScheme_n194(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorAccentScheme): _ColorAccentScheme {
+    return to_candid_variant_n195(_uploadFile, _downloadFile, value);
 }
-function to_candid_ColorVariation_n192(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorVariation): _ColorVariation {
-    return to_candid_variant_n193(_uploadFile, _downloadFile, value);
+function to_candid_ColorVariation_n186(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorVariation): _ColorVariation {
+    return to_candid_variant_n187(_uploadFile, _downloadFile, value);
 }
-async function to_candid_DoctorCredentials_n143(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: DoctorCredentials): Promise<_DoctorCredentials> {
-    return await to_candid_record_n144(_uploadFile, _downloadFile, value);
+async function to_candid_DoctorCredentials_n137(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: DoctorCredentials): Promise<_DoctorCredentials> {
+    return await to_candid_record_n138(_uploadFile, _downloadFile, value);
 }
-function to_candid_EffectIntensity_n190(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectIntensity): _EffectIntensity {
-    return to_candid_variant_n191(_uploadFile, _downloadFile, value);
+function to_candid_EffectIntensity_n184(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectIntensity): _EffectIntensity {
+    return to_candid_variant_n185(_uploadFile, _downloadFile, value);
 }
-function to_candid_EffectSpeed_n187(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectSpeed): _EffectSpeed {
-    return to_candid_variant_n182(_uploadFile, _downloadFile, value);
+function to_candid_EffectSpeed_n181(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectSpeed): _EffectSpeed {
+    return to_candid_variant_n176(_uploadFile, _downloadFile, value);
 }
 async function to_candid_ExternalBlob_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ExternalBlob): Promise<_ExternalBlob> {
     return await _uploadFile(value);
 }
-async function to_candid_FooterContent_n145(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: FooterContent): Promise<_FooterContent> {
-    return await to_candid_record_n146(_uploadFile, _downloadFile, value);
+async function to_candid_FooterContent_n139(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: FooterContent): Promise<_FooterContent> {
+    return await to_candid_record_n140(_uploadFile, _downloadFile, value);
 }
-function to_candid_Glassmorphism_n169(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Glassmorphism): _Glassmorphism {
-    return to_candid_record_n170(_uploadFile, _downloadFile, value);
+function to_candid_Glassmorphism_n163(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Glassmorphism): _Glassmorphism {
+    return to_candid_record_n164(_uploadFile, _downloadFile, value);
 }
-function to_candid_Gradient_n161(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Gradient): _Gradient {
-    return to_candid_record_n162(_uploadFile, _downloadFile, value);
+function to_candid_Gradient_n155(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Gradient): _Gradient {
+    return to_candid_record_n156(_uploadFile, _downloadFile, value);
 }
-function to_candid_HeroLayoutOverride_n149(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroLayoutOverride): _HeroLayoutOverride {
-    return to_candid_record_n150(_uploadFile, _downloadFile, value);
+function to_candid_HeroLayoutOverride_n143(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroLayoutOverride): _HeroLayoutOverride {
+    return to_candid_record_n144(_uploadFile, _downloadFile, value);
 }
-function to_candid_HeroSectionTheme_n147(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroSectionTheme): _HeroSectionTheme {
-    return to_candid_record_n148(_uploadFile, _downloadFile, value);
+function to_candid_HeroSectionTheme_n141(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroSectionTheme): _HeroSectionTheme {
+    return to_candid_record_n142(_uploadFile, _downloadFile, value);
 }
-function to_candid_HeroSection_n229(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroSection): _HeroSection {
-    return to_candid_record_n230(_uploadFile, _downloadFile, value);
+function to_candid_HeroSection_n217(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HeroSection): _HeroSection {
+    return to_candid_record_n218(_uploadFile, _downloadFile, value);
 }
-function to_candid_HomepageTextFormatting_n202(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HomepageTextFormatting): _HomepageTextFormatting {
+function to_candid_HorizontalAlignment_n151(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HorizontalAlignment): _HorizontalAlignment {
+    return to_candid_variant_n152(_uploadFile, _downloadFile, value);
+}
+function to_candid_MaxWidthPreset_n149(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MaxWidthPreset): _MaxWidthPreset {
+    return to_candid_variant_n150(_uploadFile, _downloadFile, value);
+}
+function to_candid_MotionAmplitude_n173(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionAmplitude): _MotionAmplitude {
+    return to_candid_variant_n174(_uploadFile, _downloadFile, value);
+}
+function to_candid_MotionEffectType_n177(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffectType): _MotionEffectType {
+    return to_candid_variant_n178(_uploadFile, _downloadFile, value);
+}
+function to_candid_MotionEffect_n168(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffect): _MotionEffect {
+    return to_candid_record_n169(_uploadFile, _downloadFile, value);
+}
+function to_candid_MotionPattern_n170(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionPattern): _MotionPattern {
+    return to_candid_record_n171(_uploadFile, _downloadFile, value);
+}
+function to_candid_MotionSpeed_n175(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionSpeed): _MotionSpeed {
+    return to_candid_variant_n176(_uploadFile, _downloadFile, value);
+}
+function to_candid_ParticleEffectType_n182(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffectType): _ParticleEffectType {
+    return to_candid_variant_n183(_uploadFile, _downloadFile, value);
+}
+function to_candid_ParticleEffect_n179(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffect): _ParticleEffect {
+    return to_candid_record_n180(_uploadFile, _downloadFile, value);
+}
+function to_candid_RevealAnimation_n198(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: RevealAnimation): _RevealAnimation {
+    return to_candid_record_n199(_uploadFile, _downloadFile, value);
+}
+function to_candid_ReviewContentLayout_n202(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewContentLayout): _ReviewContentLayout {
     return to_candid_record_n203(_uploadFile, _downloadFile, value);
 }
-function to_candid_HorizontalAlignment_n157(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HorizontalAlignment): _HorizontalAlignment {
-    return to_candid_variant_n158(_uploadFile, _downloadFile, value);
+function to_candid_ReviewDisplayMode_n206(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewDisplayMode): _ReviewDisplayMode {
+    return to_candid_variant_n207(_uploadFile, _downloadFile, value);
 }
-function to_candid_MaxWidthPreset_n155(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MaxWidthPreset): _MaxWidthPreset {
-    return to_candid_variant_n156(_uploadFile, _downloadFile, value);
+function to_candid_ReviewGlassmorphism_n213(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewGlassmorphism): _ReviewGlassmorphism {
+    return to_candid_record_n164(_uploadFile, _downloadFile, value);
 }
-function to_candid_MotionAmplitude_n179(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionAmplitude): _MotionAmplitude {
-    return to_candid_variant_n180(_uploadFile, _downloadFile, value);
-}
-function to_candid_MotionEffectType_n183(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffectType): _MotionEffectType {
-    return to_candid_variant_n184(_uploadFile, _downloadFile, value);
-}
-function to_candid_MotionEffect_n174(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffect): _MotionEffect {
-    return to_candid_record_n175(_uploadFile, _downloadFile, value);
-}
-function to_candid_MotionPattern_n176(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionPattern): _MotionPattern {
-    return to_candid_record_n177(_uploadFile, _downloadFile, value);
-}
-function to_candid_MotionSpeed_n181(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionSpeed): _MotionSpeed {
-    return to_candid_variant_n182(_uploadFile, _downloadFile, value);
-}
-function to_candid_ParticleEffectType_n188(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffectType): _ParticleEffectType {
-    return to_candid_variant_n189(_uploadFile, _downloadFile, value);
-}
-function to_candid_ParticleEffect_n185(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffect): _ParticleEffect {
-    return to_candid_record_n186(_uploadFile, _downloadFile, value);
-}
-function to_candid_RevealAnimation_n210(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: RevealAnimation): _RevealAnimation {
+function to_candid_ReviewGradient_n210(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewGradient): _ReviewGradient {
     return to_candid_record_n211(_uploadFile, _downloadFile, value);
 }
-function to_candid_ReviewContentLayout_n214(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewContentLayout): _ReviewContentLayout {
-    return to_candid_record_n215(_uploadFile, _downloadFile, value);
-}
-function to_candid_ReviewDisplayMode_n218(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewDisplayMode): _ReviewDisplayMode {
-    return to_candid_variant_n219(_uploadFile, _downloadFile, value);
-}
-function to_candid_ReviewGlassmorphism_n225(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewGlassmorphism): _ReviewGlassmorphism {
-    return to_candid_record_n170(_uploadFile, _downloadFile, value);
-}
-function to_candid_ReviewGradient_n222(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewGradient): _ReviewGradient {
-    return to_candid_record_n223(_uploadFile, _downloadFile, value);
-}
-function to_candid_ReviewTransitionType_n220(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewTransitionType): _ReviewTransitionType {
-    return to_candid_variant_n221(_uploadFile, _downloadFile, value);
+function to_candid_ReviewTransitionType_n208(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewTransitionType): _ReviewTransitionType {
+    return to_candid_variant_n209(_uploadFile, _downloadFile, value);
 }
 async function to_candid_Review_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Review): Promise<_Review> {
     return await to_candid_record_n14(_uploadFile, _downloadFile, value);
 }
-function to_candid_ReviewsPanelSettings_n208(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewsPanelSettings): _ReviewsPanelSettings {
-    return to_candid_record_n209(_uploadFile, _downloadFile, value);
+function to_candid_ReviewsPanelSettings_n196(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewsPanelSettings): _ReviewsPanelSettings {
+    return to_candid_record_n197(_uploadFile, _downloadFile, value);
 }
 async function to_candid_RichContentElement_n22(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: RichContentElement): Promise<_RichContentElement> {
     return await to_candid_variant_n23(_uploadFile, _downloadFile, value);
@@ -2675,38 +2528,35 @@ async function to_candid_RichContentElement_n22(_uploadFile: (file: ExternalBlob
 async function to_candid_SocialMediaLink_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: SocialMediaLink): Promise<_SocialMediaLink> {
     return await to_candid_record_n16(_uploadFile, _downloadFile, value);
 }
-function to_candid_Spacing_n172(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Spacing): _Spacing {
-    return to_candid_record_n173(_uploadFile, _downloadFile, value);
+function to_candid_Spacing_n166(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Spacing): _Spacing {
+    return to_candid_record_n167(_uploadFile, _downloadFile, value);
 }
-function to_candid_TextFormattingBundle_n204(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: TextFormattingBundle): _TextFormattingBundle {
-    return to_candid_record_n205(_uploadFile, _downloadFile, value);
+function to_candid_TextSizePreset_n147(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: TextSizePreset): _TextSizePreset {
+    return to_candid_variant_n148(_uploadFile, _downloadFile, value);
 }
-function to_candid_TextSizePreset_n153(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: TextSizePreset): _TextSizePreset {
-    return to_candid_variant_n154(_uploadFile, _downloadFile, value);
+function to_candid_ThemePreference_n216(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemePreference): _ThemePreference {
+    return to_candid_variant_n161(_uploadFile, _downloadFile, value);
 }
-function to_candid_ThemePreference_n228(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemePreference): _ThemePreference {
-    return to_candid_variant_n167(_uploadFile, _downloadFile, value);
-}
-function to_candid_ThemeType_n164(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemeType): _ThemeType {
-    return to_candid_record_n165(_uploadFile, _downloadFile, value);
+function to_candid_ThemeType_n158(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemeType): _ThemeType {
+    return to_candid_record_n159(_uploadFile, _downloadFile, value);
 }
 function to_candid_UserRole_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
     return to_candid_variant_n18(_uploadFile, _downloadFile, value);
 }
-function to_candid_VectorComplexity_n196(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorComplexity): _VectorComplexity {
-    return to_candid_variant_n197(_uploadFile, _downloadFile, value);
+function to_candid_VectorComplexity_n190(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorComplexity): _VectorComplexity {
+    return to_candid_variant_n191(_uploadFile, _downloadFile, value);
 }
-function to_candid_VectorEffectType_n198(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffectType): _VectorEffectType {
-    return to_candid_variant_n199(_uploadFile, _downloadFile, value);
+function to_candid_VectorEffectType_n192(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffectType): _VectorEffectType {
+    return to_candid_variant_n193(_uploadFile, _downloadFile, value);
 }
-function to_candid_VectorEffect_n194(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffect): _VectorEffect {
-    return to_candid_record_n195(_uploadFile, _downloadFile, value);
+function to_candid_VectorEffect_n188(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffect): _VectorEffect {
+    return to_candid_record_n189(_uploadFile, _downloadFile, value);
 }
-function to_candid_VerticalPosition_n151(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VerticalPosition): _VerticalPosition {
-    return to_candid_variant_n152(_uploadFile, _downloadFile, value);
+function to_candid_VerticalPosition_n145(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VerticalPosition): _VerticalPosition {
+    return to_candid_variant_n146(_uploadFile, _downloadFile, value);
 }
-async function to_candid_WebsiteContent_n226(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: WebsiteContent): Promise<_WebsiteContent> {
-    return await to_candid_record_n227(_uploadFile, _downloadFile, value);
+async function to_candid_WebsiteContent_n214(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: WebsiteContent): Promise<_WebsiteContent> {
+    return await to_candid_record_n215(_uploadFile, _downloadFile, value);
 }
 async function to_candid_WebsiteImage_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: WebsiteImage): Promise<_WebsiteImage> {
     return await to_candid_record_n12(_uploadFile, _downloadFile, value);
@@ -2735,28 +2585,7 @@ async function to_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise
         image: await to_candid_ExternalBlob_n10(_uploadFile, _downloadFile, value.image)
     };
 }
-async function to_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    id: string;
-    patientImage?: ExternalBlob;
-    reviewText: string;
-    patientName: string;
-    rating: bigint;
-}): Promise<{
-    id: string;
-    patientImage: [] | [_ExternalBlob];
-    reviewText: string;
-    patientName: string;
-    rating: bigint;
-}> {
-    return {
-        id: value.id,
-        patientImage: value.patientImage ? candid_some(await to_candid_ExternalBlob_n10(_uploadFile, _downloadFile, value.patientImage)) : candid_none(),
-        reviewText: value.reviewText,
-        patientName: value.patientName,
-        rating: value.rating
-    };
-}
-async function to_candid_record_n144(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function to_candid_record_n138(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     yearsOfExperience: string;
     profileImage?: ExternalBlob;
     name: string;
@@ -2780,7 +2609,28 @@ async function to_candid_record_n144(_uploadFile: (file: ExternalBlob) => Promis
         specializations: value.specializations
     };
 }
-async function to_candid_record_n146(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function to_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    patientImage?: ExternalBlob;
+    reviewText: string;
+    patientName: string;
+    rating: bigint;
+}): Promise<{
+    id: string;
+    patientImage: [] | [_ExternalBlob];
+    reviewText: string;
+    patientName: string;
+    rating: bigint;
+}> {
+    return {
+        id: value.id,
+        patientImage: value.patientImage ? candid_some(await to_candid_ExternalBlob_n10(_uploadFile, _downloadFile, value.patientImage)) : candid_none(),
+        reviewText: value.reviewText,
+        patientName: value.patientName,
+        rating: value.rating
+    };
+}
+async function to_candid_record_n140(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     contact: FooterContact;
     background?: ExternalBlob;
     quickLinks: Array<FooterLink>;
@@ -2801,7 +2651,7 @@ async function to_candid_record_n146(_uploadFile: (file: ExternalBlob) => Promis
         copyright: value.copyright
     };
 }
-function to_candid_record_n148(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n142(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     layoutOverride: HeroLayoutOverride;
     gradient: Gradient;
     themeType: ThemeType;
@@ -2829,21 +2679,21 @@ function to_candid_record_n148(_uploadFile: (file: ExternalBlob) => Promise<Uint
     vectorEffect: _VectorEffect;
 } {
     return {
-        layoutOverride: to_candid_HeroLayoutOverride_n149(_uploadFile, _downloadFile, value.layoutOverride),
-        gradient: to_candid_Gradient_n161(_uploadFile, _downloadFile, value.gradient),
-        themeType: to_candid_ThemeType_n164(_uploadFile, _downloadFile, value.themeType),
+        layoutOverride: to_candid_HeroLayoutOverride_n143(_uploadFile, _downloadFile, value.layoutOverride),
+        gradient: to_candid_Gradient_n155(_uploadFile, _downloadFile, value.gradient),
+        themeType: to_candid_ThemeType_n158(_uploadFile, _downloadFile, value.themeType),
         areaDimensions: value.areaDimensions,
         contentPosition: value.contentPosition,
-        glassmorphism: to_candid_Glassmorphism_n169(_uploadFile, _downloadFile, value.glassmorphism),
-        spacing: to_candid_Spacing_n172(_uploadFile, _downloadFile, value.spacing),
+        glassmorphism: to_candid_Glassmorphism_n163(_uploadFile, _downloadFile, value.glassmorphism),
+        spacing: to_candid_Spacing_n166(_uploadFile, _downloadFile, value.spacing),
         effectsEnabled: value.effectsEnabled,
         colorAccents: value.colorAccents,
-        motionEffect: to_candid_MotionEffect_n174(_uploadFile, _downloadFile, value.motionEffect),
-        particleEffect: to_candid_ParticleEffect_n185(_uploadFile, _downloadFile, value.particleEffect),
-        vectorEffect: to_candid_VectorEffect_n194(_uploadFile, _downloadFile, value.vectorEffect)
+        motionEffect: to_candid_MotionEffect_n168(_uploadFile, _downloadFile, value.motionEffect),
+        particleEffect: to_candid_ParticleEffect_n179(_uploadFile, _downloadFile, value.particleEffect),
+        vectorEffect: to_candid_VectorEffect_n188(_uploadFile, _downloadFile, value.vectorEffect)
     };
 }
-function to_candid_record_n150(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n144(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     verticalPlacement: VerticalPosition;
     textSizePreset: TextSizePreset;
     contentContainerPreset: MaxWidthPreset;
@@ -2859,12 +2709,60 @@ function to_candid_record_n150(_uploadFile: (file: ExternalBlob) => Promise<Uint
     ctaRowLayout: _CTARowLayout;
 } {
     return {
-        verticalPlacement: to_candid_VerticalPosition_n151(_uploadFile, _downloadFile, value.verticalPlacement),
-        textSizePreset: to_candid_TextSizePreset_n153(_uploadFile, _downloadFile, value.textSizePreset),
-        contentContainerPreset: to_candid_MaxWidthPreset_n155(_uploadFile, _downloadFile, value.contentContainerPreset),
+        verticalPlacement: to_candid_VerticalPosition_n145(_uploadFile, _downloadFile, value.verticalPlacement),
+        textSizePreset: to_candid_TextSizePreset_n147(_uploadFile, _downloadFile, value.textSizePreset),
+        contentContainerPreset: to_candid_MaxWidthPreset_n149(_uploadFile, _downloadFile, value.contentContainerPreset),
         explicitMaxWidth: value.explicitMaxWidth ? candid_some(value.explicitMaxWidth) : candid_none(),
-        horizontalAlignment: to_candid_HorizontalAlignment_n157(_uploadFile, _downloadFile, value.horizontalAlignment),
-        ctaRowLayout: to_candid_CTARowLayout_n159(_uploadFile, _downloadFile, value.ctaRowLayout)
+        horizontalAlignment: to_candid_HorizontalAlignment_n151(_uploadFile, _downloadFile, value.horizontalAlignment),
+        ctaRowLayout: to_candid_CTARowLayout_n153(_uploadFile, _downloadFile, value.ctaRowLayout)
+    };
+}
+function to_candid_record_n156(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    direction: Variant_topToBottom_leftToRight;
+    colors: Array<Color>;
+    intensity: bigint;
+}): {
+    direction: {
+        topToBottom: null;
+    } | {
+        leftToRight: null;
+    };
+    colors: Array<_Color>;
+    intensity: bigint;
+} {
+    return {
+        direction: to_candid_variant_n157(_uploadFile, _downloadFile, value.direction),
+        colors: value.colors,
+        intensity: value.intensity
+    };
+}
+function to_candid_record_n159(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    accent: Variant_magenta_blue_teal;
+    mode: ThemePreference;
+    gradientStyle: Variant_radial_linear;
+}): {
+    accent: {
+        magenta: null;
+    } | {
+        blue: null;
+    } | {
+        teal: null;
+    };
+    mode: {
+        dark: null;
+    } | {
+        light: null;
+    };
+    gradientStyle: {
+        radial: null;
+    } | {
+        linear: null;
+    };
+} {
+    return {
+        accent: to_candid_variant_n160(_uploadFile, _downloadFile, value.accent),
+        mode: to_candid_variant_n161(_uploadFile, _downloadFile, value.mode),
+        gradientStyle: to_candid_variant_n162(_uploadFile, _downloadFile, value.gradientStyle)
     };
 }
 async function to_candid_record_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
@@ -2894,55 +2792,7 @@ async function to_candid_record_n16(_uploadFile: (file: ExternalBlob) => Promise
         isVisible: value.isVisible
     };
 }
-function to_candid_record_n162(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    direction: Variant_topToBottom_leftToRight;
-    colors: Array<Color>;
-    intensity: bigint;
-}): {
-    direction: {
-        topToBottom: null;
-    } | {
-        leftToRight: null;
-    };
-    colors: Array<_Color>;
-    intensity: bigint;
-} {
-    return {
-        direction: to_candid_variant_n163(_uploadFile, _downloadFile, value.direction),
-        colors: value.colors,
-        intensity: value.intensity
-    };
-}
-function to_candid_record_n165(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    accent: Variant_magenta_blue_teal;
-    mode: ThemePreference;
-    gradientStyle: Variant_radial_linear;
-}): {
-    accent: {
-        magenta: null;
-    } | {
-        blue: null;
-    } | {
-        teal: null;
-    };
-    mode: {
-        dark: null;
-    } | {
-        light: null;
-    };
-    gradientStyle: {
-        radial: null;
-    } | {
-        linear: null;
-    };
-} {
-    return {
-        accent: to_candid_variant_n166(_uploadFile, _downloadFile, value.accent),
-        mode: to_candid_variant_n167(_uploadFile, _downloadFile, value.mode),
-        gradientStyle: to_candid_variant_n168(_uploadFile, _downloadFile, value.gradientStyle)
-    };
-}
-function to_candid_record_n170(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n164(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     transparency: bigint;
     blurIntensity: bigint;
     overlayEffect: Variant_strong_subtle_medium;
@@ -2960,10 +2810,10 @@ function to_candid_record_n170(_uploadFile: (file: ExternalBlob) => Promise<Uint
     return {
         transparency: value.transparency,
         blurIntensity: value.blurIntensity,
-        overlayEffect: to_candid_variant_n171(_uploadFile, _downloadFile, value.overlayEffect)
+        overlayEffect: to_candid_variant_n165(_uploadFile, _downloadFile, value.overlayEffect)
     };
 }
-function to_candid_record_n173(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n167(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     verticalPadding: bigint;
     elementSpacing: bigint;
     contentAlignment: HorizontalAlignment;
@@ -2981,10 +2831,10 @@ function to_candid_record_n173(_uploadFile: (file: ExternalBlob) => Promise<Uint
     return {
         verticalPadding: value.verticalPadding,
         elementSpacing: value.elementSpacing,
-        contentAlignment: to_candid_variant_n158(_uploadFile, _downloadFile, value.contentAlignment)
+        contentAlignment: to_candid_variant_n152(_uploadFile, _downloadFile, value.contentAlignment)
     };
 }
-function to_candid_record_n175(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n169(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     pattern: MotionPattern;
     amplitude: MotionAmplitude;
     enabled: boolean;
@@ -2998,14 +2848,14 @@ function to_candid_record_n175(_uploadFile: (file: ExternalBlob) => Promise<Uint
     effectType: _MotionEffectType;
 } {
     return {
-        pattern: to_candid_MotionPattern_n176(_uploadFile, _downloadFile, value.pattern),
-        amplitude: to_candid_MotionAmplitude_n179(_uploadFile, _downloadFile, value.amplitude),
+        pattern: to_candid_MotionPattern_n170(_uploadFile, _downloadFile, value.pattern),
+        amplitude: to_candid_MotionAmplitude_n173(_uploadFile, _downloadFile, value.amplitude),
         enabled: value.enabled,
-        speed: to_candid_MotionSpeed_n181(_uploadFile, _downloadFile, value.speed),
-        effectType: to_candid_MotionEffectType_n183(_uploadFile, _downloadFile, value.effectType)
+        speed: to_candid_MotionSpeed_n175(_uploadFile, _downloadFile, value.speed),
+        effectType: to_candid_MotionEffectType_n177(_uploadFile, _downloadFile, value.effectType)
     };
 }
-function to_candid_record_n177(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n171(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     complexity: bigint;
     patternType: Variant_wave_bounce_random_spiral;
 }): {
@@ -3022,10 +2872,10 @@ function to_candid_record_n177(_uploadFile: (file: ExternalBlob) => Promise<Uint
 } {
     return {
         complexity: value.complexity,
-        patternType: to_candid_variant_n178(_uploadFile, _downloadFile, value.patternType)
+        patternType: to_candid_variant_n172(_uploadFile, _downloadFile, value.patternType)
     };
 }
-function to_candid_record_n186(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n180(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     enabled: boolean;
     speed: EffectSpeed;
     effectType: ParticleEffectType;
@@ -3040,13 +2890,13 @@ function to_candid_record_n186(_uploadFile: (file: ExternalBlob) => Promise<Uint
 } {
     return {
         enabled: value.enabled,
-        speed: to_candid_EffectSpeed_n187(_uploadFile, _downloadFile, value.speed),
-        effectType: to_candid_ParticleEffectType_n188(_uploadFile, _downloadFile, value.effectType),
-        intensity: to_candid_EffectIntensity_n190(_uploadFile, _downloadFile, value.intensity),
-        colorVariation: to_candid_ColorVariation_n192(_uploadFile, _downloadFile, value.colorVariation)
+        speed: to_candid_EffectSpeed_n181(_uploadFile, _downloadFile, value.speed),
+        effectType: to_candid_ParticleEffectType_n182(_uploadFile, _downloadFile, value.effectType),
+        intensity: to_candid_EffectIntensity_n184(_uploadFile, _downloadFile, value.intensity),
+        colorVariation: to_candid_ColorVariation_n186(_uploadFile, _downloadFile, value.colorVariation)
     };
 }
-function to_candid_record_n195(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n189(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     complexity: VectorComplexity;
     enabled: boolean;
     effectType: VectorEffectType;
@@ -3058,100 +2908,13 @@ function to_candid_record_n195(_uploadFile: (file: ExternalBlob) => Promise<Uint
     colorScheme: _ColorAccentScheme;
 } {
     return {
-        complexity: to_candid_VectorComplexity_n196(_uploadFile, _downloadFile, value.complexity),
+        complexity: to_candid_VectorComplexity_n190(_uploadFile, _downloadFile, value.complexity),
         enabled: value.enabled,
-        effectType: to_candid_VectorEffectType_n198(_uploadFile, _downloadFile, value.effectType),
-        colorScheme: to_candid_ColorAccentScheme_n200(_uploadFile, _downloadFile, value.colorScheme)
+        effectType: to_candid_VectorEffectType_n192(_uploadFile, _downloadFile, value.effectType),
+        colorScheme: to_candid_ColorAccentScheme_n194(_uploadFile, _downloadFile, value.colorScheme)
     };
 }
-async function to_candid_record_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    id: string;
-    title: string;
-    content: Array<RichContentElement>;
-    createdAt: bigint;
-    author: string;
-    updatedAt: bigint;
-}): Promise<{
-    id: string;
-    title: string;
-    content: Array<_RichContentElement>;
-    createdAt: bigint;
-    author: string;
-    updatedAt: bigint;
-}> {
-    return {
-        id: value.id,
-        title: value.title,
-        content: await to_candid_vec_n21(_uploadFile, _downloadFile, value.content),
-        createdAt: value.createdAt,
-        author: value.author,
-        updatedAt: value.updatedAt
-    };
-}
-function to_candid_record_n203(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    heroHeading: TextFormattingBundle;
-    footerHeading: TextFormattingBundle;
-    overviewBody: TextFormattingBundle;
-    heroBody: TextFormattingBundle;
-    overviewHeading: TextFormattingBundle;
-    servicesHeading: TextFormattingBundle;
-    servicesBody: TextFormattingBundle;
-    footerBody: TextFormattingBundle;
-}): {
-    heroHeading: _TextFormattingBundle;
-    footerHeading: _TextFormattingBundle;
-    overviewBody: _TextFormattingBundle;
-    heroBody: _TextFormattingBundle;
-    overviewHeading: _TextFormattingBundle;
-    servicesHeading: _TextFormattingBundle;
-    servicesBody: _TextFormattingBundle;
-    footerBody: _TextFormattingBundle;
-} {
-    return {
-        heroHeading: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.heroHeading),
-        footerHeading: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.footerHeading),
-        overviewBody: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.overviewBody),
-        heroBody: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.heroBody),
-        overviewHeading: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.overviewHeading),
-        servicesHeading: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.servicesHeading),
-        servicesBody: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.servicesBody),
-        footerBody: to_candid_TextFormattingBundle_n204(_uploadFile, _downloadFile, value.footerBody)
-    };
-}
-function to_candid_record_n205(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    fontFamily: string;
-    fontWeight: Variant_normal_bold;
-    fontSize: bigint;
-    letterSpacing: bigint;
-    textTransform: Variant_none_lowercase_capitalize_uppercase;
-}): {
-    fontFamily: string;
-    fontWeight: {
-        normal: null;
-    } | {
-        bold: null;
-    };
-    fontSize: bigint;
-    letterSpacing: bigint;
-    textTransform: {
-        none: null;
-    } | {
-        lowercase: null;
-    } | {
-        capitalize: null;
-    } | {
-        uppercase: null;
-    };
-} {
-    return {
-        fontFamily: value.fontFamily,
-        fontWeight: to_candid_variant_n206(_uploadFile, _downloadFile, value.fontWeight),
-        fontSize: value.fontSize,
-        letterSpacing: value.letterSpacing,
-        textTransform: to_candid_variant_n207(_uploadFile, _downloadFile, value.textTransform)
-    };
-}
-function to_candid_record_n209(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n197(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     revealAnimation: RevealAnimation;
     contentLayout: ReviewContentLayout;
     displayMode: ReviewDisplayMode;
@@ -3179,21 +2942,21 @@ function to_candid_record_n209(_uploadFile: (file: ExternalBlob) => Promise<Uint
     overlayEffect: _ReviewGlassmorphism;
 } {
     return {
-        revealAnimation: to_candid_RevealAnimation_n210(_uploadFile, _downloadFile, value.revealAnimation),
-        contentLayout: to_candid_ReviewContentLayout_n214(_uploadFile, _downloadFile, value.contentLayout),
-        displayMode: to_candid_ReviewDisplayMode_n218(_uploadFile, _downloadFile, value.displayMode),
+        revealAnimation: to_candid_RevealAnimation_n198(_uploadFile, _downloadFile, value.revealAnimation),
+        contentLayout: to_candid_ReviewContentLayout_n202(_uploadFile, _downloadFile, value.contentLayout),
+        displayMode: to_candid_ReviewDisplayMode_n206(_uploadFile, _downloadFile, value.displayMode),
         autoScrollSpeed: value.autoScrollSpeed,
         primaryColor: value.primaryColor,
-        transitionType: to_candid_ReviewTransitionType_n220(_uploadFile, _downloadFile, value.transitionType),
+        transitionType: to_candid_ReviewTransitionType_n208(_uploadFile, _downloadFile, value.transitionType),
         maxReviews: value.maxReviews,
         darkModeSupport: value.darkModeSupport,
         secondaryColor: value.secondaryColor,
         carouselEnabled: value.carouselEnabled,
-        gradientSettings: to_candid_ReviewGradient_n222(_uploadFile, _downloadFile, value.gradientSettings),
-        overlayEffect: to_candid_ReviewGlassmorphism_n225(_uploadFile, _downloadFile, value.overlayEffect)
+        gradientSettings: to_candid_ReviewGradient_n210(_uploadFile, _downloadFile, value.gradientSettings),
+        overlayEffect: to_candid_ReviewGlassmorphism_n213(_uploadFile, _downloadFile, value.overlayEffect)
     };
 }
-function to_candid_record_n211(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n199(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     delayUnit: bigint;
     animationType: Variant_pop_fade_none_slideIn_expand;
     speedUnit: bigint;
@@ -3222,12 +2985,36 @@ function to_candid_record_n211(_uploadFile: (file: ExternalBlob) => Promise<Uint
 } {
     return {
         delayUnit: value.delayUnit,
-        animationType: to_candid_variant_n212(_uploadFile, _downloadFile, value.animationType),
+        animationType: to_candid_variant_n200(_uploadFile, _downloadFile, value.animationType),
         speedUnit: value.speedUnit,
-        easing: to_candid_variant_n213(_uploadFile, _downloadFile, value.easing)
+        easing: to_candid_variant_n201(_uploadFile, _downloadFile, value.easing)
     };
 }
-function to_candid_record_n215(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function to_candid_record_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    title: string;
+    content: Array<RichContentElement>;
+    createdAt: bigint;
+    author: string;
+    updatedAt: bigint;
+}): Promise<{
+    id: string;
+    title: string;
+    content: Array<_RichContentElement>;
+    createdAt: bigint;
+    author: string;
+    updatedAt: bigint;
+}> {
+    return {
+        id: value.id,
+        title: value.title,
+        content: await to_candid_vec_n21(_uploadFile, _downloadFile, value.content),
+        createdAt: value.createdAt,
+        author: value.author,
+        updatedAt: value.updatedAt
+    };
+}
+function to_candid_record_n203(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     style: Variant_glassmorphic_gradient_card_frosted_minimalist;
     paddingUnit: bigint;
     spacingUnit: bigint;
@@ -3257,13 +3044,13 @@ function to_candid_record_n215(_uploadFile: (file: ExternalBlob) => Promise<Uint
     };
 } {
     return {
-        style: to_candid_variant_n216(_uploadFile, _downloadFile, value.style),
+        style: to_candid_variant_n204(_uploadFile, _downloadFile, value.style),
         paddingUnit: value.paddingUnit,
         spacingUnit: value.spacingUnit,
-        layoutType: to_candid_variant_n217(_uploadFile, _downloadFile, value.layoutType)
+        layoutType: to_candid_variant_n205(_uploadFile, _downloadFile, value.layoutType)
     };
 }
-function to_candid_record_n223(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n211(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     direction: Variant_topToBottom_leftToRight_diagonal;
     colors: Array<ReviewColor>;
     intensity: bigint;
@@ -3279,12 +3066,12 @@ function to_candid_record_n223(_uploadFile: (file: ExternalBlob) => Promise<Uint
     intensity: bigint;
 } {
     return {
-        direction: to_candid_variant_n224(_uploadFile, _downloadFile, value.direction),
+        direction: to_candid_variant_n212(_uploadFile, _downloadFile, value.direction),
         colors: value.colors,
         intensity: value.intensity
     };
 }
-async function to_candid_record_n227(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+async function to_candid_record_n215(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     theme: ThemePreference;
     overviewContent: string;
     heroSection: HeroSection;
@@ -3298,14 +3085,14 @@ async function to_candid_record_n227(_uploadFile: (file: ExternalBlob) => Promis
     aboutContent: string;
 }> {
     return {
-        theme: to_candid_ThemePreference_n228(_uploadFile, _downloadFile, value.theme),
+        theme: to_candid_ThemePreference_n216(_uploadFile, _downloadFile, value.theme),
         overviewContent: value.overviewContent,
-        heroSection: to_candid_HeroSection_n229(_uploadFile, _downloadFile, value.heroSection),
-        doctorCredentials: await to_candid_DoctorCredentials_n143(_uploadFile, _downloadFile, value.doctorCredentials),
+        heroSection: to_candid_HeroSection_n217(_uploadFile, _downloadFile, value.heroSection),
+        doctorCredentials: await to_candid_DoctorCredentials_n137(_uploadFile, _downloadFile, value.doctorCredentials),
         aboutContent: value.aboutContent
     };
 }
-function to_candid_record_n230(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function to_candid_record_n218(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     subtext: string;
     headline: string;
     primaryButton: Button;
@@ -3374,7 +3161,7 @@ async function to_candid_record_n9(_uploadFile: (file: ExternalBlob) => Promise<
         contactDetails: value.contactDetails
     };
 }
-function to_candid_variant_n152(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VerticalPosition): {
+function to_candid_variant_n146(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VerticalPosition): {
     top: null;
 } | {
     center: null;
@@ -3389,7 +3176,7 @@ function to_candid_variant_n152(_uploadFile: (file: ExternalBlob) => Promise<Uin
         bottom: null
     } : value;
 }
-function to_candid_variant_n154(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: TextSizePreset): {
+function to_candid_variant_n148(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: TextSizePreset): {
     large: null;
 } | {
     extraLarge: null;
@@ -3404,7 +3191,7 @@ function to_candid_variant_n154(_uploadFile: (file: ExternalBlob) => Promise<Uin
         medium: null
     } : value;
 }
-function to_candid_variant_n156(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MaxWidthPreset): {
+function to_candid_variant_n150(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MaxWidthPreset): {
     full: null;
 } | {
     large: null;
@@ -3419,7 +3206,7 @@ function to_candid_variant_n156(_uploadFile: (file: ExternalBlob) => Promise<Uin
         medium: null
     } : value;
 }
-function to_candid_variant_n158(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HorizontalAlignment): {
+function to_candid_variant_n152(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: HorizontalAlignment): {
     center: null;
 } | {
     left: null;
@@ -3434,7 +3221,7 @@ function to_candid_variant_n158(_uploadFile: (file: ExternalBlob) => Promise<Uin
         right: null
     } : value;
 }
-function to_candid_variant_n160(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: CTARowLayout): {
+function to_candid_variant_n154(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: CTARowLayout): {
     row: null;
 } | {
     stacked: null;
@@ -3445,7 +3232,7 @@ function to_candid_variant_n160(_uploadFile: (file: ExternalBlob) => Promise<Uin
         stacked: null
     } : value;
 }
-function to_candid_variant_n163(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_topToBottom_leftToRight): {
+function to_candid_variant_n157(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_topToBottom_leftToRight): {
     topToBottom: null;
 } | {
     leftToRight: null;
@@ -3456,7 +3243,7 @@ function to_candid_variant_n163(_uploadFile: (file: ExternalBlob) => Promise<Uin
         leftToRight: null
     } : value;
 }
-function to_candid_variant_n166(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_magenta_blue_teal): {
+function to_candid_variant_n160(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_magenta_blue_teal): {
     magenta: null;
 } | {
     blue: null;
@@ -3471,7 +3258,7 @@ function to_candid_variant_n166(_uploadFile: (file: ExternalBlob) => Promise<Uin
         teal: null
     } : value;
 }
-function to_candid_variant_n167(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemePreference): {
+function to_candid_variant_n161(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ThemePreference): {
     dark: null;
 } | {
     light: null;
@@ -3482,7 +3269,7 @@ function to_candid_variant_n167(_uploadFile: (file: ExternalBlob) => Promise<Uin
         light: null
     } : value;
 }
-function to_candid_variant_n168(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_radial_linear): {
+function to_candid_variant_n162(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_radial_linear): {
     radial: null;
 } | {
     linear: null;
@@ -3493,7 +3280,7 @@ function to_candid_variant_n168(_uploadFile: (file: ExternalBlob) => Promise<Uin
         linear: null
     } : value;
 }
-function to_candid_variant_n171(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_strong_subtle_medium): {
+function to_candid_variant_n165(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_strong_subtle_medium): {
     strong: null;
 } | {
     subtle: null;
@@ -3508,7 +3295,7 @@ function to_candid_variant_n171(_uploadFile: (file: ExternalBlob) => Promise<Uin
         medium: null
     } : value;
 }
-function to_candid_variant_n178(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_wave_bounce_random_spiral): {
+function to_candid_variant_n172(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_wave_bounce_random_spiral): {
     wave: null;
 } | {
     bounce: null;
@@ -3527,22 +3314,7 @@ function to_candid_variant_n178(_uploadFile: (file: ExternalBlob) => Promise<Uin
         spiral: null
     } : value;
 }
-function to_candid_variant_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
-    admin: null;
-} | {
-    user: null;
-} | {
-    guest: null;
-} {
-    return value == UserRole.admin ? {
-        admin: null
-    } : value == UserRole.user ? {
-        user: null
-    } : value == UserRole.guest ? {
-        guest: null
-    } : value;
-}
-function to_candid_variant_n180(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionAmplitude): {
+function to_candid_variant_n174(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionAmplitude): {
     low: null;
 } | {
     high: null;
@@ -3557,7 +3329,7 @@ function to_candid_variant_n180(_uploadFile: (file: ExternalBlob) => Promise<Uin
         medium: null
     } : value;
 }
-function to_candid_variant_n182(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionSpeed): {
+function to_candid_variant_n176(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionSpeed): {
     fast: null;
 } | {
     slow: null;
@@ -3572,7 +3344,7 @@ function to_candid_variant_n182(_uploadFile: (file: ExternalBlob) => Promise<Uin
         medium: null
     } : value;
 }
-function to_candid_variant_n184(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffectType): {
+function to_candid_variant_n178(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: MotionEffectType): {
     waveMotion: null;
 } | {
     floatingMotion: null;
@@ -3599,7 +3371,22 @@ function to_candid_variant_n184(_uploadFile: (file: ExternalBlob) => Promise<Uin
         spiral: null
     } : value;
 }
-function to_candid_variant_n189(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffectType): {
+function to_candid_variant_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+} {
+    return value == UserRole.admin ? {
+        admin: null
+    } : value == UserRole.user ? {
+        user: null
+    } : value == UserRole.guest ? {
+        guest: null
+    } : value;
+}
+function to_candid_variant_n183(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ParticleEffectType): {
     confetti: null;
 } | {
     dots: null;
@@ -3638,7 +3425,7 @@ function to_candid_variant_n189(_uploadFile: (file: ExternalBlob) => Promise<Uin
         rings: null
     } : value;
 }
-function to_candid_variant_n191(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectIntensity): {
+function to_candid_variant_n185(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EffectIntensity): {
     dynamic: null;
 } | {
     subtle: null;
@@ -3653,7 +3440,7 @@ function to_candid_variant_n191(_uploadFile: (file: ExternalBlob) => Promise<Uin
         moderate: null
     } : value;
 }
-function to_candid_variant_n193(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorVariation): {
+function to_candid_variant_n187(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorVariation): {
     accent: null;
 } | {
     gradient: null;
@@ -3668,7 +3455,7 @@ function to_candid_variant_n193(_uploadFile: (file: ExternalBlob) => Promise<Uin
         mono: null
     } : value;
 }
-function to_candid_variant_n197(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorComplexity): {
+function to_candid_variant_n191(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorComplexity): {
     complex: null;
 } | {
     simple: null;
@@ -3683,7 +3470,7 @@ function to_candid_variant_n197(_uploadFile: (file: ExternalBlob) => Promise<Uin
         moderate: null
     } : value;
 }
-function to_candid_variant_n199(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffectType): {
+function to_candid_variant_n193(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: VectorEffectType): {
     gradientOverlays: null;
 } | {
     animatedPaths: null;
@@ -3698,7 +3485,7 @@ function to_candid_variant_n199(_uploadFile: (file: ExternalBlob) => Promise<Uin
         geometricPatterns: null
     } : value;
 }
-function to_candid_variant_n201(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorAccentScheme): {
+function to_candid_variant_n195(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ColorAccentScheme): {
     gradient: null;
 } | {
     secondary: null;
@@ -3713,37 +3500,7 @@ function to_candid_variant_n201(_uploadFile: (file: ExternalBlob) => Promise<Uin
         primary: null
     } : value;
 }
-function to_candid_variant_n206(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_normal_bold): {
-    normal: null;
-} | {
-    bold: null;
-} {
-    return value == Variant_normal_bold.normal ? {
-        normal: null
-    } : value == Variant_normal_bold.bold ? {
-        bold: null
-    } : value;
-}
-function to_candid_variant_n207(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_none_lowercase_capitalize_uppercase): {
-    none: null;
-} | {
-    lowercase: null;
-} | {
-    capitalize: null;
-} | {
-    uppercase: null;
-} {
-    return value == Variant_none_lowercase_capitalize_uppercase.none ? {
-        none: null
-    } : value == Variant_none_lowercase_capitalize_uppercase.lowercase ? {
-        lowercase: null
-    } : value == Variant_none_lowercase_capitalize_uppercase.capitalize ? {
-        capitalize: null
-    } : value == Variant_none_lowercase_capitalize_uppercase.uppercase ? {
-        uppercase: null
-    } : value;
-}
-function to_candid_variant_n212(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_pop_fade_none_slideIn_expand): {
+function to_candid_variant_n200(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_pop_fade_none_slideIn_expand): {
     pop: null;
 } | {
     fade: null;
@@ -3766,7 +3523,7 @@ function to_candid_variant_n212(_uploadFile: (file: ExternalBlob) => Promise<Uin
         expand: null
     } : value;
 }
-function to_candid_variant_n213(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_easeInOut_bounce_linear): {
+function to_candid_variant_n201(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_easeInOut_bounce_linear): {
     easeInOut: null;
 } | {
     bounce: null;
@@ -3781,7 +3538,7 @@ function to_candid_variant_n213(_uploadFile: (file: ExternalBlob) => Promise<Uin
         linear: null
     } : value;
 }
-function to_candid_variant_n216(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_glassmorphic_gradient_card_frosted_minimalist): {
+function to_candid_variant_n204(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_glassmorphic_gradient_card_frosted_minimalist): {
     glassmorphic: null;
 } | {
     gradient: null;
@@ -3804,7 +3561,7 @@ function to_candid_variant_n216(_uploadFile: (file: ExternalBlob) => Promise<Uin
         minimalist: null
     } : value;
 }
-function to_candid_variant_n217(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_singleColumn_overlay_multiColumn_cardStyle): {
+function to_candid_variant_n205(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_singleColumn_overlay_multiColumn_cardStyle): {
     singleColumn: null;
 } | {
     overlay: null;
@@ -3823,7 +3580,7 @@ function to_candid_variant_n217(_uploadFile: (file: ExternalBlob) => Promise<Uin
         cardStyle: null
     } : value;
 }
-function to_candid_variant_n219(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewDisplayMode): {
+function to_candid_variant_n207(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewDisplayMode): {
     multi: null;
 } | {
     centered: null;
@@ -3842,7 +3599,7 @@ function to_candid_variant_n219(_uploadFile: (file: ExternalBlob) => Promise<Uin
         masonry: null
     } : value;
 }
-function to_candid_variant_n221(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewTransitionType): {
+function to_candid_variant_n209(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReviewTransitionType): {
     glassmorphic: null;
 } | {
     blur: null;
@@ -3869,7 +3626,7 @@ function to_candid_variant_n221(_uploadFile: (file: ExternalBlob) => Promise<Uin
         slide: null
     } : value;
 }
-function to_candid_variant_n224(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_topToBottom_leftToRight_diagonal): {
+function to_candid_variant_n212(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Variant_topToBottom_leftToRight_diagonal): {
     topToBottom: null;
 } | {
     leftToRight: null;

@@ -1,117 +1,108 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add text formatting controls in admin panel for homepage sections",
+  "title": "Revert application to Version 62 state",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Create a new 'Text Formatting' tab in the admin panel alongside existing sections",
+      "id": "REQ-2",
+      "summary": "Restore all frontend components, styles, and functionality to the exact state from Version 62, removing any changes introduced in Version 63",
       "acceptanceCriteria": [
-        "A new tab labeled 'Text Formatting' appears in the AdminPanel component",
-        "The tab is accessible alongside other existing admin tabs",
-        "Clicking the tab displays the text formatting controls"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/AdminPanel.tsx",
-          "operation": "modify",
-          "description": "Add a new tab labeled 'Text Formatting' to the existing tab list in AdminPanel. Insert it after the existing tabs (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer) and wire it to display the TextFormattingManager component when selected."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Create TextFormattingManager admin component with section-based controls for font size, font family, font weight, letter spacing, and text transform",
-      "acceptanceCriteria": [
-        "Component displays separate subsections for hero, overview/about, services, and footer",
-        "Each subsection has separate controls for 'Headings' and 'Body Text'",
-        "Controls include inputs for font size (px), font family dropdown, font weight dropdown, letter spacing (em), and text transform options",
-        "Changes can be previewed and saved per section",
-        "A save button persists all formatting changes to the backend"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/admin/TextFormattingManager.tsx",
-          "operation": "create",
-          "description": "Create a new admin component that fetches the current HomepageTextFormatting using the getHomepageTextFormatting backend method. Display four subsections: 'Hero Section', 'Overview/About Section', 'Services Section', and 'Footer Section'. For each subsection, provide two groups of controls: 'Headings' and 'Body Text'. Each group includes input fields for font size (number input in px), font family (dropdown with common web fonts like Arial, Helvetica, Georgia, Times New Roman, Courier New, Verdana, etc.), font weight (dropdown with 'normal' and 'bold' options), letter spacing (number input in em), and text transform (dropdown with 'none', 'uppercase', 'lowercase', 'capitalize' options). Map the subsections to the backend fields: heroHeading, heroBody, overviewHeading, overviewBody, servicesHeading, servicesBody, footerHeading, footerBody. Include a save button that calls updateHomepageTextFormatting mutation with the modified HomepageTextFormatting object. Display loading states and error handling."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add two new hooks: useGetHomepageTextFormatting (query hook that calls actor.getHomepageTextFormatting) and useUpdateHomepageTextFormatting (mutation hook that calls actor.updateHomepageTextFormatting and invalidates the 'homepageTextFormatting' query key on success). Follow the existing pattern used for other query and mutation hooks in the file."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Apply stored text formatting settings to Hero component's text elements",
-      "acceptanceCriteria": [
-        "Hero headline applies heading formatting from hero section settings",
-        "Hero subtext applies body formatting from hero section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
+        "All frontend components match Version 62 implementation",
+        "UI appearance and behavior are identical to Version 62",
+        "No Version 63 frontend features or changes remain"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Hero.tsx",
           "operation": "modify",
-          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply heroHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the headline element using inline styles. Apply heroBody formatting to the subtext element using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage, not on blog pages."
+          "description": "Remove text formatting props and dynamic styling logic. Restore static styling as it existed in Version 62, removing any textFormatting prop usage and related conditional styling."
+        },
+        {
+          "path": "frontend/src/components/Overview.tsx",
+          "operation": "modify",
+          "description": "Remove text formatting props and dynamic styling logic. Restore static styling for the overview section and highlight cards as they existed in Version 62."
+        },
+        {
+          "path": "frontend/src/components/About.tsx",
+          "operation": "modify",
+          "description": "Remove text formatting props and dynamic styling logic. Restore static styling for the about section as it existed in Version 62."
+        },
+        {
+          "path": "frontend/src/components/Services.tsx",
+          "operation": "modify",
+          "description": "Remove text formatting props and dynamic styling logic. Restore static styling for the services grid as it existed in Version 62."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Remove text formatting props and dynamic styling logic. Restore static styling for the footer as it existed in Version 62."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Remove any text formatting state management, hooks, or props being passed to child components. Restore Version 62 state where components receive only the props they had originally."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Remove the TextFormattingManager component and all text formatting controls that were added in Version 63",
+      "acceptanceCriteria": [
+        "TextFormattingManager component is removed from the admin panel",
+        "Text formatting tab is removed from AdminPanel.tsx",
+        "All text formatting state management hooks are removed"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/admin/TextFormattingManager.tsx",
+          "operation": "delete",
+          "description": "Delete the TextFormattingManager component file that was added in Version 63."
+        },
+        {
+          "path": "frontend/src/components/AdminPanel.tsx",
+          "operation": "modify",
+          "description": "Remove the TextFormattingManager import and the 'Text Formatting' tab from the admin panel. Remove any text formatting state or props related to this feature. Restore the admin panel to its Version 62 tab structure (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Remove any text formatting related hooks (e.g., useGetTextFormatting, useUpdateTextFormatting) that were added in Version 63. Restore the hooks file to its Version 62 state with only the original query hooks."
         }
       ]
     },
     {
       "id": "REQ-5",
-      "summary": "Apply stored text formatting settings to Overview/About components' text elements",
+      "summary": "Remove text formatting props and dynamic styling from all homepage components (Hero, Overview, About, Services, Footer) that were modified in Version 63",
       "acceptanceCriteria": [
-        "Overview and About section headings apply heading formatting from overview/about section settings",
-        "Overview and About body text applies body formatting from overview/about section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
+        "Homepage components use static styling as in Version 62",
+        "No dynamic text formatting is applied to any component",
+        "All components render with Version 62 appearance"
       ],
       "file_operations": [
         {
+          "path": "frontend/src/components/Hero.tsx",
+          "operation": "modify",
+          "description": "Verify removal of all textFormatting props, inline style objects derived from text formatting data, and any conditional className or style attributes related to dynamic text formatting. Ensure only hardcoded Tailwind classes and static styles remain."
+        },
+        {
           "path": "frontend/src/components/Overview.tsx",
           "operation": "modify",
-          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply overviewHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the section heading element using inline styles. Apply overviewBody formatting to the content text elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
+          "description": "Verify removal of all textFormatting props and dynamic style generation. Restore static Tailwind classes for headings, body text, and card content as they existed in Version 62."
         },
         {
           "path": "frontend/src/components/About.tsx",
           "operation": "modify",
-          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply overviewHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the section heading element using inline styles. Apply overviewBody formatting to the description text elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Apply stored text formatting settings to Services component's text elements",
-      "acceptanceCriteria": [
-        "Service card titles apply heading formatting from services section settings",
-        "Service card descriptions apply body formatting from services section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
-      ],
-      "file_operations": [
+          "description": "Verify removal of all textFormatting props and dynamic styling. Restore static classes for section heading and body text as they existed in Version 62."
+        },
         {
           "path": "frontend/src/components/Services.tsx",
           "operation": "modify",
-          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply servicesHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to the service title elements in each service card using inline styles. Apply servicesBody formatting to the service description elements using inline styles. Ensure the formatting is applied dynamically when the query data updates. This component is only used on the homepage."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Apply stored text formatting settings to Footer component's text elements",
-      "acceptanceCriteria": [
-        "Footer section headings apply heading formatting from footer section settings",
-        "Footer body text (contact info, links, copyright) applies body formatting from footer section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
-      ],
-      "file_operations": [
+          "description": "Verify removal of all textFormatting props and dynamic styling. Restore static classes for service titles and descriptions as they existed in Version 62."
+        },
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Fetch HomepageTextFormatting using useGetHomepageTextFormatting hook. Apply footerHeading formatting (fontSize, fontFamily, fontWeight, letterSpacing, textTransform) to all footer section heading elements using inline styles. Apply footerBody formatting to footer body text elements including contact info, links, and copyright text using inline styles. Ensure the formatting is applied dynamically when the query data updates. The Footer component appears on all pages, but the text formatting should only affect the visual presentation without disrupting blog page layouts."
+          "description": "Verify removal of all textFormatting props and dynamic styling. Restore static classes for footer headings, links, and body text as they existed in Version 62."
         }
       ]
     }

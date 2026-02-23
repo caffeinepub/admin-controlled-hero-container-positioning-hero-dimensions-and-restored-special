@@ -1,159 +1,108 @@
 {
   "kind": "build_request",
-  "title": "Add text formatting controls in admin panel for homepage sections",
-  "priority": "normal",
+  "title": "Revert application to Version 62 state",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create a new 'Text Formatting' section in the admin panel as a separate tab alongside existing sections (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)",
-      "target": "frontend",
+      "text": "Restore all backend code to the exact state from Version 62, including main.mo with all data structures, functions, and logic as they existed in that version",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-recent"
         ],
         "quotes": [
-          "Create a saparate section for text formarting in admin panel"
+          "Revert entire app code and UI to version 62 fully"
         ]
       },
       "acceptanceCriteria": [
-        "A new tab labeled 'Text Formatting' appears in the AdminPanel component",
-        "The tab is accessible alongside other existing admin tabs",
-        "Clicking the tab displays the text formatting controls"
+        "Backend main.mo matches Version 62 implementation exactly",
+        "All backend data structures and functions are restored to Version 62 state",
+        "No Version 63 backend code remains"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Add backend storage for text formatting settings that stores font size and letter formatting (font family, font weight, letter spacing, text transform) separately for headings and body text across homepage sections: hero, overview/about, services, and footer",
-      "target": "backend",
+      "text": "Restore all frontend components, styles, and functionality to the exact state from Version 62, removing any changes introduced in Version 63",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-recent"
         ],
         "quotes": [
-          "adjust font size and letter formatting of every text on the homepage",
-          "category wise adjustment possible like hero section, about, services, footer"
+          "Revert entire app code and UI to version 62 fully"
         ]
       },
       "acceptanceCriteria": [
-        "Backend type defines text formatting settings with separate configurations for headings and body text",
-        "Settings are organized by section: hero, overview/about, services, footer",
-        "Each section stores font size, font family, font weight, letter spacing, and text transform",
-        "Query and mutation methods exist to retrieve and update text formatting settings"
+        "All frontend components match Version 62 implementation",
+        "UI appearance and behavior are identical to Version 62",
+        "No Version 63 frontend features or changes remain"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Create TextFormattingManager admin component with section-based controls allowing independent adjustment of font size, font family, font weight, letter spacing, and text transform for both headings and body text in each homepage section (hero, overview/about, services, footer)",
+      "text": "Remove the TextFormattingManager component and all text formatting controls that were added in Version 63",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-recent"
         ],
         "quotes": [
-          "adjust font size and letter formatting",
-          "It will apply to all headings and body saparately and category wise adjustment possible"
+          "Revert entire app code and UI to version 62 fully"
         ]
       },
       "acceptanceCriteria": [
-        "Component displays separate subsections for hero, overview/about, services, and footer",
-        "Each subsection has separate controls for 'Headings' and 'Body Text'",
-        "Controls include inputs for font size (px), font family dropdown, font weight dropdown, letter spacing (em), and text transform options",
-        "Changes can be previewed and saved per section",
-        "A save button persists all formatting changes to the backend"
+        "TextFormattingManager component is removed from the admin panel",
+        "Text formatting tab is removed from AdminPanel.tsx",
+        "All text formatting state management hooks are removed"
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Apply stored text formatting settings to Hero component's text elements, using heading settings for headline and body settings for subtext, without affecting blog pages",
-      "target": "frontend",
+      "text": "Remove all text formatting backend functionality including the getTextFormatting and updateTextFormatting functions, and remove text formatting data structures from the backend state",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-recent"
         ],
         "quotes": [
-          "every text on the homepage not blog page",
-          "like hero section"
+          "Revert entire app code and UI to version 62 fully"
         ]
       },
       "acceptanceCriteria": [
-        "Hero headline applies heading formatting from hero section settings",
-        "Hero subtext applies body formatting from hero section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
+        "Text formatting query and update functions are removed from backend",
+        "Text formatting state variables are removed from backend",
+        "Backend state matches Version 62 schema"
       ]
     },
     {
       "id": "REQ-5",
-      "text": "Apply stored text formatting settings to Overview/About components' text elements, using heading settings for section titles and body settings for description text, without affecting blog pages",
+      "text": "Remove text formatting props and dynamic styling from all homepage components (Hero, Overview, About, Services, Footer) that were modified in Version 63",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-recent"
         ],
         "quotes": [
-          "every text on the homepage not blog page",
-          "about"
+          "Revert entire app code and UI to version 62 fully"
         ]
       },
       "acceptanceCriteria": [
-        "Overview and About section headings apply heading formatting from overview/about section settings",
-        "Overview and About body text applies body formatting from overview/about section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Apply stored text formatting settings to Services component's text elements, using heading settings for service titles and body settings for service descriptions, without affecting blog pages",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "every text on the homepage not blog page",
-          "services"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Service card titles apply heading formatting from services section settings",
-        "Service card descriptions apply body formatting from services section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Apply stored text formatting settings to Footer component's text elements, using heading settings for section titles and body settings for footer content text, without affecting blog pages",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "every text on the homepage not blog page",
-          "footer"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Footer section headings apply heading formatting from footer section settings",
-        "Footer body text (contact info, links, copyright) applies body formatting from footer section settings",
-        "Formatting updates dynamically when settings change",
-        "Blog pages remain unaffected"
+        "Homepage components use static styling as in Version 62",
+        "No dynamic text formatting is applied to any component",
+        "All components render with Version 62 appearance"
       ]
     }
   ],
   "constraints": [
-    "Text formatting changes must not affect blog page content",
-    "Formatting settings must be stored in the backend for persistence across sessions",
-    "Each homepage section (hero, overview/about, services, footer) must have independent formatting controls",
-    "Headings and body text within each section must have separate formatting options"
+    "Must preserve all Version 62 functionality exactly",
+    "Must remove all Version 63 changes completely",
+    "Must not introduce any new features during the revert"
   ],
   "nonGoals": [
-    "Formatting controls for blog pages",
-    "Formatting controls for header/navigation elements",
-    "Individual element-level formatting (formatting applies to all headings or all body text within a section)",
-    "Advanced typography features like line height, text decoration, or text shadow"
+    "Adding new features",
+    "Improving on Version 62 code",
+    "Partial revert of specific features"
   ],
   "imageRequirements": {
     "required": [],

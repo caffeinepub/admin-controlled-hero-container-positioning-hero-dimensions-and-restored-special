@@ -290,28 +290,6 @@ export const HeroSectionTheme = IDL.Record({
   'particleEffect' : ParticleEffect,
   'vectorEffect' : VectorEffect,
 });
-export const TextFormattingBundle = IDL.Record({
-  'fontFamily' : IDL.Text,
-  'fontWeight' : IDL.Variant({ 'normal' : IDL.Null, 'bold' : IDL.Null }),
-  'fontSize' : IDL.Nat,
-  'letterSpacing' : IDL.Nat,
-  'textTransform' : IDL.Variant({
-    'none' : IDL.Null,
-    'lowercase' : IDL.Null,
-    'capitalize' : IDL.Null,
-    'uppercase' : IDL.Null,
-  }),
-});
-export const HomepageTextFormatting = IDL.Record({
-  'heroHeading' : TextFormattingBundle,
-  'footerHeading' : TextFormattingBundle,
-  'overviewBody' : TextFormattingBundle,
-  'heroBody' : TextFormattingBundle,
-  'overviewHeading' : TextFormattingBundle,
-  'servicesHeading' : TextFormattingBundle,
-  'servicesBody' : TextFormattingBundle,
-  'footerBody' : TextFormattingBundle,
-});
 export const RevealAnimation = IDL.Record({
   'delayUnit' : IDL.Nat,
   'animationType' : IDL.Variant({
@@ -481,11 +459,6 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'getHeroSectionTheme' : IDL.Func([], [HeroSectionTheme], ['query']),
-  'getHomepageTextFormatting' : IDL.Func(
-      [],
-      [HomepageTextFormatting],
-      ['query'],
-    ),
   'getImage' : IDL.Func([IDL.Text], [IDL.Opt(WebsiteImage)], ['query']),
   'getReviewSettings' : IDL.Func([], [ReviewsPanelSettings], ['query']),
   'getSortedSocialMediaLinks' : IDL.Func(
@@ -507,7 +480,6 @@ export const idlService = IDL.Service({
   'updateFooterContent' : IDL.Func([FooterContent], [], []),
   'updateFooterSectionOrder' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
   'updateHeroSectionTheme' : IDL.Func([HeroSectionTheme], [], []),
-  'updateHomepageTextFormatting' : IDL.Func([HomepageTextFormatting], [], []),
   'updateImage' : IDL.Func([WebsiteImage], [], []),
   'updateReview' : IDL.Func([Review], [], []),
   'updateReviewSettings' : IDL.Func([ReviewsPanelSettings], [], []),
@@ -789,28 +761,6 @@ export const idlFactory = ({ IDL }) => {
     'particleEffect' : ParticleEffect,
     'vectorEffect' : VectorEffect,
   });
-  const TextFormattingBundle = IDL.Record({
-    'fontFamily' : IDL.Text,
-    'fontWeight' : IDL.Variant({ 'normal' : IDL.Null, 'bold' : IDL.Null }),
-    'fontSize' : IDL.Nat,
-    'letterSpacing' : IDL.Nat,
-    'textTransform' : IDL.Variant({
-      'none' : IDL.Null,
-      'lowercase' : IDL.Null,
-      'capitalize' : IDL.Null,
-      'uppercase' : IDL.Null,
-    }),
-  });
-  const HomepageTextFormatting = IDL.Record({
-    'heroHeading' : TextFormattingBundle,
-    'footerHeading' : TextFormattingBundle,
-    'overviewBody' : TextFormattingBundle,
-    'heroBody' : TextFormattingBundle,
-    'overviewHeading' : TextFormattingBundle,
-    'servicesHeading' : TextFormattingBundle,
-    'servicesBody' : TextFormattingBundle,
-    'footerBody' : TextFormattingBundle,
-  });
   const RevealAnimation = IDL.Record({
     'delayUnit' : IDL.Nat,
     'animationType' : IDL.Variant({
@@ -980,11 +930,6 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getHeroSectionTheme' : IDL.Func([], [HeroSectionTheme], ['query']),
-    'getHomepageTextFormatting' : IDL.Func(
-        [],
-        [HomepageTextFormatting],
-        ['query'],
-      ),
     'getImage' : IDL.Func([IDL.Text], [IDL.Opt(WebsiteImage)], ['query']),
     'getReviewSettings' : IDL.Func([], [ReviewsPanelSettings], ['query']),
     'getSortedSocialMediaLinks' : IDL.Func(
@@ -1006,7 +951,6 @@ export const idlFactory = ({ IDL }) => {
     'updateFooterContent' : IDL.Func([FooterContent], [], []),
     'updateFooterSectionOrder' : IDL.Func([IDL.Vec(IDL.Nat)], [], []),
     'updateHeroSectionTheme' : IDL.Func([HeroSectionTheme], [], []),
-    'updateHomepageTextFormatting' : IDL.Func([HomepageTextFormatting], [], []),
     'updateImage' : IDL.Func([WebsiteImage], [], []),
     'updateReview' : IDL.Func([Review], [], []),
     'updateReviewSettings' : IDL.Func([ReviewsPanelSettings], [], []),

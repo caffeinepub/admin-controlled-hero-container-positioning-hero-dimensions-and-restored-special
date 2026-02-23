@@ -116,16 +116,6 @@ export interface HeroSectionTheme {
   'particleEffect' : ParticleEffect,
   'vectorEffect' : VectorEffect,
 }
-export interface HomepageTextFormatting {
-  'heroHeading' : TextFormattingBundle,
-  'footerHeading' : TextFormattingBundle,
-  'overviewBody' : TextFormattingBundle,
-  'heroBody' : TextFormattingBundle,
-  'overviewHeading' : TextFormattingBundle,
-  'servicesHeading' : TextFormattingBundle,
-  'servicesBody' : TextFormattingBundle,
-  'footerBody' : TextFormattingBundle,
-}
 export type HorizontalAlignment = { 'center' : null } |
   { 'left' : null } |
   { 'right' : null };
@@ -276,17 +266,6 @@ export interface Spacing {
     { 'left' : null } |
     { 'right' : null },
 }
-export interface TextFormattingBundle {
-  'fontFamily' : string,
-  'fontWeight' : { 'normal' : null } |
-    { 'bold' : null },
-  'fontSize' : bigint,
-  'letterSpacing' : bigint,
-  'textTransform' : { 'none' : null } |
-    { 'lowercase' : null } |
-    { 'capitalize' : null } |
-    { 'uppercase' : null },
-}
 export type TextSizePreset = { 'large' : null } |
   { 'extraLarge' : null } |
   { 'medium' : null };
@@ -391,7 +370,6 @@ export interface _SERVICE {
     [] | [{ 'darkMode' : [] | [ExternalBlob], 'standard' : ExternalBlob }]
   >,
   'getHeroSectionTheme' : ActorMethod<[], HeroSectionTheme>,
-  'getHomepageTextFormatting' : ActorMethod<[], HomepageTextFormatting>,
   'getImage' : ActorMethod<[string], [] | [WebsiteImage]>,
   'getReviewSettings' : ActorMethod<[], ReviewsPanelSettings>,
   'getSortedSocialMediaLinks' : ActorMethod<[], Array<SocialMediaLink>>,
@@ -405,10 +383,6 @@ export interface _SERVICE {
   'updateFooterContent' : ActorMethod<[FooterContent], undefined>,
   'updateFooterSectionOrder' : ActorMethod<[Array<bigint>], undefined>,
   'updateHeroSectionTheme' : ActorMethod<[HeroSectionTheme], undefined>,
-  'updateHomepageTextFormatting' : ActorMethod<
-    [HomepageTextFormatting],
-    undefined
-  >,
   'updateImage' : ActorMethod<[WebsiteImage], undefined>,
   'updateReview' : ActorMethod<[Review], undefined>,
   'updateReviewSettings' : ActorMethod<[ReviewsPanelSettings], undefined>,

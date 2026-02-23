@@ -1,60 +1,34 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Website with admin panel for content and styling management",
-  "architectural_notes": [
-    "Admin panel with separate text formatting section",
-    "Homepage sections: hero, about, services, footer with independent styling controls",
-    "Font customization applies category-wise (per section) and element-wise (headings vs body)"
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [
+    "Unable to revert to Version 62 - multiple attempts failed"
   ],
-  "known_issues": [],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-create-a-new-text-formatting-section-in-the-admin-panel-as-a-separate-tab-alongside-existing-sections-content-hero-theme-clinics-services-reviews-social-media-footer",
-      "title": "Create a new 'Text Formatting' section in the admin panel as a separate tab alongside existing sections (Content, Hero Theme, Clinics, Services, Reviews, Social Media, Footer)",
+      "id": "feature-restore-all-frontend-components-styles-and-functionality-to-the-exact-state-from-version-62-removing-any-changes-introduced-in-version-63",
+      "title": "Restore all frontend components, styles, and functionality to the exact state from Version 62, removing any changes introduced in Version 63",
       "reqIds": [
-        "REQ-1"
+        "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-textformattingmanager-admin-component-with-section-based-controls-allowing-independent-adjustment-of-font-size-font-family-font-weight-letter-spacing-and-text-transform-for-both-headings-and-body-text-in-each-homepage-section-hero-overview-about-services-footer",
-      "title": "Create TextFormattingManager admin component with section-based controls allowing independent adjustment of font size, font family, font weight, letter spacing, and text transform for both headings and body text in each homepage section (hero, overview/about, services, footer)",
+      "id": "feature-remove-the-textformattingmanager-component-and-all-text-formatting-controls-that-were-added-in-version-63",
+      "title": "Remove the TextFormattingManager component and all text formatting controls that were added in Version 63",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
     },
     {
-      "id": "feature-apply-stored-text-formatting-settings-to-hero-component-s-text-elements-using-heading-settings-for-headline-and-body-settings-for-subtext-without-affecting-blog-pages",
-      "title": "Apply stored text formatting settings to Hero component's text elements, using heading settings for headline and body settings for subtext, without affecting blog pages",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-stored-text-formatting-settings-to-overview-about-components-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-description-text-without-affecting-blog-pages",
-      "title": "Apply stored text formatting settings to Overview/About components' text elements, using heading settings for section titles and body settings for description text, without affecting blog pages",
+      "id": "feature-remove-text-formatting-props-and-dynamic-styling-from-all-homepage-components-hero-overview-about-services-footer-that-were-modified-in-version-63",
+      "title": "Remove text formatting props and dynamic styling from all homepage components (Hero, Overview, About, Services, Footer) that were modified in Version 63",
       "reqIds": [
         "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-stored-text-formatting-settings-to-services-component-s-text-elements-using-heading-settings-for-service-titles-and-body-settings-for-service-descriptions-without-affecting-blog-pages",
-      "title": "Apply stored text formatting settings to Services component's text elements, using heading settings for service titles and body settings for service descriptions, without affecting blog pages",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-stored-text-formatting-settings-to-footer-component-s-text-elements-using-heading-settings-for-section-titles-and-body-settings-for-footer-content-text-without-affecting-blog-pages",
-      "title": "Apply stored text formatting settings to Footer component's text elements, using heading settings for section titles and body settings for footer content text, without affecting blog pages",
-      "reqIds": [
-        "REQ-7"
       ],
       "version": 1
     }
@@ -62,20 +36,22 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Admin panel text formatting controls for homepage sections (hero, about, services, footer) with category-wise font size and letter formatting options for headings and body text separately",
-      "reqIds": [],
+      "summary": "Restore all backend code to the exact state from Version 62, including main.mo with all data structures, functions, and logic as they existed in that version",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     },
     {
-      "id": "AR-3",
-      "summary": "Add backend storage for text formatting settings that stores font size and letter formatting (font family, font weight, letter spacing, text transform) separately for headings and body text across homepage sections: hero, overview/about, services, and footer",
+      "id": "AR-4",
+      "summary": "Remove all text formatting backend functionality including the getTextFormatting and updateTextFormatting functions, and remove text formatting data structures from the backend state",
       "reqIds": [
-        "REQ-2"
+        "REQ-4"
       ],
       "status": "pending"
     }
   ],
-  "projectName": "Add text formatting controls in admin panel for homepage sections",
+  "projectName": "Revert application to Version 62 state",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
